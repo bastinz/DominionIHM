@@ -1,0 +1,168 @@
+\documentclass[12pt]{td}
+\usepackage{multicol}
+
+\graphicspath{{../web/cards/}}
+\renewcommand{\TDmodule}{IUT de Montpellier, Dép. Informatique\\
+M2103 - Base de la POO (1ère année)}
+\renewcommand{\TDresponsables}{Responsable~: P.~Valicov}
+
+\definecolor{commentscolor}{HTML}{568262}
+\definecolor{keywordcolor}{HTML}{741157}
+\definecolor{stringcolor}{HTML}{8C1C16}
+\definecolor{terminaltext}{gray}{0.9}
+\definecolor{terminalbg}{gray}{0.0}
+
+\lstset{
+	basicstyle=\normalsize\ttfamily\NoAutoSpacing,
+	language=Java,
+	commentstyle=\color{commentscolor},
+	keywordstyle=\bfseries\color{keywordcolor},
+	stringstyle=\color{stringcolor},
+	breaklines=true,
+	breakatwhitespace=true,
+	keepspaces,
+	columns=fullflexible,
+	% literate=
+	% {?}{?}1 {é}{{\'{e}}}1 {è}{{\`{e}}}1 {ê}{{\^{e}}}1 {ë}{{\¨{e}}}1 {û}{{\^{u}}}1 {ù}{{\`{u}}}1 {â}{{\^{a}}}1 {à}{{\`{a}}}1 {î}{{\^{i}}}1 {ô}{{\^{o}}}1 {ç}{{\c{c}}}1 {Ç}{{\c{C}}}1 {É}{{\'{E}}}1 {Ê}{{\^{E}}}1 {À}{{\`{A}}}1 {Â}{{\^{A}}}1 {Î}{{\^{I}}}1
+}
+
+\lstdefinestyle{terminal}{
+	basicstyle=\color{terminaltext}\small\ttfamily\NoAutoSpacing,
+	backgroundcolor=\color{terminalbg},
+	identifierstyle=,
+	commentstyle=,
+	stringstyle=,
+	showspaces=false,
+	showstringspaces=false,
+	columns=fullflexible,
+	tabsize=2,
+	frame=single,
+	breaklines=true,
+	breakatwhitespace=true,
+	keepspaces,
+}
+
+\begin{document}
+
+\newcommand{\coins}[1]{\hspace{-.2em}\makebox[1.4em]{\raisebox{-.35em}{\includegraphics[width=1.4em]{coin.png}}\hspace{-.95em}#1\ }}
+\newcommand{\vp}{\raisebox{-.4em}{\includegraphics[height=1.4em]{vp.png}}}
+
+\label{sec:liste_cartes}
+
+\newcommand{\card}[3]{
+	\noindent
+	\begin{minipage}{.15\textwidth}
+	\includegraphics[width=\textwidth]{#1.jpg}
+	\end{minipage}
+	\begin{minipage}{.35\textwidth}
+	\textbf{\emph{#2}}\\
+	#3
+	\end{minipage}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\card}[4]{
+	\bigskip
+
+	\noindent
+	\begin{minipage}{.15\textwidth}
+	\includegraphics[width=\textwidth]{#1.jpg}
+	\end{minipage}
+	\begin{minipage}{.85\textwidth}
+	\textbf{\emph{#2}}\\
+	#3
+	\bigskip\\
+	\textbf{Détails~: }#4
+	\end{minipage}
+} 
+\newcommand{\details}{\textbf{Détails~: }}
+
+
+\card{cellar}{Cave (Cellar)}{+1 Action.\\Défaussez autant de cartes que vous voulez.\\+1 Carte par carte défaussée.}
+{Le joueur entre un par un les noms des cartes qu'il souhaite défausser de sa main. Lorsqu'il ne veut plus défausser de cartes, il entre la chaîne vide. Le programme doit compter les cartes défaussées et ne piocher les nouvelles cartes en main qu'après que l'utilisateur ait fini de défausser.}
+
+\card{chapel}{Chapelle (Chapel)}{Écartez jusqu'à 4 cartes de votre main.}
+{Le joueur entre un par un les noms des cartes à écarter. Il peut entrer la chaîne vide lorsqu'il ne souhaite plus écarter de carte.}
+
+\card{moat}{Douves (Moat)}{+2 Cartes.\\Lorsqu'un adversaire joue une carte \emph{Attaque}, vous pouvez dévoiler cette carte de votre main.\\Dans ce cas, l'\emph{Attaque} n'a pas d'effet sur vous.}
+{La carte est très simple lorsqu'elle est jouée en tant que carte \emph{Action}. C'est en tant que réaction à une attaque qu'elle est plus complexe. Lorsqu'un joueur joue une carte \emph{Attaque}, il faut demander à tous les autres joueurs ayant des \emph{Douves} en main s'ils veulent la révéler. S'ils répondent \texttt{"y"}, alors l'attaque ne les affecte pas, s'ils répondent \texttt{"n"} ils subissent l'attaque normalement (comme s'ils n'avaient pas de \emph{Douves} en main).}
+
+\card{harbinger}{Messager (Harbinger)}{+1 Carte.\\+1 Action.\\Regardez dans votre défausse, vous pouvez prendre une carte et la mettre sur votre deck.}
+{Le joueur entre le nom de la carte qu'il veut placer sur son deck, ou la chaîne vide s'il ne veut en prendre aucune. Idéalement, les noms des cartes disponibles sont présentés avec \texttt{chooseOption(...)} pour qu'ils soient correctement affichés à l'utilisateur.}
+
+\card{merchant}{Marchand (Merchant)}{+1 Carte.\\+1 Action.\\La première fois que vous jouez un \emph{Argent} pendant ce tour, +\coins{1}.}
+{Bien qu'elle ne demande aucune intervention de la part du joueur, cette carte est compliquée à implémenter correctement car elle modifie le fonctionnement de la carte \emph{Argent} lorsqu'elle est jouée pour la première fois.}
+
+\card{vassal}{Vassal (Vassal)}{Recevez \coins{2}.\\Défaussez la première carte de votre deck. Si c'est une carte Action, vous pouvez la jouer.}
+{Si la carte à défausser est une carte \emph{Action} on demande au joueur s'il veut la jouer. S'il répond \texttt{"y"} la carte est jouée (et déplacée dans \texttt{inPlay}), sinon (\texttt{"n"}) rien ne se passe.}
+
+\card{village}{Village}{+1 Carte.\\+2 Actions.}
+{Aucune intervention de la part des joueurs.}
+
+\card{workshop}{Atelier (Workshop)}{Recevez une carte coûtant jusqu'à \coins{4}.}
+{Le joueur doit entrer le nom de la carte qu'il souhaite gagner.}
+
+\card{bureaucrat}{Bureaucrate (Bureaucrat)}{Recevez une carte \emph{Argent}~; placez-la sur votre deck.\\Tous vos adversaires dévoilent une carte \emph{Victoire} et la placent sur leur deck (sinon ils dévoilent leur main afin que vous puissiez voir qu'ils n'ont pas de cartes \emph{Victoire}).}
+{Les adversaires doivent entrer le nom de la carte \emph{Victoire} qu'ils souhaitent révéler (s'ils n'en ont aucune, le programme passe automatiquement au joueur suivant).}
+
+\card{gardens}{Jardins (Gardens)}{Vaut 1\vp{} pour chaque 10 cartes dans votre deck (arrondi à l'unité inférieure).}
+{Pour obtenir la valeur de cette carte, il faut compter toutes les cartes en possession du joueur (main, défausse, pioche et en jeu). Si la carte dit qu'il faut compter les cartes dans le \emph{deck} (terme qui est habituellement utilisé pour la pioche dans le reste des règles) c'est parce que d'après les règles en fin de partie toutes les cartes du joueur sont placées dans sa pioche (donc son \emph{deck}) avant de compter les points. Pour le programme, il est plus simple de compter les cartes dans toutes les piles appartenant au joueur.}
+
+\card{militia}{Milice (Militia)}{+\coins{2}.\\Tous vos adversaires défaussent leurs cartes de façon à n'avoir que 3 cartes en main.}
+{Chaque adversaire doit entrer les noms des cartes qu'il souhaite défausser de sa main, tant qu'il a strictement plus de 3 cartes.}
+
+\card{poacher}{Braconnier (Poacher)}{+1 Action.\\+1 Carte.\\+\coins{1}.\\Défaussez une carte de votre main par pile de réserve épuisée.}
+{Le joueur entre successivement les noms des cartes à défausser.}
+
+\card{moneylender}{Prêteur sur gages (Moneylender)}{Vous pouvez écarter une carte de votre main pour +\coins{3}.}
+{L'action est optionnelle. Si le joueur a au moins un \emph{Cuivre}, il doit entrer le nom de la carte à écarter (ici c'est obligatoirement \texttt{"Copper"}) ou entrer la chaîne vide pour passer (s'il passe il ne gagne pas +\coins{3}).}
+
+\card{remodel}{Rénovation (Remodel)}{Écartez une carte de votre main.\\Recevez une carte coûtant jusqu'à \coins{2} de plus que la carte écartée.}
+{Le joueur entre le nom de la carte de sa main qu'il souhaite écarter, puis le nom de la carte qu'il souhaite gagner.}
+
+\card{smithy}{Forgeron (Smithy)}{+3 Cartes.}
+{Aucune intervention de la part des joueurs.}
+
+\card{throneroom}{Salle du trône (Throne Room)}{Vous pouvez jouer une carte Action de votre main deux fois.}
+{Le joueur entre le nom de la carte \emph{Action} de sa main qu'il souhaite jouer deux fois, ou la chaîne vide pour passer. L'action de la carte est exécutée deux fois par le programme (avec toutes les interactions associées). Notez que le joueur peut tout à fait jouer une seconde \emph{Salle du trône} deux fois, mais il faut alors qu'il ait deux autres actions en main, puisque chaque exécution de la seconde \emph{Salle du trône} demande que le joueur ait une carte en main (lorsqu'une carte est jouée avec \emph{Salle du trône} elle est mise en jeu).}
+
+\card{bandit}{Bandit (Bandit)}{Gagnez un \emph{Or}.\\Chaque joueur révèle les deux premières cartes de son deck, écarte un \emph{Trésor} autre que \emph{Cuivre} et défausse le reste.}
+{Si les deux cartes retournées par un des adversaires sont deux \emph{Trésors} distincts autres que \emph{Cuivre}, l'adversaire entre le nom de la carte qu'il souhaite écarter (dans les autres cas, le choix est fait automatiquement).}
+
+\card{councilroom}{Chambre du conseil (Council Room)}{+4 Cartes.\\+1 Achat.\\Tous vos adversaires piochent 1 carte.}
+{Aucune intervention de la part des joueurs.}
+
+\vspace{-0.2cm}
+\card{festival}{Festival}{+2 Actions.\\+1 Achat.\\+\coins{2}.}
+{Aucune intervention de la part des joueurs.}
+
+\vspace{-0.2cm}
+\card{laboratory}{Laboratoire (Laboratory)}{+2 Cartes.\\+1 Action.}
+{Aucune intervention de la part des joueurs.}
+
+\vspace{-0.2cm}
+\card{library}{Bibliothèque (Library)}{Piochez jusqu'à ce que vous ayez 7 cartes en main. Chaque carte \emph{Action} piochée peut être mise de côté. Défaussez les cartes mises de côté lorsque vous avez terminé de piocher.}
+{Les cartes sont automatiquement piochées tant que le joueur a strictement moins de 7 cartes en main. À chaque fois qu'une carte Action est piochée, le joueur peut entrer \texttt{"y"} pour la mettre de côté (ou \texttt{"n"} pour la piocher en main normalement).}
+
+\vspace{-0.2cm}
+\card{market}{Marché (Market)}{+1 Carte.\\+1 Action.\\+1 Achat.\\+\coins{1}.}
+{Aucune intervention de la part des joueurs.}
+
+\vspace{-0.2cm}
+\card{mine}{Mine}{Vous pouvez écarter une carte \emph{Trésor} de votre main. Recevez en main une carte \emph{Trésor} coûtant jusqu'à \coins{3} de plus.}
+{Le joueur doit entrer le nom de la carte qu'il souhaite écarter ou la chaîne vide pour passer (s'il passe, il ne gagne pas de \emph{Trésor}), puis le nom de la carte qu'il souhaite gagner (la carte est gagnée dans la main, pas dans la défausse).}
+
+\card{sentry}{Sentinelle (Sentry)}{+1 Carte.\\+1 Action.\\Regardez les 2 premières cartes de votre deck. Écartez et/ou défaussez celles que vous voulez. Replacez les autres sur votre deck dans l'ordre de votre choix.}
+{Le joueur entre d'abord les noms des cartes qu'il souhaite écarter, et entre la chaîne vide pour passer à la suite. Il entre ensuite les noms des cartes qu'il souhaite défausser et passe avec la chaîne vide. Enfin, il entre les noms des cartes à replacer sur la pioche, la dernière étant replacée au-dessus.}
+
+\vspace{-0.2cm}
+\card{witch}{Sorcière (Witch)}{+2 Cartes.\\Tous vos adversaires recoivent une carte \emph{Malédiction}.}
+{Aucune intervention de la part des joueurs.}
+
+\vspace{-0.2cm}
+\card{artisan}{Artisan (Artisan)}{Gagnez une carte coûtant jusqu'à \coins{5} dans votre main.\\Mettez une carte de votre main sur votre deck.}
+{Le joueur entre d'abord le nom de la carte à gagner en main, puis le nom de la carte qu'il veut replacer sur son deck.}
+
+\end{document}

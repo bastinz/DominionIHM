@@ -1,0 +1,25 @@
+- Important: Durations ne restent pas en jeu si aucun effet au tour suivant
+
+- Tactician ne reste pas en jeu s'il n'a pas d'effet au prochain tour (pas de cartes en main) -> ajout de la méthode Card.onCleanup(Player p) ?
+
+- Throne Room + Duration compliqué à gérer. Pas implémenté ici parce que les étudiants n'ont pas à écrire Throne Room
+
+- "If your Monkey draws a Reaction that can react to the card they gained (e.g. they gained a Treasure and you draw a Pirate), you can immediately use it."
+
+- Sailor est un peu compliqué si la carte n'est pas gagnée sur la défausse (cf. https://boardgamegeek.com/thread/2955524/blockade-and-villasailor-on-gain-effect pour intéraction Sailor+Blockade)
+
+- Attention à bien compter les cartes mises de côté par Blockade et Haven si la partie s'arrête pendant que la carte est en jeu
+
+- Blockade ne donne un Curse que si la carte est gagnée par un joueur pendant son tour
+
+- Pearl Diver : il faut mélanger la défausse dans la pioche si la pioche est vide avant de regarder la carte au fond de la pioche
+
+- Les conditions pour retirer Outpost du jeu ne sont pas très claires. Peut-être toujours pendant le cleanup du tour qui suit le tour où il a été joué ?
+
+- Pour simplifier l'interface, les effets des cartes inPlay sont exécutés dans l'ordre de la liste
+
+- Dans Game.run(), imposer la structure
+        currentTurnPlayer.playTurn();
+        currentTurnPlayer.cleanup();
+        moveToNextPlayer();
+    pour les tests
