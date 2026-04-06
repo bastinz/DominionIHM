@@ -3,6 +3,7 @@ package fr.umontpellier.iut.dominionJavaFX.dominion;
 import fr.umontpellier.iut.dominionJavaFX.IGame;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.FactorySupplyPile;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.concurrent.Task;
@@ -394,7 +395,9 @@ public class Game extends Task<Void> implements Runnable, IGame {
         System.out.println(toString());
         System.out.println(currentTurnPlayer.getValue().toString());
         String ligneInstruction = ">>> " + instruction + "<<<";
-        this.instruction.set(ligneInstruction);
+        Platform.runLater(() -> {
+            this.instruction.set(instruction);
+        });
         System.out.println(ligneInstruction);
 
         // Prépare la représentation envoyée à l'UI
@@ -437,5 +440,10 @@ public class Game extends Task<Void> implements Runnable, IGame {
     protected Void call() throws Exception {
         run();
         return null;
+    }
+
+    @Override
+    public ObjectProperty<String> instructionProperty() {
+        return instruction;
     }
 }

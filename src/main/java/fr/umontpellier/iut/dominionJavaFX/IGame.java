@@ -1,5 +1,7 @@
 package fr.umontpellier.iut.dominionJavaFX;
 
-public interface IGame {
+import javafx.beans.property.ObjectProperty;
 
+public interface IGame {
+    ObjectProperty<String> instructionProperty();
 }

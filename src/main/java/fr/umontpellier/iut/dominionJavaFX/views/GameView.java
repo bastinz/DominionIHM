@@ -1,6 +1,7 @@
 package fr.umontpellier.iut.dominionJavaFX.views;
 
 import fr.umontpellier.iut.dominionJavaFX.IGame;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -36,6 +37,7 @@ public class GameView extends HBox {
     }
 
     public void createBindings() {
+        instructionLabel.textProperty().bind(game.instructionProperty());
     }
 
     private void createInnerComponentsBindings() {
