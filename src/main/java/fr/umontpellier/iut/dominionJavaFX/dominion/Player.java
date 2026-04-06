@@ -691,6 +691,7 @@ public class Player implements IPlayer {
         for (Button b : buttons) {
             choices.add("BUTTON:" + b.value());
         }
+
         // Si aucun choix disponible, le joueur est autorisé à passer
         if (choices.isEmpty()) {
             canPass = true;
@@ -1046,6 +1047,11 @@ public class Player implements IPlayer {
     @Override
     public ObservableList<Card> getHand() {
         return hand;
+    }
+
+    @Override
+    public ObservableList<Card> getInPlay() {
+        return inPlay;
     }
 
     @Override

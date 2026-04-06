@@ -383,13 +383,13 @@ public class Game extends Task<Void> implements Runnable, IGame {
      *         l'entrée standard (sans le retour à la ligne finale)
      */
     public String readLine() {
-//        return scanner.nextLine();
-        try {
-            return inputQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return scanner.nextLine();
+//        try {
+//            return inputQueue.take();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
     }
 
     /**

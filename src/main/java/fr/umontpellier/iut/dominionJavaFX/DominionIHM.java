@@ -108,10 +108,11 @@ public class DominionIHM extends Application {
         // String[] kingdomCards = new String[]{};
 
         // Option 2. Liste explicite de cartes royaume à utiliser (le nombre de cartes peut être quelconque)
-        // String[] kingdomCards = new String[]{"Ambassador", "Blockade", "Pirate", "Sailor"};
+         String[] kingdomCards = new String[]{"Ambassador", "Lighthouse", "Pirate", "Sailor"};
 
         // Option 3. Choix aléatoire de 10 cartes parmi la liste complète allKingdomCards définie précédemment
-        return allKingdomCards.subList(0, 10).toArray(new String[10]);
+        // String[] kingdomCards = allKingdomCards.subList(0, 10).toArray(new String[10]);
+        return kingdomCards;
     }
 
     private void startGameService() {

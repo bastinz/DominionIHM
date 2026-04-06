@@ -30,6 +30,9 @@ public class CurrentPlayerView extends VBox {
     @FXML
     private HBox handPane;
 
+    @FXML
+    private HBox inPlayPane;
+
     private ObjectProperty<? extends IPlayer> currentPlayer;
 
     public CurrentPlayerView() {
@@ -51,11 +54,11 @@ public class CurrentPlayerView extends VBox {
     private final ListChangeListener<? super Card> handListener = change ->
     Platform.runLater(() -> {
     while (change.next()) {
-/*            if (change.wasAdded()) {
+        if (change.wasAdded()) {
             for (Card card : change.getAddedSubList()) {
                 handPane.getChildren().add(createCardNode(card));
             }
-        }*/
+         }
         if (change.wasRemoved()) {
             for (Card card : change.getRemoved()) {
                 handPane.getChildren().removeIf(node -> node.getUserData() == card);
@@ -64,18 +67,44 @@ public class CurrentPlayerView extends VBox {
     }
     });
 
+    private final ListChangeListener<? super Card> inPlayListener = change ->
+    Platform.runLater(() -> {
+        while (change.next()) {
+            if (change.wasAdded()) {
+                for (Card card : change.getAddedSubList()) {
+                    inPlayPane.getChildren().add(createCardNode(card));
+                }
+            }
+            if (change.wasRemoved()) {
+                for (Card card : change.getRemoved()) {
+                    inPlayPane.getChildren().removeIf(node -> node.getUserData() == card);
+                }
+            }
+        }
+    });
+
      private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) ->
      Platform.runLater(() -> {
      if (newPlayer != null) {
          nameLabel.setText(newPlayer.getName());
          refreshHand();
+         refreshInPlay();
          newPlayer.getHand().addListener(handListener);
+         newPlayer.getInPlay().addListener(inPlayListener);
      }
      });
 
     private void refreshHand() {
         handPane.getChildren().setAll(
                 currentPlayer.getValue().getHand().stream()
+                        .map(this::createCardNode)
+                        .toList()
+        );
+    }
+
+    private void refreshInPlay() {
+        inPlayPane.getChildren().setAll(
+                currentPlayer.getValue().getInPlay().stream()
                         .map(this::createCardNode)
                         .toList()
         );

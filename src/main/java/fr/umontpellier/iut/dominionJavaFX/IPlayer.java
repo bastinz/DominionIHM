@@ -10,4 +10,5 @@ public interface IPlayer {
     String getName();
 
     ObservableList<Card> getHand();
+    ObservableList<Card> getInPlay();
 }
