@@ -1042,4 +1042,9 @@ public class Player implements IPlayer {
         drawToHand(nbCardsToDrawAtCleanup);
         nbCardsToDrawAtCleanup = 5;
     }
+
+    @Override
+    public ObservableList<Card> getHand() {
+        return hand;
+    }
 }

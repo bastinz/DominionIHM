@@ -2,13 +2,18 @@ package fr.umontpellier.iut.dominionJavaFX.views;
 
 import fr.umontpellier.iut.dominionJavaFX.DominionIHM;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
+import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -22,6 +27,9 @@ public class CurrentPlayerView extends VBox {
 
     @FXML
     private Label nameLabel;
+
+    @FXML
+    private HBox handPane;
 
     private ObjectProperty<? extends IPlayer> currentPlayer;
 
@@ -41,13 +49,46 @@ public class CurrentPlayerView extends VBox {
         setCurrentPlayerChangeListener(currentPlayerChangeListener);
     }
 
-     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldJoueur, IPlayer newJoueur) -> {
+    private final ListChangeListener<? super Card> handListener = change -> {
         Platform.runLater(() -> {
-            if (newJoueur != null) {
-                nameLabel.setText(newJoueur.getName());
+        while (change.next()) {
+/*            if (change.wasAdded()) {
+                for (Card card : change.getAddedSubList()) {
+                    handPane.getChildren().add(createCardNode(card));
+                }
+            }*/
+            if (change.wasRemoved()) {
+                for (Card card : change.getRemoved()) {
+                    handPane.getChildren().removeIf(node -> node.getUserData() == card);
+                }
             }
+        }
         });
     };
+
+     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) -> {
+        Platform.runLater(() -> {
+        if (newPlayer != null) {
+            nameLabel.setText(newPlayer.getName());
+            refreshHand();
+            newPlayer.getHand().addListener(handListener);
+        }
+        });
+    };
+
+    private void refreshHand() {
+        handPane.getChildren().setAll(
+                currentPlayer.getValue().getHand().stream()
+                        .map(this::createCardNode)
+                        .toList()
+        );
+    }
+
+    private Node createCardNode(Card card) {
+        Button cardButton = new Button(card.getName());
+        cardButton.setUserData(card);
+        return cardButton;
+    }
 
     protected void setCurrentPlayerChangeListener(ChangeListener<IPlayer> currentPlayerChangeListener) {
         currentPlayer.addListener(currentPlayerChangeListener);

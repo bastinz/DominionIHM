@@ -1,6 +1,7 @@
 package fr.umontpellier.iut.dominionJavaFX.dominion;
 
 import fr.umontpellier.iut.dominionJavaFX.IGame;
+import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.FactorySupplyPile;
 import javafx.application.Platform;
@@ -448,7 +449,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     @Override
-    public ObjectProperty<Player> currentPlayerProperty() {
+    public ObjectProperty<? extends IPlayer> currentPlayerProperty() {
         return currentTurnPlayer;
     }
 }
