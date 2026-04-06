@@ -1,3 +1,4 @@
+/*
 package fr.umontpellier.iut.dominionJavaFX.dominion;
 
 import fr.umontpellier.iut.dominionJavaFX.dominion.gui.GameGUI;
@@ -124,3 +125,4 @@ public class AppDominion {
         AppDominion.clients.remove(session);
     }
 }
+*/

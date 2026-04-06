@@ -17,7 +17,7 @@
                text="Ici le texte pour les indications">
         </Label>
         <CurrentPlayerView fx:id="currentPlayerPane"/>
-        <Button fx:id="passButton" onMouseClicked="#pass" text="Passer"/>
+        <Button fx:id="skipButton" onMouseClicked="#skip" text="Passer"/>
         <spacing>10</spacing>
     </VBox>
     <spacing>10</spacing>

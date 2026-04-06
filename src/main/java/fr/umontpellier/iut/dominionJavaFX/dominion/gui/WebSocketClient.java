@@ -1,3 +1,4 @@
+/*
 package fr.umontpellier.iut.dominionJavaFX.dominion.gui;
 
 import fr.umontpellier.iut.dominionJavaFX.dominion.AppDominion;
@@ -27,3 +28,4 @@ public class WebSocketClient {
         System.err.println("Error for client: " + session.getId());
     }
 }
+*/

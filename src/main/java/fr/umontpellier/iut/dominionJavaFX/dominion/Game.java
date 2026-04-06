@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringJoiner;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 /**
@@ -70,6 +71,8 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     private final Scanner scanner;
 
+    private final LinkedBlockingQueue<String> inputQueue;
+
     /**
      * Constructeur
      *
@@ -80,6 +83,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     public Game(String[] playerNames, String[] kingdomPiles) {
         instruction = new SimpleObjectProperty<>("");
+        this.inputQueue = new LinkedBlockingQueue<>();
         int nbPlayers = playerNames.length;
         trashedCards = new ArrayList<>();
         scanner = new Scanner(System.in);
@@ -379,7 +383,13 @@ public class Game extends Task<Void> implements Runnable, IGame {
      *         l'entrée standard (sans le retour à la ligne finale)
      */
     public String readLine() {
-        return scanner.nextLine();
+//        return scanner.nextLine();
+        try {
+            return inputQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -444,6 +454,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     @Override
+    public void skipWasChosen() {
+        addInput("");
+    }
+
+    @Override
     public ObjectProperty<String> instructionProperty() {
         return instruction;
     }
@@ -452,4 +467,9 @@ public class Game extends Task<Void> implements Runnable, IGame {
     public ObjectProperty<? extends IPlayer> currentPlayerProperty() {
         return currentTurnPlayer;
     }
+
+    public void addInput(String message) {
+        inputQueue.add(message);
+    }
+
 }

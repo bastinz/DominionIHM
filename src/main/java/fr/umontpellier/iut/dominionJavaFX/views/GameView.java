@@ -54,23 +54,16 @@ public class GameView extends HBox {
     private CurrentPlayerView currentPlayerPane;
 
     @FXML
-    Button passButton;
+    Button skipButton;
 
     @FXML
-    void pass() {
-//        getJeu().passerAEteChoisi();
-        System.out.println("Vous avez cliqué le bouton passer");
+    void skip() {
+        game.skipWasChosen();
     }
 
     @FXML
     private void initialize() {
-        // Called automatically after FXML is loaded and @FXML fields are injected
         createBindings();
     }
 }
-
-//    EventHandler<? super MouseEvent> actionPasserParDefaut = (mouseEvent ->
-//            Platform.runLater(() -> {
-//                getJeu().passerAEteChoisi();
-//            }));
 

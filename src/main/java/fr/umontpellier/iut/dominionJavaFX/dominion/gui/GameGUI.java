@@ -1,3 +1,4 @@
+/*
 package fr.umontpellier.iut.dominionJavaFX.dominion.gui;
 
 import fr.umontpellier.iut.dominionJavaFX.dominion.AppDominion;
@@ -33,3 +34,4 @@ public class GameGUI extends Game implements Runnable {
         }
     }
 }
+*/
