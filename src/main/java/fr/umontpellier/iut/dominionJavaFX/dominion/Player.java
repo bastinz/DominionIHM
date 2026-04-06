@@ -2,6 +2,8 @@ package fr.umontpellier.iut.dominionJavaFX.dominion;
 
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.gui.Utils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,35 +50,35 @@ public class Player {
     /**
      * Liste des cartes dans la main du joueur
      */
-    private final List<Card> hand;
+    private final ObservableList<Card> hand;
 
     /**
      * Liste des cartes dans la défausse du joueur
      */
-    private final List<Card> discard;
+    private final ObservableList<Card> discard;
 
     /**
      * Liste des cartes dans la pioche du joueur (on considère que le dessus de
      * la pioche est à la fin de la liste)
      */
-    private final List<Card> draw;
+    private final ObservableList<Card> draw;
 
     /**
      * Listes des cartes qui ont été jouées pendant le tour courant
      */
-    private final List<Card> inPlay;
+    private final ObservableList<Card> inPlay;
 
-    private final List<Card> cardsSetAside;
+    private final ObservableList<Card> cardsSetAside;
     /**
      * Liste des cartes mises de côté sur le plateau île (island mat) du joueur
      */
-    private final List<Card> islandMat;
+    private final ObservableList<Card> islandMat;
 
-    private final List<Card> nativeVillageMat;
+    private final ObservableList<Card> nativeVillageMat;
 
-    private final List<Card> cardsGainedThisTurn;
+    private final ObservableList<Card> cardsGainedThisTurn;
 
-    private final List<Card> cardsBoughtThisTurn;
+    private final ObservableList<Card> cardsBoughtThisTurn;
 
     private int nbCardsToDrawAtCleanup = 5;
 
@@ -106,15 +108,15 @@ public class Player {
         this.name = name;
         this.game = game;
         // Prépare les listes de cartes
-        hand = new ArrayList<>();
-        discard = new ArrayList<>();
-        draw = new ArrayList<>();
-        inPlay = new ArrayList<>();
-        cardsSetAside = new ArrayList<>();
-        islandMat = new ArrayList<>();
-        nativeVillageMat = new ArrayList<>();
-        cardsGainedThisTurn = new ArrayList<>();
-        cardsBoughtThisTurn = new ArrayList<>();
+        hand = FXCollections.observableArrayList();
+        discard = FXCollections.observableArrayList();
+        draw = FXCollections.observableArrayList();
+        inPlay = FXCollections.observableArrayList();
+        cardsSetAside = FXCollections.observableArrayList();
+        islandMat = FXCollections.observableArrayList();
+        nativeVillageMat = FXCollections.observableArrayList();
+        cardsGainedThisTurn = FXCollections.observableArrayList();
+        cardsBoughtThisTurn = FXCollections.observableArrayList();
 
         // Ajoute 3 Estate et 7 Copper (pris dans la réserve du jeu) dans la
         // défausse du joueur
