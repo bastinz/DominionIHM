@@ -396,7 +396,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         System.out.println(currentTurnPlayer.getValue().toString());
         String ligneInstruction = ">>> " + instruction + "<<<";
         Platform.runLater(() -> {
-            this.instruction.set(instruction);
+            this.instruction.set(currentTurnPlayer.getValue().getName() + " " + instruction);
         });
         System.out.println(ligneInstruction);
 
