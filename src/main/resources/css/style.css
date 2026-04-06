@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&display=swap');
+
+.root {
+    -fx-text-fill: black;
+    -fx-font-size: 20;
+}
+
+.label,.text-field, .button {
+    -fx-text-fill: black;
+    -fx-font-size: 22;
+    -fx-font-family: "IM Fell English SC", serif;
+}
+
+.text-field {
+    -fx-font-size: 26;
+}
+
+Text {
+      -fx-font-weight: bold;
+      -fx-font-size: 18px;
+      -fx-fill: yellow;
+ }
+
+SVGPath {
+    -fx-fill: none;
+    -fx-stroke: red; // transparent
+    -fx-stroke-width: 3px;
+}
+
+#instructionLabel {
+    -fx-font-size: 30;
+}
+
+#nameLabel {
+    -fx-font-size: 30;
+}
+
