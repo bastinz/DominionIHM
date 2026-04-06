@@ -27,7 +27,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     private ObjectProperty<Player> currentTurnPlayer;
 
-    private Player previousTurnPlayer = null;
+    private ObjectProperty<Player> previousTurnPlayer = null;
 
     private boolean samePlayerShouldPlayExtraTurn = false;
 
@@ -96,6 +96,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         for (String playerName : playerNames)
             players.add(new Player(playerName, this));
         currentTurnPlayer = new SimpleObjectProperty<>();
+        previousTurnPlayer = new SimpleObjectProperty<>();
         currentTurnPlayer.setValue(players.get(0));
     }
 
@@ -112,7 +113,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     public Player getPreviousTurnPlayer() {
-        return previousTurnPlayer;
+        return previousTurnPlayer.getValue();
     }
 
     public void setSamePlayerShouldPlayExtraTurn(boolean b) {
@@ -304,7 +305,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * méthode.
      */
     public void moveToNextPlayer() {
-        previousTurnPlayer = currentTurnPlayer.getValue();
+        previousTurnPlayer.setValue(currentTurnPlayer.getValue());
         if (!samePlayerShouldPlayExtraTurn) {
             // passe au joueur suivant
             int nextPlayerIndex = (players.indexOf(currentTurnPlayer.getValue()) + 1) % players.size();
@@ -324,7 +325,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     public void run() {
         while (!isFinished()) {
             // joue le tour du joueur courant
-            if (currentTurnPlayer.getValue() != previousTurnPlayer) {
+            if (currentTurnPlayer.getValue() != previousTurnPlayer.getValue()) {
                 log("<div class=\"turn-title\">%s (turn %d)</div>".formatted(currentTurnPlayer.getValue().toLog(), turnNumber));
             } else {
                 log("<div class=\"turn-title\">%s (extra turn)</div>".formatted(currentTurnPlayer.getValue().toLog()));
