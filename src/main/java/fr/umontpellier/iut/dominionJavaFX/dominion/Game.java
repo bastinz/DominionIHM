@@ -104,7 +104,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
             players.add(new Player(playerName, this));
         currentTurnPlayer = new SimpleObjectProperty<>();
         previousTurnPlayer = new SimpleObjectProperty<>();
-        currentTurnPlayer.setValue(players.get(0));
     }
 
     /**
@@ -330,6 +329,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * final et les cartes possédées par chacun des joueurs.
      */
     public void run() {
+        currentTurnPlayer.setValue(players.get(0));
         while (!isFinished()) {
             // joue le tour du joueur courant
             if (currentTurnPlayer.getValue() != previousTurnPlayer.getValue()) {
@@ -396,7 +396,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         System.out.println(currentTurnPlayer.getValue().toString());
         String ligneInstruction = ">>> " + instruction + "<<<";
         Platform.runLater(() -> {
-            this.instruction.set(currentTurnPlayer.getValue().getName() + " " + instruction);
+            this.instruction.set(instruction);
         });
         System.out.println(ligneInstruction);
 
@@ -445,5 +445,10 @@ public class Game extends Task<Void> implements Runnable, IGame {
     @Override
     public ObjectProperty<String> instructionProperty() {
         return instruction;
+    }
+
+    @Override
+    public ObjectProperty<Player> currentPlayerProperty() {
+        return currentTurnPlayer;
     }
 }

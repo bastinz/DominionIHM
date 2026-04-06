@@ -6,7 +6,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
-<fx:root fx:id="gameView" type="javafx.scene.layout.HBox" styleClass="root" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="fr.umontpellier.iut.dominionJavaFX.views.GameView">
+<?import fr.umontpellier.iut.dominionJavaFX.views.CurrentPlayerView?>
+
+<fx:root fx:id="gameView" type="javafx.scene.layout.HBox" styleClass="root" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
     <stylesheets>
         <URL value="@../css/style.css"/>
     </stylesheets>
@@ -14,6 +16,7 @@
         <Label id="instructionLabel" fx:id="instructionLabel" alignment="TOP_LEFT"
                text="Ici le texte pour les indications">
         </Label>
+        <CurrentPlayerView fx:id="currentPlayerPane"/>
         <Button fx:id="passButton" onMouseClicked="#pass" text="Passer"/>
         <spacing>10</spacing>
     </VBox>

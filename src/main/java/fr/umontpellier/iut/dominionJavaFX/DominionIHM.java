@@ -51,7 +51,6 @@ public class DominionIHM extends Application {
         gameService = new GameService(game);
         gameView = new GameView(game);
         Scene scene = new Scene(gameView, Screen.getPrimary().getBounds().getWidth() * pourcentageEcran,  Screen.getPrimary().getBounds().getHeight() * pourcentageEcran); // la scene doit être créée avant de mettre en place les bindings
-        gameView.createBindings();
         startGameService(); // le service doit être démarré après que les bindings ont été mis en place
 
         primaryStage.setScene(scene);

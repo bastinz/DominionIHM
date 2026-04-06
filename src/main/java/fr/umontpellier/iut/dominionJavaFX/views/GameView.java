@@ -1,7 +1,6 @@
 package fr.umontpellier.iut.dominionJavaFX.views;
 
 import fr.umontpellier.iut.dominionJavaFX.IGame;
-import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -40,15 +39,19 @@ public class GameView extends HBox {
         instructionLabel.textProperty().bind(game.instructionProperty());
     }
 
-    private void createInnerComponentsBindings() {
-        // à faire une fois que la vue du jeu est totalement instanciée donc pas dans le constructeur
-    }
+//    private void createInnerComponentsBindings() {
+//        // à faire une fois que la vue du jeu est totalement instanciée donc pas dans le constructeur
+////        currentPlayerPane.bindCurrentPlayer();
+//    }
 
     @FXML
-    VBox initialView;
+    private VBox initialView;
 
     @FXML
-    Label instructionLabel;
+    private Label instructionLabel;
+
+    @FXML
+    private CurrentPlayerView currentPlayerPane;
 
     @FXML
     Button passButton;
@@ -59,6 +62,11 @@ public class GameView extends HBox {
         System.out.println("Vous avez cliqué le bouton passer");
     }
 
+    @FXML
+    private void initialize() {
+        // Called automatically after FXML is loaded and @FXML fields are injected
+        createBindings();
+    }
 }
 
 //    EventHandler<? super MouseEvent> actionPasserParDefaut = (mouseEvent ->
