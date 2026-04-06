@@ -2,8 +2,10 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
 <fx:root fx:id="currentPlayerPane" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/">
     <Label id="nameLabel" fx:id="nameLabel"/>
     <HBox id="handPane" fx:id="handPane"/>
+    <Button fx:id="playTreasuresButton" onMouseClicked="#playTreasures" text="Play treasures"/>
 </fx:root>
 

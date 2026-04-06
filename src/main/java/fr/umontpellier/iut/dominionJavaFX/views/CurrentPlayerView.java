@@ -20,7 +20,6 @@ import java.io.IOException;
 
 /**
  * Cette classe présente les éléments appartenant au joueur courant.
- *
  * On y définit les bindings sur le joueur courant, ainsi que le listener à exécuter lorsque ce joueur change
  */
 public class CurrentPlayerView extends VBox {
@@ -49,32 +48,30 @@ public class CurrentPlayerView extends VBox {
         setCurrentPlayerChangeListener(currentPlayerChangeListener);
     }
 
-    private final ListChangeListener<? super Card> handListener = change -> {
-        Platform.runLater(() -> {
-        while (change.next()) {
+    private final ListChangeListener<? super Card> handListener = change ->
+    Platform.runLater(() -> {
+    while (change.next()) {
 /*            if (change.wasAdded()) {
-                for (Card card : change.getAddedSubList()) {
-                    handPane.getChildren().add(createCardNode(card));
-                }
-            }*/
-            if (change.wasRemoved()) {
-                for (Card card : change.getRemoved()) {
-                    handPane.getChildren().removeIf(node -> node.getUserData() == card);
-                }
+            for (Card card : change.getAddedSubList()) {
+                handPane.getChildren().add(createCardNode(card));
+            }
+        }*/
+        if (change.wasRemoved()) {
+            for (Card card : change.getRemoved()) {
+                handPane.getChildren().removeIf(node -> node.getUserData() == card);
             }
         }
-        });
-    };
+    }
+    });
 
-     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) -> {
-        Platform.runLater(() -> {
-        if (newPlayer != null) {
-            nameLabel.setText(newPlayer.getName());
-            refreshHand();
-            newPlayer.getHand().addListener(handListener);
-        }
-        });
-    };
+     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) ->
+     Platform.runLater(() -> {
+     if (newPlayer != null) {
+         nameLabel.setText(newPlayer.getName());
+         refreshHand();
+         newPlayer.getHand().addListener(handListener);
+     }
+     });
 
     private void refreshHand() {
         handPane.getChildren().setAll(
@@ -97,6 +94,11 @@ public class CurrentPlayerView extends VBox {
     @FXML
     private void initialize() {
         bindCurrentPlayer();
+    }
+
+    @FXML
+    void playTreasures() {
+        currentPlayer.getValue().playTreasuresWasChosen();
     }
 
 }

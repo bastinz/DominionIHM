@@ -1047,4 +1047,9 @@ public class Player implements IPlayer {
     public ObservableList<Card> getHand() {
         return hand;
     }
+
+    @Override
+    public void playTreasuresWasChosen() {
+        game.addInput("BUTTON:treasures");
+    }
 }
