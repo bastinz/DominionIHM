@@ -1,5 +1,6 @@
 package fr.umontpellier.iut.dominionJavaFX.dominion;
 
+import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.gui.Utils;
 import javafx.collections.FXCollections;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Un joueur de Dominion
  */
-public class Player {
+public class Player implements IPlayer {
     /**
      * Nom du joueur
      */
