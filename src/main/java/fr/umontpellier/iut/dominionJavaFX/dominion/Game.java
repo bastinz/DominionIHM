@@ -32,7 +32,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     /**
      * Instruction à afficher au joueur actif
      */
-    private ObjectProperty<String> ligneInstruction;
+    private ObjectProperty<String> instruction;
 
     private boolean samePlayerShouldPlayExtraTurn = false;
 
@@ -77,7 +77,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * @param kingdomPiles nom des cartes "royaume" à utiliser pour la partie
      */
     public Game(String[] playerNames, String[] kingdomPiles) {
-        ligneInstruction = new SimpleObjectProperty<>("");
+        instruction = new SimpleObjectProperty<>("");
         int nbPlayers = playerNames.length;
         trashedCards = new ArrayList<>();
         scanner = new Scanner(System.in);
@@ -394,7 +394,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         System.out.println(toString());
         System.out.println(currentTurnPlayer.getValue().toString());
         String ligneInstruction = ">>> " + instruction + "<<<";
-        this.ligneInstruction.set(ligneInstruction);
+        this.instruction.set(ligneInstruction);
         System.out.println(ligneInstruction);
 
         // Prépare la représentation envoyée à l'UI
