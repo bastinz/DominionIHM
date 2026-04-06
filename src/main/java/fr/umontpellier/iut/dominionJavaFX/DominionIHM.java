@@ -15,7 +15,7 @@ import java.util.Collections;
 
 public class DominionIHM extends Application {
 
-    public static final double pourcentageEcran = .95;
+    public static final double pourcentageEcran = .55;/*.95*/
     private GameView gameView;
 /*    private ChoosePlayersView choosePlayersView;*/
     private Stage primaryStage;

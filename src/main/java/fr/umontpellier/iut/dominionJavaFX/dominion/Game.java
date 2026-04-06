@@ -3,6 +3,8 @@ package fr.umontpellier.iut.dominionJavaFX.dominion;
 import fr.umontpellier.iut.dominionJavaFX.IGame;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.FactorySupplyPile;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     /**
      * Le joueur dont c'est actuellement le tour
      */
-    private Player currentTurnPlayer;
+    private ObjectProperty<Player> currentTurnPlayer;
 
     private Player previousTurnPlayer = null;
 
@@ -93,7 +95,8 @@ public class Game extends Task<Void> implements Runnable, IGame {
         players = new ArrayList<>(nbPlayers);
         for (String playerName : playerNames)
             players.add(new Player(playerName, this));
-        currentTurnPlayer = players.getFirst();
+        currentTurnPlayer = new SimpleObjectProperty<>();
+        currentTurnPlayer.setValue(players.get(0));
     }
 
     /**
@@ -105,7 +108,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     public Player getCurrentTurnPlayer() {
-        return currentTurnPlayer;
+        return currentTurnPlayer.getValue();
     }
 
     public Player getPreviousTurnPlayer() {
@@ -207,7 +210,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     @Override
     public String toString() {
-        String title = String.format("     -- %s's Turn --\n", currentTurnPlayer.getName());
+        String title = String.format("     -- %s's Turn --\n", currentTurnPlayer.getValue().getName());
         StringJoiner joiner = new StringJoiner("   ");
         for (List<Card> pile : supplyPiles)
             if (pile.isEmpty())
@@ -301,11 +304,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * méthode.
      */
     public void moveToNextPlayer() {
-        previousTurnPlayer = currentTurnPlayer;
+        previousTurnPlayer = currentTurnPlayer.getValue();
         if (!samePlayerShouldPlayExtraTurn) {
             // passe au joueur suivant
-            int nextPlayerIndex = (players.indexOf(currentTurnPlayer) + 1) % players.size();
-            currentTurnPlayer = players.get(nextPlayerIndex);
+            int nextPlayerIndex = (players.indexOf(currentTurnPlayer.getValue()) + 1) % players.size();
+            currentTurnPlayer.setValue(players.get(nextPlayerIndex));
             turnNumber += 1;
         }
         samePlayerShouldPlayExtraTurn = false;
@@ -321,13 +324,13 @@ public class Game extends Task<Void> implements Runnable, IGame {
     public void run() {
         while (!isFinished()) {
             // joue le tour du joueur courant
-            if (currentTurnPlayer != previousTurnPlayer) {
-                log("<div class=\"turn-title\">%s (turn %d)</div>".formatted(currentTurnPlayer.toLog(), turnNumber));
+            if (currentTurnPlayer.getValue() != previousTurnPlayer) {
+                log("<div class=\"turn-title\">%s (turn %d)</div>".formatted(currentTurnPlayer.getValue().toLog(), turnNumber));
             } else {
-                log("<div class=\"turn-title\">%s (extra turn)</div>".formatted(currentTurnPlayer.toLog()));
+                log("<div class=\"turn-title\">%s (extra turn)</div>".formatted(currentTurnPlayer.getValue().toLog()));
             }
-            currentTurnPlayer.playTurn();
-            currentTurnPlayer.cleanup();
+            currentTurnPlayer.getValue().playTurn();
+            currentTurnPlayer.getValue().cleanup();
             moveToNextPlayer();
         }
         // Affiche le score et les cartes de chaque joueur
@@ -382,7 +385,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         // Prépare la version affichée à l'utilisateur
         System.out.println("");
         System.out.println(toString());
-        System.out.println(currentTurnPlayer.toString());
+        System.out.println(currentTurnPlayer.getValue().toString());
         String ligneInstruction = ">>> " + instruction + "<<<";
         System.out.println(ligneInstruction);
 
