@@ -56,7 +56,7 @@ public class CurrentPlayerView extends VBox {
     while (change.next()) {
         if (change.wasAdded()) {
             for (Card card : change.getAddedSubList()) {
-                handPane.getChildren().add(createCardNode(card));
+                handPane.getChildren().add(createCardNodeInHand(card));
             }
          }
         if (change.wasRemoved()) {
@@ -72,7 +72,7 @@ public class CurrentPlayerView extends VBox {
         while (change.next()) {
             if (change.wasAdded()) {
                 for (Card card : change.getAddedSubList()) {
-                    inPlayPane.getChildren().add(createCardNode(card));
+                    inPlayPane.getChildren().add(createCardNodeInPlay(card));
                 }
             }
             if (change.wasRemoved()) {
@@ -97,7 +97,7 @@ public class CurrentPlayerView extends VBox {
     private void refreshHand() {
         handPane.getChildren().setAll(
                 currentPlayer.getValue().getHand().stream()
-                        .map(this::createCardNode)
+                        .map(this::createCardNodeInHand)
                         .toList()
         );
     }
@@ -105,14 +105,26 @@ public class CurrentPlayerView extends VBox {
     private void refreshInPlay() {
         inPlayPane.getChildren().setAll(
                 currentPlayer.getValue().getInPlay().stream()
-                        .map(this::createCardNode)
+                        .map(this::createCardNodeInPlay)
                         .toList()
         );
     }
 
-    private Node createCardNode(Card card) {
+    private Node createCardNodeInHand(Card card) {
         Button cardButton = new Button(card.getName());
         cardButton.setUserData(card);
+        cardButton.setOnMouseClicked(event -> {
+            currentPlayer.getValue().cardInHandWasChosen(card.getName());}
+        );
+        return cardButton;
+    }
+
+    private Node createCardNodeInPlay(Card card) {
+        Button cardButton = new Button(card.getName());
+        cardButton.setUserData(card);
+        cardButton.setOnMouseClicked(event -> {
+            currentPlayer.getValue().cardInHandWasChosen(card.getName());}
+        );
         return cardButton;
     }
 

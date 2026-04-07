@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 public interface IPlayer {
 
     void playTreasuresWasChosen();
+    void cardInHandWasChosen(String supplyName);
 
     String getName();
 

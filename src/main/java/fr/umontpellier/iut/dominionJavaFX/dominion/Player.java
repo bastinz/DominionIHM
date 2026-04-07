@@ -1,5 +1,6 @@
 package fr.umontpellier.iut.dominionJavaFX.dominion;
 
+import fr.umontpellier.iut.dominionJavaFX.DominionIHM;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.gui.Utils;
@@ -1057,5 +1058,11 @@ public class Player implements IPlayer {
     @Override
     public void playTreasuresWasChosen() {
         game.addInput("BUTTON:treasures");
+    }
+
+    @Override
+    public void cardInHandWasChosen(String cardName) {
+        System.out.println(cardName + " choisie");
+        DominionIHM.getGame().addInput("HAND:" + cardName);
     }
 }
