@@ -1,8 +1,12 @@
 package fr.umontpellier.iut.dominionJavaFX.views;
 
 import fr.umontpellier.iut.dominionJavaFX.IGame;
+import fr.umontpellier.iut.dominionJavaFX.dominion.SupplyPile;
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -23,6 +27,21 @@ public class GameView extends HBox {
 
     private final IGame game;
 
+    @FXML
+    private VBox initialView;
+
+    @FXML
+    private Label instructionLabel;
+
+    @FXML
+    private HBox supplyPane;
+
+    @FXML
+    private CurrentPlayerView currentPlayerPane;
+
+    @FXML
+    private Button skipButton;
+
     public GameView(IGame game) {
         this.game = game;
         try {
@@ -36,25 +55,24 @@ public class GameView extends HBox {
     }
 
     public void createBindings() {
+        setSupplyPane();
         instructionLabel.textProperty().bind(game.instructionProperty());
     }
 
-//    private void createInnerComponentsBindings() {
-//        // à faire une fois que la vue du jeu est totalement instanciée donc pas dans le constructeur
-////        currentPlayerPane.bindCurrentPlayer();
-//    }
+    private Node createSupplyPile(SupplyPile pile) {
+        Button pileButton = new Button(pile.getName());
+        pileButton.setUserData(pile);
+        pileButton.setOnMouseClicked(event -> {game.supplyWasChosen(pile.getName());});
+        return pileButton;
+    }
 
-    @FXML
-    private VBox initialView;
-
-    @FXML
-    private Label instructionLabel;
-
-    @FXML
-    private CurrentPlayerView currentPlayerPane;
-
-    @FXML
-    Button skipButton;
+    private void setSupplyPane() {
+        supplyPane.getChildren().setAll(
+                game.getSupplyPiles().stream()
+                        .map(this::createSupplyPile)
+                        .toList()
+        );
+    }
 
     @FXML
     void skip() {
@@ -65,5 +83,6 @@ public class GameView extends HBox {
     private void initialize() {
         createBindings();
     }
+
 }
 

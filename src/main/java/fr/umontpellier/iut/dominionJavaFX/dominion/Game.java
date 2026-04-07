@@ -7,6 +7,8 @@ import fr.umontpellier.iut.dominionJavaFX.dominion.cards.FactorySupplyPile;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
@@ -59,7 +61,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * carte. Ces piles peuvent être vides en cours de partie si toutes les
      * cartes de la pile ont été achetées ou gagnées par les joueurs.
      */
-    private final List<SupplyPile> supplyPiles;
+    private final ObservableList<SupplyPile> supplyPiles;
 
     /**
      * Liste des cartes qui ont été écartées (trash)
@@ -89,7 +91,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         scanner = new Scanner(System.in);
 
         // Création des piles de réserve
-        supplyPiles = new ArrayList<>();
+        supplyPiles = FXCollections.observableArrayList();
         for (String cardName : kingdomPiles) {
             supplyPiles.add(FactorySupplyPile.createSupplyPile(cardName, nbPlayers));
         }
@@ -383,13 +385,13 @@ public class Game extends Task<Void> implements Runnable, IGame {
      *         l'entrée standard (sans le retour à la ligne finale)
      */
     public String readLine() {
-        return scanner.nextLine();
-//        try {
-//            return inputQueue.take();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
+//        return scanner.nextLine();
+        try {
+            return inputQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -459,6 +461,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     @Override
+    public void supplyWasChosen(String supplyName) {
+        addInput("SUPPLY:" + supplyName);
+    }
+
+    @Override
     public ObjectProperty<String> instructionProperty() {
         return instruction;
     }
@@ -470,6 +477,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
 
     public void addInput(String message) {
         inputQueue.add(message);
+    }
+
+    @Override
+    public ObservableList<SupplyPile> getSupplyPiles() {
+        return supplyPiles;
     }
 
 }

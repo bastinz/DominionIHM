@@ -16,6 +16,7 @@
         <Label id="instructionLabel" fx:id="instructionLabel" alignment="TOP_LEFT"
                text="Ici le texte pour les indications">
         </Label>
+        <HBox id="supplyPane" fx:id="supplyPane"/>
         <CurrentPlayerView fx:id="currentPlayerPane"/>
         <Button fx:id="skipButton" onMouseClicked="#skip" text="Passer"/>
         <spacing>10</spacing>

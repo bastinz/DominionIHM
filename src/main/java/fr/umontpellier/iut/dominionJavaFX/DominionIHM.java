@@ -50,7 +50,8 @@ public class DominionIHM extends Application {
         game = new Game(playerNames, kingdomCards);
         gameService = new GameService(game);
         gameView = new GameView(game);
-        Scene scene = new Scene(gameView, Screen.getPrimary().getBounds().getWidth() * pourcentageEcran,  Screen.getPrimary().getBounds().getHeight() * pourcentageEcran); // la scene doit être créée avant de mettre en place les bindings
+//        Scene scene = new Scene(gameView, Screen.getPrimary().getBounds().getWidth() * pourcentageEcran,  Screen.getPrimary().getBounds().getHeight() * pourcentageEcran); // la scene doit être créée avant de mettre en place les bindings
+        Scene scene = new Scene(gameView, 1200,  500); // la scene doit être créée avant de mettre en place les bindings
         startGameService(); // le service doit être démarré après que les bindings ont été mis en place
 
         primaryStage.setScene(scene);
@@ -108,10 +109,10 @@ public class DominionIHM extends Application {
         // String[] kingdomCards = new String[]{};
 
         // Option 2. Liste explicite de cartes royaume à utiliser (le nombre de cartes peut être quelconque)
-         String[] kingdomCards = new String[]{"Ambassador", "Lighthouse", "Pirate", "Sailor"};
+//         String[] kingdomCards = new String[]{"Ambassador", "Lighthouse", "Pirate", "Sailor"};
 
         // Option 3. Choix aléatoire de 10 cartes parmi la liste complète allKingdomCards définie précédemment
-        // String[] kingdomCards = allKingdomCards.subList(0, 10).toArray(new String[10]);
+         String[] kingdomCards = allKingdomCards.subList(0, 10).toArray(new String[10]);
         return kingdomCards;
     }
 
