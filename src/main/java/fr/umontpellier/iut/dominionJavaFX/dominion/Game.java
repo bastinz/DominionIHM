@@ -4,6 +4,7 @@ import fr.umontpellier.iut.dominionJavaFX.IGame;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.FactorySupplyPile;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionState;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -335,6 +336,19 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * terminée. Lorsque la partie se termine, la méthode affiche le score
      * final et les cartes possédées par chacun des joueurs.
      */
+    public void runNew() {
+        currentTurnPlayer.setValue(players.getFirst());
+        getCurrentTurnPlayer().setCurrentState(new ActionState(getCurrentTurnPlayer())) ;
+//        currentTurnPlayer.getValue().playTurn();
+    }
+
+    /**
+     * Boucle d'exécution d'une partie.
+     * <p>
+     * Cette méthode exécute les tours des joueurs jusqu'à ce que la partie soit
+     * terminée. Lorsque la partie se termine, la méthode affiche le score
+     * final et les cartes possédées par chacun des joueurs.
+     */
     public void run() {
         currentTurnPlayer.setValue(players.get(0));
         while (!isFinished()) {
@@ -455,9 +469,13 @@ public class Game extends Task<Void> implements Runnable, IGame {
         return null;
     }
 
-    @Override
+/*    @Override
     public void skipWasChosen() {
         addInput("");
+    }*/
+    @Override
+    public void skipWasChosen() {
+        moveToNextPlayer();
     }
 
     @Override
@@ -482,6 +500,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
     @Override
     public ObservableList<SupplyPile> getSupplyPiles() {
         return supplyPiles;
+    }
+
+    public void moveToNextPlayerState() {
+        moveToNextPlayer();
+        getCurrentTurnPlayer().setCurrentState(new ActionState(getCurrentTurnPlayer())) ;
     }
 
 }

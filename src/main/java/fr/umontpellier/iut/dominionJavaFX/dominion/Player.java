@@ -4,6 +4,7 @@ import fr.umontpellier.iut.dominionJavaFX.DominionIHM;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.gui.Utils;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayerState;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -1064,5 +1065,18 @@ public class Player implements IPlayer {
     public void cardInHandWasChosen(String cardName) {
         System.out.println(cardName + " choisie");
         DominionIHM.getGame().addInput("HAND:" + cardName);
+    }
+
+    /**
+     * Gestion des états du joueur courant
+     */
+    private PlayerState currentState;
+
+    public void setCurrentState(PlayerState currentState) {
+        this.currentState = currentState;
+    }
+
+    public PlayerState getCurrentState() {
+        return currentState;
     }
 }
