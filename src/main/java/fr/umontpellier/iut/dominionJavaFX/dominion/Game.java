@@ -33,7 +33,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     private ObjectProperty<Player> currentTurnPlayer;
 
-    private ObjectProperty<Player> previousTurnPlayer = null;
+    private ObjectProperty<Player> previousTurnPlayer;
 
     /**
      * Instruction à afficher au joueur actif

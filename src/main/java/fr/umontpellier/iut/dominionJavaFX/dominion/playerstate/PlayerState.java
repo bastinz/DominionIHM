@@ -18,7 +18,7 @@ public abstract class PlayerState {
     public void defausser() {
     }
 
-    public void playTreasuresWasChosen(int numBanc) {
+    public void playTreasuresWasChosen() {
     }
 
     public void cardInHandWasChosen(String carteChoisie) {
