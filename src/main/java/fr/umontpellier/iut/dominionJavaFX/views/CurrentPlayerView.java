@@ -2,6 +2,7 @@ package fr.umontpellier.iut.dominionJavaFX.views;
 
 import fr.umontpellier.iut.dominionJavaFX.DominionIHM;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
+import fr.umontpellier.iut.dominionJavaFX.dominion.Player;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -51,8 +52,7 @@ public class CurrentPlayerView extends VBox {
         setCurrentPlayerChangeListener(currentPlayerChangeListener);
     }
 
-    private final ListChangeListener<? super Card> handListener = change ->
-    Platform.runLater(() -> {
+    private final ListChangeListener<? super Card> handListener = change -> {
     while (change.next()) {
         if (change.wasAdded()) {
             for (Card card : change.getAddedSubList()) {
@@ -65,10 +65,9 @@ public class CurrentPlayerView extends VBox {
             }
         }
     }
-    });
+    };
 
-    private final ListChangeListener<? super Card> inPlayListener = change ->
-    Platform.runLater(() -> {
+    private final ListChangeListener<? super Card> inPlayListener = change -> {
         while (change.next()) {
             if (change.wasAdded()) {
                 for (Card card : change.getAddedSubList()) {
@@ -81,18 +80,15 @@ public class CurrentPlayerView extends VBox {
                 }
             }
         }
-    });
+    };
 
-     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) ->
-     Platform.runLater(() -> {
+     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) -> {
      if (newPlayer != null) {
          nameLabel.setText(newPlayer.getName());
          refreshHand();
-         refreshInPlay();
-         newPlayer.getHand().addListener(handListener);
-         newPlayer.getInPlay().addListener(inPlayListener);
+//         refreshInPlay();
      }
-     });
+     };
 
     private void refreshHand() {
         handPane.getChildren().setAll(
@@ -103,11 +99,12 @@ public class CurrentPlayerView extends VBox {
     }
 
     private void refreshInPlay() {
-        inPlayPane.getChildren().setAll(
+        inPlayPane.getChildren().clear();
+/*        inPlayPane.getChildren().setAll(
                 currentPlayer.getValue().getInPlay().stream()
                         .map(this::createCardNodeInPlay)
                         .toList()
-        );
+        );*/
     }
 
     private Node createCardNodeInHand(Card card) {
@@ -135,6 +132,10 @@ public class CurrentPlayerView extends VBox {
     @FXML
     private void initialize() {
         bindCurrentPlayer();
+        for (Player p : DominionIHM.getGame().getPlayers()) {
+            p.getHand().addListener(handListener);
+            p.getInPlay().addListener(inPlayListener);
+        };
     }
 
     @FXML

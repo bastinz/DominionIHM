@@ -26,7 +26,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
     /**
      * Tableau contenant les joueurs de la partie
      */
-    private final ArrayList<Player> players;
+    /*private*/ final ArrayList<Player> players;
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 
     /**
      * Le joueur dont c'est actuellement le tour
@@ -319,6 +323,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * méthode.
      */
     public void moveToNextPlayer() {
+        currentTurnPlayer.getValue().cleanup();
         previousTurnPlayer.setValue(currentTurnPlayer.getValue());
         if (!samePlayerShouldPlayExtraTurn) {
             // passe au joueur suivant
@@ -359,7 +364,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
                 log("<div class=\"turn-title\">%s (extra turn)</div>".formatted(currentTurnPlayer.getValue().toLog()));
             }
             currentTurnPlayer.getValue().playTurn();
-            currentTurnPlayer.getValue().cleanup();
             moveToNextPlayer();
         }
         // Affiche le score et les cartes de chaque joueur

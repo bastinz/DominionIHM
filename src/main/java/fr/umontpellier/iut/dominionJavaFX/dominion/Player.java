@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionJavaFX.DominionIHM;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.gui.Utils;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionState;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayTreasuresState;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayerState;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -968,7 +970,7 @@ public class Player implements IPlayer {
                     break turnloop;
                 }
                 case "BUTTON:treasures" -> {
-                    List<Card> treasures = hand.stream().filter(c -> c.hasType(CardType.TREASURE)).toList();
+                    List<Card> treasures = hand.stream().filter(c -> c.hasType(CardType.TREASURE)).toList();;
                     for (Card c : treasures)
                         playCard(c);
                     canPlayActions = false;
@@ -1018,6 +1020,12 @@ public class Player implements IPlayer {
         }
     }
 
+    public void playTreasures() {
+        List<Card> treasures = hand.stream().filter(c -> c.hasType(CardType.TREASURE)).toList();
+        for (Card c : treasures)
+            playCard(c);
+    }
+
     /**
      * Fin du tour du joueur
      * <p>
@@ -1056,9 +1064,17 @@ public class Player implements IPlayer {
         return inPlay;
     }
 
+/*
     @Override
     public void playTreasuresWasChosen() {
         game.addInput("BUTTON:treasures");
+    }
+*/
+
+    @Override
+    public void playTreasuresWasChosen() {
+        setCurrentState(new PlayTreasuresState(this)) ;
+        currentState.playTreasuresWasChosen();
     }
 
     @Override

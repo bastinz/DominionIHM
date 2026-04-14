@@ -12,4 +12,11 @@ public class ActionState extends PlayerState {
         finDuTour();
     }
 
+    public void playTreasuresWasChosen() {
+        nextState = new PlayTreasuresState(currentPlayer);
+        nextState.playTreasuresWasChosen();
+    }
+
+
+
 }
