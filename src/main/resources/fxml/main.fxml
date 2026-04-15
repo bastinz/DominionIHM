@@ -6,20 +6,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
+<?import javafx.scene.layout.FlowPane?>
 <?import fr.umontpellier.iut.dominionJavaFX.views.CurrentPlayerView?>
 
-<fx:root fx:id="gameView" type="javafx.scene.layout.HBox" styleClass="root" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
+<fx:root fx:id="gameView" type="javafx.scene.layout.HBox" id="gameView" styleClass="root" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
     <stylesheets>
         <URL value="@../css/style.css"/>
     </stylesheets>
-    <VBox id="initialView" fx:id="initialView">
-        <Label id="instructionLabel" fx:id="instructionLabel" alignment="TOP_LEFT"
-               text="Ici le texte pour les indications">
-        </Label>
-        <HBox id="supplyPane" fx:id="supplyPane"/>
-        <CurrentPlayerView fx:id="currentPlayerPane"/>
-        <Button fx:id="skipButton" onMouseClicked="#skip" text="Passer"/>
-        <spacing>10</spacing>
+    <VBox id="initialView" fx:id="initialView" spacing="10" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+        <Label id="instructionLabel" fx:id="instructionLabel" alignment="TOP_LEFT" text="Ici le texte pour les indications"/>
+        <FlowPane id="supplyPane" fx:id="supplyPane" prefWidth="-1" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" prefWrapLength="600"/>
+        <CurrentPlayerView id="currentPlayerPane" fx:id="currentPlayerPane"/>
+        <Button id="skipButton" fx:id="skipButton" onMouseClicked="#skip" text="Passer"/>
     </VBox>
     <spacing>10</spacing>
     <padding>

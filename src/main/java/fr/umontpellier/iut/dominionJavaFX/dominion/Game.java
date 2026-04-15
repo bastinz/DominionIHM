@@ -66,7 +66,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * carte. Ces piles peuvent être vides en cours de partie si toutes les
      * cartes de la pile ont été achetées ou gagnées par les joueurs.
      */
-    private final ObservableList<SupplyPile> supplyPiles;
+    private final List<SupplyPile> supplyPiles;
 
     /**
      * Liste des cartes qui ont été écartées (trash)
@@ -96,7 +96,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         scanner = new Scanner(System.in);
 
         // Création des piles de réserve
-        supplyPiles = FXCollections.observableArrayList();
+        supplyPiles = new ArrayList<>();
         for (String cardName : kingdomPiles) {
             supplyPiles.add(FactorySupplyPile.createSupplyPile(cardName, nbPlayers));
         }
@@ -502,7 +502,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     @Override
-    public ObservableList<SupplyPile> getSupplyPiles() {
+    public List<SupplyPile> getSupplyPiles() {
         return supplyPiles;
     }
 

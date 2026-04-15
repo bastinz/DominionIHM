@@ -99,6 +99,8 @@ public class FactorySupplyPile {
      */
     public static SupplyPile createSupplyPile(String cardName, int numberOfPlayers) {
         PileConfig config = PILE_CONFIGS.get(cardName);
-        return new SupplyPile(config.cardSupplier(), config.countFunction().apply(numberOfPlayers));
+        SupplyPile temp =  new SupplyPile(config.cardSupplier(), config.countFunction().apply(numberOfPlayers));
+
+        return temp;
     }
 }
