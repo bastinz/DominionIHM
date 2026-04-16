@@ -12,10 +12,7 @@ public abstract class PlayerState {
         nextState = this;
     }
 
-    public void passer() {
-    }
-
-    public void defausser() {
+    public void skip() {
     }
 
     public void playTreasuresWasChosen() {
@@ -24,27 +21,13 @@ public abstract class PlayerState {
     public void cardInHandWasChosen(String carteChoisie) {
     }
 
-    public void continuerTour() {
-/*        if (currentPlayer.getCurrentState() instanceof TourNormal && currentPlayer.actionsRestantAJouer().isEmpty()) { // revoir ce test
-            finDuTour();
-        }*/
+    public void supplyCardWasChosen(String carteChoisie) {
     }
 
-/*
-    public void finDuTour() {
-//        currentPlayer.finaliserLeTour();
-//        getGame().verifieSiFinDePartie();
-//        getGame().joueurSuivant();
-    }
-*/
-
-    public void finDuTour() {
-/*        if (getGame().getCurrentState().initialisationTerminee()) {
-            getGame().setCurrentState(new PartieEnCours(getGame()));
-            getGame().getCurrentState().demarrerPartie();
-        } else {*/
-            getGame().moveToNextPlayerState();
-//        }
+    public void endOfCurrentPlayersTurn() {
+        // on vérifie si fin de partie ??
+        getGame().moveToNextPlayerState(); // fait le cleanUp
+        currentPlayer.startTurn();
     }
 
     protected Game getGame() {

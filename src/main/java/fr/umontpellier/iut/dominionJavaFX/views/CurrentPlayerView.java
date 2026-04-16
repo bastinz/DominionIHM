@@ -4,7 +4,6 @@ import fr.umontpellier.iut.dominionJavaFX.DominionIHM;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.Player;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
-import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -92,7 +91,7 @@ public class CurrentPlayerView extends VBox {
 
     private void refreshHand() {
         handPane.getChildren().setAll(
-                currentPlayer.getValue().getHand().stream()
+                currentPlayer().getHand().stream()
                         .map(this::createCardNodeInHand)
                         .toList()
         );
@@ -111,7 +110,7 @@ public class CurrentPlayerView extends VBox {
         Button cardButton = new Button(card.getName());
         cardButton.setUserData(card);
         cardButton.setOnMouseClicked(event -> {
-            currentPlayer.getValue().cardInHandWasChosen(card.getName());}
+            currentPlayer().cardInHandWasChosen(card.getName());}
         );
         return cardButton;
     }
@@ -119,10 +118,14 @@ public class CurrentPlayerView extends VBox {
     private Node createCardNodeInPlay(Card card) {
         Button cardButton = new Button(card.getName());
         cardButton.setUserData(card);
-        cardButton.setOnMouseClicked(event -> {
-            currentPlayer.getValue().cardInHandWasChosen(card.getName());}
+        cardButton.setOnMouseClicked(event -> {/*
+            currentPlayer().cardInPlayWasChosen(card.getName());*/}
         );
         return cardButton;
+    }
+
+    private IPlayer currentPlayer() {
+        return currentPlayer.getValue();
     }
 
     protected void setCurrentPlayerChangeListener(ChangeListener<IPlayer> currentPlayerChangeListener) {
@@ -140,7 +143,7 @@ public class CurrentPlayerView extends VBox {
 
     @FXML
     void playTreasures() {
-        currentPlayer.getValue().playTreasuresWasChosen();
+        currentPlayer().playTreasuresWasChosen();
     }
 
 }

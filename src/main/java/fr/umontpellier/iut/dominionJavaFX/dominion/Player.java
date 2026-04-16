@@ -1,11 +1,11 @@
 package fr.umontpellier.iut.dominionJavaFX.dominion;
 
-import fr.umontpellier.iut.dominionJavaFX.DominionIHM;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.gui.Utils;
-import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionState;
-import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayTreasuresState;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionPhase;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.CardInHandChosen;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.TreasuresPhase;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayerState;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -898,6 +898,8 @@ public class Player implements IPlayer {
         nbSilverOrGoldPlayed = 0;
         cardsGainedThisTurn.clear();
         cardsBoughtThisTurn.clear();
+        canPlayActions = true;
+        canPlayTreasures = true;
         for (Card c : inPlay) {
             c.atStartOfTurn(this);
         }
@@ -1020,10 +1022,33 @@ public class Player implements IPlayer {
         }
     }
 
+    //Ajout Sophie
+
+    boolean canPlayActions = true;
+    boolean canPlayTreasures = true;
+
     public void playTreasures() {
         List<Card> treasures = hand.stream().filter(c -> c.hasType(CardType.TREASURE)).toList();
         for (Card c : treasures)
             playCard(c);
+    }
+
+    public List<String> getNamesOfCardsInHand() {
+        return hand.stream().map(c -> c.getName()).toList();
+    }
+
+    public void playCardInHand(String cardName) {
+        Card cardToPlay = hand.stream()
+                .filter(card -> card.hasName(cardName))
+                .findFirst()
+                .orElse(null);
+        if (cardToPlay.hasType(CardType.ACTION)) {
+            numberOfActions -= 1;
+            playCard(cardToPlay);
+        } else if (cardToPlay.hasType(CardType.TREASURE)) {
+            canPlayActions = false;
+            playCard(cardToPlay);
+        }
     }
 
     /**
@@ -1064,23 +1089,30 @@ public class Player implements IPlayer {
         return inPlay;
     }
 
-/*
     @Override
     public void playTreasuresWasChosen() {
-        game.addInput("BUTTON:treasures");
-    }
-*/
-
-    @Override
-    public void playTreasuresWasChosen() {
-        setCurrentState(new PlayTreasuresState(this)) ;
         currentState.playTreasuresWasChosen();
     }
 
     @Override
     public void cardInHandWasChosen(String cardName) {
-        System.out.println(cardName + " choisie");
-        DominionIHM.getGame().addInput("HAND:" + cardName);
+        currentState.cardInHandWasChosen(cardName);
+    }
+
+    public void switchToStateByCardType(String cardName) {
+        Card cardToPlay = hand.stream()
+                .filter(card -> card.getName().equals(cardName))
+                .findFirst()
+                .orElse(null);
+        if (cardToPlay.hasType(CardType.ACTION)) {
+            numberOfActions -= 1;
+            playCard(cardToPlay);
+            setCurrentState(new ActionPhase(this));
+        } else if (cardToPlay.hasType(CardType.TREASURE)) {
+            canPlayActions = false;
+            playCard(cardToPlay);
+            setCurrentState(new TreasuresPhase(this));
+        }
     }
 
     /**
@@ -1095,4 +1127,5 @@ public class Player implements IPlayer {
     public PlayerState getCurrentState() {
         return currentState;
     }
+
 }

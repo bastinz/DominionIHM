@@ -4,12 +4,11 @@ import fr.umontpellier.iut.dominionJavaFX.IGame;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.FactorySupplyPile;
-import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionState;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionPhase;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.StartTurn;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
@@ -126,7 +125,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         return players.indexOf(p);
     }
 
-    public Player getCurrentTurnPlayer() {
+    public Player currentPlayer() {
         return currentTurnPlayer.getValue();
     }
 
@@ -343,7 +342,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     public void runNew() {
         currentTurnPlayer.setValue(players.getFirst());
-        getCurrentTurnPlayer().setCurrentState(new ActionState(getCurrentTurnPlayer())) ;
+        currentPlayer().setCurrentState(new StartTurn(currentPlayer())) ;
 //        currentTurnPlayer.getValue().playTurn();
     }
 
@@ -479,7 +478,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }*/
     @Override
     public void skipWasChosen() {
-        moveToNextPlayer();
+        currentPlayer().getCurrentState().skip();
     }
 
     @Override
@@ -508,7 +507,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
 
     public void moveToNextPlayerState() {
         moveToNextPlayer();
-        getCurrentTurnPlayer().setCurrentState(new ActionState(getCurrentTurnPlayer())) ;
+        currentPlayer().setCurrentState(new StartTurn(currentPlayer())) ;
     }
 
 }

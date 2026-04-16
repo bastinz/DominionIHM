@@ -55,7 +55,7 @@ public class Blockade extends AttackCard {
     public void onPlayerGainCard(Player p, Card gainedCard, Player owner) {
         if (attackedPlayers.contains(p)
                 && cardSetAside.hasSameNameAs(gainedCard)
-                && p.getGame().getCurrentTurnPlayer() == p) {
+                && p.getGame().currentPlayer() == p) {
             Card curse = p.getCardFromSupply("Curse");
             if (curse != null) {
                 p.log("gains %s (%s)".formatted(curse.toLog(), this.toLog()));
