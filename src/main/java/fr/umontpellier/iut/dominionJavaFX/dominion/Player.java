@@ -4,8 +4,7 @@ import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.gui.Utils;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionPhase;
-import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.CardInHandChosen;
-import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.TreasuresPhase;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayTreasures;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayerState;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -1037,20 +1036,12 @@ public class Player implements IPlayer {
         return hand.stream().map(c -> c.getName()).toList();
     }
 
-    public void playCardInHand(String cardName) {
-        Card cardToPlay = hand.stream()
-                .filter(card -> card.hasName(cardName))
-                .findFirst()
-                .orElse(null);
-        if (cardToPlay.hasType(CardType.ACTION)) {
-            numberOfActions -= 1;
-            playCard(cardToPlay);
-        } else if (cardToPlay.hasType(CardType.TREASURE)) {
-            canPlayActions = false;
-            playCard(cardToPlay);
-        }
+    public List<String> getNamesOfTreasuresInHand() {
+        return hand.stream()
+                .filter(c -> c.hasType(CardType.TREASURE))
+                .map(c -> c.getName())
+                .toList();
     }
-
     /**
      * Fin du tour du joueur
      * <p>
@@ -1111,8 +1102,17 @@ public class Player implements IPlayer {
         } else if (cardToPlay.hasType(CardType.TREASURE)) {
             canPlayActions = false;
             playCard(cardToPlay);
-            setCurrentState(new TreasuresPhase(this));
+            setCurrentState(new PlayTreasures(this));
         }
+    }
+
+    public void playTreasureCard(String cardName) {
+        Card cardToPlay = hand.stream()
+                .filter(card -> card.getName().equals(cardName))
+                .findFirst()
+                .orElse(null);
+        canPlayActions = false;
+        playCard(cardToPlay);
     }
 
     /**

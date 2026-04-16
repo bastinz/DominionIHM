@@ -10,12 +10,12 @@ public class ActionPhase extends PlayerState {
         getGame().instructionProperty().setValue("Action phase or skip");
     }
 
-    public void passer() {
+    public void skip() {
         endOfCurrentPlayersTurn();
     }
 
     public void playTreasuresWasChosen() {
-        nextState = new TreasuresPhase(currentPlayer);
+        nextState = new PlayTreasures(currentPlayer);
         nextState.playTreasuresWasChosen();
     }
 

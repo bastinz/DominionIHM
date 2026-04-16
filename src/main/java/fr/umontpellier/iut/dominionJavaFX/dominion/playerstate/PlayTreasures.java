@@ -4,30 +4,27 @@ import fr.umontpellier.iut.dominionJavaFX.dominion.Player;
 
 import java.util.List;
 
-public class StartTurn extends PlayerState {
-    public StartTurn(Player currentPlayer) {
+public class PlayTreasures extends PlayerState {
+    public PlayTreasures(Player currentPlayer) {
         super(currentPlayer);
-        currentPlayer.startTurn();
-        getGame().instructionProperty().setValue("Action phase or skip");
+        getGame().instructionProperty().setValue("Treasure phase");
     }
 
     public void skip() {
         endOfCurrentPlayersTurn();
     }
 
-    public void playTreasuresWasChosen() {
-        nextState = new PlayTreasures(currentPlayer);
-        nextState.playTreasuresWasChosen();
-    }
-
     public void cardInHandWasChosen(String cardName) {
-        List<String> choixPossibles = currentPlayer.getNamesOfCardsInHand();
+        List<String> choixPossibles = currentPlayer.getNamesOfTreasuresInHand();
         if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
-            currentPlayer.switchToStateByCardType(cardName);
+            currentPlayer.playTreasureCard(cardName);
         }
         // ici il faut passer à la phase suivante
         // pour l'instant on passe au joueur suivant
 //        passer();
     }
 
+    public void playTreasuresWasChosen() {
+        currentPlayer.playTreasures();
+    }
 }
