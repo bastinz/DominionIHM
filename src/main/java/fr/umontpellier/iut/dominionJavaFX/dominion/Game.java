@@ -472,18 +472,14 @@ public class Game extends Task<Void> implements Runnable, IGame {
         return null;
     }
 
-/*    @Override
-    public void skipWasChosen() {
-        addInput("");
-    }*/
     @Override
     public void skipWasChosen() {
         currentPlayer().getCurrentState().skip();
     }
 
     @Override
-    public void supplyWasChosen(String supplyName) {
-        addInput("SUPPLY:" + supplyName);
+    public void supplyCardWasChosen(String supplyName) {
+        currentPlayer().getCurrentState().supplyCardWasChosen(supplyName);
     }
 
     @Override

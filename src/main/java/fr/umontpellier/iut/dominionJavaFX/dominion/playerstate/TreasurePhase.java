@@ -4,8 +4,8 @@ import fr.umontpellier.iut.dominionJavaFX.dominion.Player;
 
 import java.util.List;
 
-public class PlayTreasures extends PlayerState {
-    public PlayTreasures(Player currentPlayer) {
+public class TreasurePhase extends PlayerState {
+    public TreasurePhase(Player currentPlayer) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Treasure phase");
     }
@@ -19,12 +19,18 @@ public class PlayTreasures extends PlayerState {
         if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
             currentPlayer.playTreasureCard(cardName);
         }
-        // ici il faut passer à la phase suivante
-        // pour l'instant on passe au joueur suivant
-//        passer();
     }
 
     public void playTreasuresWasChosen() {
         currentPlayer.playTreasures();
+    }
+
+    public void supplyCardWasChosen(String cardName) {
+        List<String> choixPossibles = currentPlayer.getAvailableSupplyCards();
+        if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
+            currentPlayer.buy(cardName);
+            if (currentPlayer.areBuysCompleted())
+                endOfCurrentPlayersTurn();
+        }
     }
 }

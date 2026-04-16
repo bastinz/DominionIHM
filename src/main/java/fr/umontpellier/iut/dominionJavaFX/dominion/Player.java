@@ -4,7 +4,7 @@ import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.gui.Utils;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionPhase;
-import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayTreasures;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayerState;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -134,6 +134,13 @@ public class Player implements IPlayer {
         while (!discard.isEmpty()) {
             discard.getLast().moveTo(draw);
         }
+/*        for (int i = 0; i < 5; i++) {
+            draw.getLast().moveTo(hand);
+        }*/
+        setHandAndDraw();
+    }
+
+    private void setHandAndDraw() {
         for (int i = 0; i < 5; i++) {
             draw.getLast().moveTo(hand);
         }
@@ -1021,27 +1028,6 @@ public class Player implements IPlayer {
         }
     }
 
-    //Ajout Sophie
-
-    boolean canPlayActions = true;
-    boolean canPlayTreasures = true;
-
-    public void playTreasures() {
-        List<Card> treasures = hand.stream().filter(c -> c.hasType(CardType.TREASURE)).toList();
-        for (Card c : treasures)
-            playCard(c);
-    }
-
-    public List<String> getNamesOfCardsInHand() {
-        return hand.stream().map(c -> c.getName()).toList();
-    }
-
-    public List<String> getNamesOfTreasuresInHand() {
-        return hand.stream()
-                .filter(c -> c.hasType(CardType.TREASURE))
-                .map(c -> c.getName())
-                .toList();
-    }
     /**
      * Fin du tour du joueur
      * <p>
@@ -1068,6 +1054,39 @@ public class Player implements IPlayer {
         // d'Outpost)
         drawToHand(nbCardsToDrawAtCleanup);
         nbCardsToDrawAtCleanup = 5;
+    }
+
+    // ==========================
+    //Ajouts Sophie
+
+    boolean canPlayActions = true;
+    boolean canPlayTreasures = true;
+
+    public void playTreasures() {
+        List<Card> treasures = hand.stream().filter(c -> c.hasType(CardType.TREASURE)).toList();
+        for (Card c : treasures)
+            playCard(c);
+    }
+
+    public List<String> getNamesOfCardsInHand() {
+        return hand.stream().map(c -> c.getName()).toList();
+    }
+
+    public List<String> getNamesOfTreasuresInHand() {
+        return hand.stream()
+                .filter(c -> c.hasType(CardType.TREASURE))
+                .map(c -> c.getName())
+                .toList();
+    }
+
+    public List<String> getAvailableSupplyCards() {
+        if (numberOfBuys > 0) {
+            return game.getAvailableSupplyCards().stream()
+                    .filter(c -> c.getCost() <= money)
+                    .map(c -> c.getName())
+                    .toList();
+        }
+        return List.of();
     }
 
     @Override
@@ -1102,7 +1121,7 @@ public class Player implements IPlayer {
         } else if (cardToPlay.hasType(CardType.TREASURE)) {
             canPlayActions = false;
             playCard(cardToPlay);
-            setCurrentState(new PlayTreasures(this));
+            setCurrentState(new TreasurePhase(this));
         }
     }
 
@@ -1113,6 +1132,30 @@ public class Player implements IPlayer {
                 .orElse(null);
         canPlayActions = false;
         playCard(cardToPlay);
+    }
+
+    public void buy(String cardName) {
+        canPlayActions = false;
+        canPlayTreasures = false;
+        Card c = getCardFromSupply(cardName);
+        gainToDiscard(c);
+        // gestion des token Embargo (uniquement lorsque le joueur achète une carte, pas
+        // lorsqu'il en gagne une par un autre moyen)
+        List<Card> gainedCurses = new ArrayList<>();
+                        for (int i = 0; i < game.getNumberOfEmbargoTokens(cardName); i++) {
+            Card curse = getCardFromSupply("Curse");
+            if (curse != null) {
+                gainedCurses.add(curse);
+                gainToDiscard(curse);
+            }
+        }
+        numberOfBuys -= 1;
+        money -= c.getCost();
+        cardsBoughtThisTurn.add(c);
+    }
+
+    public boolean areBuysCompleted() {
+        return numberOfBuys == 0;
     }
 
     /**

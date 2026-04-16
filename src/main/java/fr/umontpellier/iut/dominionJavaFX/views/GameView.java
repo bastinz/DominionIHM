@@ -2,9 +2,7 @@ package fr.umontpellier.iut.dominionJavaFX.views;
 
 import fr.umontpellier.iut.dominionJavaFX.IGame;
 import fr.umontpellier.iut.dominionJavaFX.dominion.SupplyPile;
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -63,9 +61,9 @@ public class GameView extends HBox {
 
     private Node createSupplyPile(SupplyPile pile) {
         Button pileButton = new Button(pile.getName());
-        pileButton.textProperty().bind(Bindings.concat(pile.getName(), " ", pile.sizeProperty().asString()));
+        pileButton.textProperty().bind(Bindings.concat(pile.getName(), " ", pile.getCost(), " ", pile.sizeProperty().asString()));
         pileButton.setUserData(pile);
-        pileButton.setOnMouseClicked(event -> {game.supplyWasChosen(pile.getName());});
+        pileButton.setOnMouseClicked(event -> {game.supplyCardWasChosen(pile.getName());});
         return pileButton;
     }
 

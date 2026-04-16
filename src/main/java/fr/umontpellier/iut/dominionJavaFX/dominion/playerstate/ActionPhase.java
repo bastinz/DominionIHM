@@ -15,20 +15,8 @@ public class ActionPhase extends PlayerState {
     }
 
     public void playTreasuresWasChosen() {
-        nextState = new PlayTreasures(currentPlayer);
-        nextState.playTreasuresWasChosen();
+        currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
+        currentPlayer.getCurrentState().playTreasuresWasChosen();
     }
-
-    public void cardInHandWasChosen(String cardName) {
-        List<String> choixPossibles = currentPlayer.getNamesOfCardsInHand();
-        if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
-//            nextState = new CardsInPlayExist(currentPlayer);
-            nextState.playTreasuresWasChosen();
-        }
-        // ici il faut passer à la phase suivante
-        // pour l'instant on passe au joueur suivant
-//        passer();
-    }
-
 
 }

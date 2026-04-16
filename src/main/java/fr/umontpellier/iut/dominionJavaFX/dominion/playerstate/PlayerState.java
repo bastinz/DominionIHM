@@ -9,7 +9,7 @@ public abstract class PlayerState {
 
     public PlayerState(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
-        nextState = this;
+       // nextState = this;
     }
 
     public void skip() {

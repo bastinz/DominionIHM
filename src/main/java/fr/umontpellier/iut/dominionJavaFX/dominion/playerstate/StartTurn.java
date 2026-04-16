@@ -16,8 +16,8 @@ public class StartTurn extends PlayerState {
     }
 
     public void playTreasuresWasChosen() {
-        nextState = new PlayTreasures(currentPlayer);
-        nextState.playTreasuresWasChosen();
+        currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
+        currentPlayer.getCurrentState().playTreasuresWasChosen();
     }
 
     public void cardInHandWasChosen(String cardName) {
@@ -25,9 +25,6 @@ public class StartTurn extends PlayerState {
         if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
             currentPlayer.switchToStateByCardType(cardName);
         }
-        // ici il faut passer à la phase suivante
-        // pour l'instant on passe au joueur suivant
-//        passer();
     }
 
 }
