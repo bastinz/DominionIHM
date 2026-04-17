@@ -4,8 +4,7 @@ import fr.umontpellier.iut.dominionJavaFX.dominion.*;
 
 public abstract class PlayerState {
     protected final Player currentPlayer;
-    protected PlayerState nextState;
-
+//    protected PlayerState nextState;
 
     public PlayerState(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
