@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import fr.umontpellier.iut.dominionJavaFX.views.CurrentPlayerView?>
+<?import fr.umontpellier.iut.dominionJavaFX.views.OtherPlayerView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -11,10 +12,13 @@
         <URL value="@../css/style.css"/>
     </stylesheets>
     <VBox id="initialView" fx:id="initialView" spacing="10" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+        <FlowPane id="supplyPane" fx:id="supplyPane" HBox.hgrow="ALWAYS" prefWrapLength="600"/>
+        <Button id="skipButton" fx:id="skipButton" onMouseClicked="#skip" text="Passer" maxWidth="Infinity" alignment="CENTER"/>
         <Label id="instructionLabel" fx:id="instructionLabel" alignment="TOP_LEFT" text="Ici le texte pour les indications"/>
-        <FlowPane id="supplyPane" fx:id="supplyPane" prefWidth="-1" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" prefWrapLength="600"/>
-        <CurrentPlayerView id="currentPlayerPane" fx:id="currentPlayerPane"/>
-        <Button id="skipButton" fx:id="skipButton" onMouseClicked="#skip" text="Passer"/>
+        <HBox VBox.vgrow="ALWAYS">
+            <CurrentPlayerView id="currentPlayerPane" fx:id="currentPlayerPane" HBox.hgrow="ALWAYS"/>
+            <OtherPlayerView id="otherPlayerPane" fx:id="otherPlayerPane"/>
+        </HBox>
     </VBox>
     <spacing>10</spacing>
     <padding>

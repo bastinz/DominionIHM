@@ -325,8 +325,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         previousTurnPlayer.setValue(currentTurnPlayer.getValue());
         if (!samePlayerShouldPlayExtraTurn) {
             // passe au joueur suivant
-            int nextPlayerIndex = (players.indexOf(currentTurnPlayer.getValue()) + 1) % players.size();
-            currentTurnPlayer.setValue(players.get(nextPlayerIndex));
+            currentTurnPlayer.setValue(getOtherPlayer());
             turnNumber += 1;
         }
         samePlayerShouldPlayExtraTurn = false;
@@ -503,6 +502,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
     public void moveToNextPlayerState() {
         moveToNextPlayer();
         currentPlayer().setCurrentState(new StartTurn(currentPlayer())) ;
+    }
+
+    public Player getOtherPlayer() {
+        int nextPlayerIndex = (players.indexOf(currentTurnPlayer.getValue()) + 1) % players.size();
+        return players.get(nextPlayerIndex);
     }
 
 }

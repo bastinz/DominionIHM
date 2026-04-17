@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<fx:root fx:id="otherPlayerPane" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/">
+    <Label id="nameLabel" fx:id="nameLabel"/>
+    <HBox spacing="10">
+        <Label id="handLabel" fx:id="handLabel"/>
+        <Label id="drawLabel" fx:id="drawLabel"/>
+        <Label id="discardLabel" fx:id="discardLabel"/>
+    </HBox>
+</fx:root>
