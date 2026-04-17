@@ -6,6 +6,8 @@ import fr.umontpellier.iut.dominionJavaFX.dominion.gui.Utils;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionPhase;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayerState;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.TreasurePhase;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -38,7 +40,7 @@ public class Player implements IPlayer {
     /**
      * Nombre de pièces disponibles pour acheter des cartes
      */
-    private int money;
+    private IntegerProperty money;
 
     /**
      * Indique si un Argent ou un Or a été joué ce tour ou non
@@ -111,6 +113,7 @@ public class Player implements IPlayer {
     public Player(String name, Game game) {
         this.name = name;
         this.game = game;
+        money = new SimpleIntegerProperty(0);
         // Prépare les listes de cartes
         hand = FXCollections.observableArrayList();
         discard = FXCollections.observableArrayList();
@@ -158,6 +161,10 @@ public class Player implements IPlayer {
     }
 
     public int getMoney() {
+        return money.getValue();
+    }
+
+    public IntegerProperty moneyProperty() {
         return money;
     }
 
@@ -341,7 +348,7 @@ public class Player implements IPlayer {
      *          souhaite diminuer le nombre de pièces)
      */
     public void incrementMoney(int n) {
-        money += n;
+        money.setValue(money.getValue() + n);
     }
 
     /**
@@ -899,7 +906,7 @@ public class Player implements IPlayer {
      */
     public void startTurn() {
         numberOfActions = 1;
-        money = 0;
+        money.setValue(0);
         numberOfBuys = 1;
         nbSilverOrGoldPlayed = 0;
         cardsGainedThisTurn.clear();
@@ -951,7 +958,7 @@ public class Player implements IPlayer {
             }
             if (numberOfBuys > 0) {
                 for (Card c : game.getAvailableSupplyCards()) {
-                    if (c.getCost() <= money) {
+                    if (c.getCost() <= money.getValue()) {
                         options.add("SUPPLY:" + c.getName());
                     }
                 }
@@ -1019,7 +1026,7 @@ public class Player implements IPlayer {
                     }
                     unindentLog();
                     numberOfBuys -= 1;
-                    money -= c.getCost();
+                    money.setValue(money.getValue() - c.getCost());
                     cardsBoughtThisTurn.add(c);
                 }
                 default -> {
@@ -1040,7 +1047,7 @@ public class Player implements IPlayer {
      */
     public void cleanup() {
         numberOfActions = 0;
-        money = 0;
+        money.setValue(0);
         numberOfBuys = 0;
         // défausse la main
         moveToDiscard(hand);
@@ -1082,7 +1089,7 @@ public class Player implements IPlayer {
     public List<String> getAvailableSupplyCards() {
         if (numberOfBuys > 0) {
             return game.getAvailableSupplyCards().stream()
-                    .filter(c -> c.getCost() <= money)
+                    .filter(c -> c.getCost() <= money.getValue())
                     .map(c -> c.getName())
                     .toList();
         }
@@ -1094,6 +1101,15 @@ public class Player implements IPlayer {
         return hand;
     }
 
+    @Override
+    public ObservableList<Card> getDraw() {
+        return draw;
+    }
+
+    @Override
+    public ObservableList<Card> getDiscard() {
+        return discard;
+    }
     @Override
     public ObservableList<Card> getInPlay() {
         return inPlay;
@@ -1150,7 +1166,7 @@ public class Player implements IPlayer {
             }
         }
         numberOfBuys -= 1;
-        money -= c.getCost();
+        money.setValue(money.getValue() - c.getCost());
         cardsBoughtThisTurn.add(c);
     }
 

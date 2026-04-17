@@ -4,6 +4,7 @@ import fr.umontpellier.iut.dominionJavaFX.DominionIHM;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.Player;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,16 +25,25 @@ import java.io.IOException;
  */
 public class CurrentPlayerView extends VBox {
 
+    private ObjectProperty<? extends IPlayer> currentPlayer;
+
     @FXML
     private Label nameLabel;
+
+    @FXML
+    private Label moneyLabel;
+
+    @FXML
+    private Label drawLabel;
+
+    @FXML
+    private Label discardLabel;
 
     @FXML
     private HBox handPane;
 
     @FXML
     private HBox inPlayPane;
-
-    private ObjectProperty<? extends IPlayer> currentPlayer;
 
     public CurrentPlayerView() {
         try {
@@ -49,6 +59,20 @@ public class CurrentPlayerView extends VBox {
     public void bindCurrentPlayer() {
         currentPlayer = DominionIHM.getGame().currentPlayerProperty();
         setCurrentPlayerChangeListener(currentPlayerChangeListener);
+    }
+
+    @FXML
+    private void initialize() {
+        bindCurrentPlayer();
+        for (Player p : DominionIHM.getGame().getPlayers()) {
+            p.getHand().addListener(handListener);
+            p.getInPlay().addListener(inPlayListener);
+        };
+    }
+
+    @FXML
+    void playTreasures() {
+        currentPlayer().playTreasuresWasChosen();
     }
 
     private final ListChangeListener<? super Card> handListener = change -> {
@@ -81,13 +105,19 @@ public class CurrentPlayerView extends VBox {
         }
     };
 
-     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) -> {
-     if (newPlayer != null) {
-         nameLabel.setText(newPlayer.getName());
-         refreshHand();
-//         refreshInPlay();
-     }
+    private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) -> {
+         if (newPlayer != null) {
+             nameLabel.setText(newPlayer.getName());
+             refreshHand();
+             moneyLabel.textProperty().bind(Bindings.concat("Money : ", currentPlayer().moneyProperty().asString()));
+             drawLabel.textProperty().bind(Bindings.concat("Draw : ", Bindings.size(currentPlayer().getDraw()).asString()));
+             discardLabel.textProperty().bind(Bindings.concat("Discard : ", Bindings.size(currentPlayer().getDiscard()).asString()));
+         }
      };
+
+    protected void setCurrentPlayerChangeListener(ChangeListener<IPlayer> currentPlayerChangeListener) {
+        currentPlayer.addListener(currentPlayerChangeListener);
+    }
 
     private void refreshHand() {
         handPane.getChildren().setAll(
@@ -126,24 +156,6 @@ public class CurrentPlayerView extends VBox {
 
     private IPlayer currentPlayer() {
         return currentPlayer.getValue();
-    }
-
-    protected void setCurrentPlayerChangeListener(ChangeListener<IPlayer> currentPlayerChangeListener) {
-        currentPlayer.addListener(currentPlayerChangeListener);
-    }
-
-    @FXML
-    private void initialize() {
-        bindCurrentPlayer();
-        for (Player p : DominionIHM.getGame().getPlayers()) {
-            p.getHand().addListener(handListener);
-            p.getInPlay().addListener(inPlayListener);
-        };
-    }
-
-    @FXML
-    void playTreasures() {
-        currentPlayer().playTreasuresWasChosen();
     }
 
 }
