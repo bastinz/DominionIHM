@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionJavaFX.dominion.cards.seaside;
+package fr.umontpellier.iut.dominionJavaFX.dominion.cards.seaside.afaire;
 
 import fr.umontpellier.iut.dominionJavaFX.dominion.CardType;
 import fr.umontpellier.iut.dominionJavaFX.dominion.Player;

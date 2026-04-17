@@ -3,6 +3,7 @@ package fr.umontpellier.iut.dominionJavaFX.dominion.cards;
 import fr.umontpellier.iut.dominionJavaFX.dominion.SupplyPile;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.common.*;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.seaside.*;
+import fr.umontpellier.iut.dominionJavaFX.dominion.cards.seaside.afaire.*;
 
 import java.util.Map;
 import java.util.function.Function;
