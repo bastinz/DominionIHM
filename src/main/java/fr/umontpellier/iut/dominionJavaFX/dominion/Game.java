@@ -4,7 +4,6 @@ import fr.umontpellier.iut.dominionJavaFX.IGame;
 import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.FactorySupplyPile;
-import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionPhase;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.StartTurn;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;

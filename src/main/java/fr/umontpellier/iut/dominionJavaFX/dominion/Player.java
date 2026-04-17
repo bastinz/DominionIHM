@@ -4,8 +4,8 @@ import fr.umontpellier.iut.dominionJavaFX.IPlayer;
 import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 import fr.umontpellier.iut.dominionJavaFX.dominion.gui.Utils;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.ActionPhase;
-import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.PlayerState;
+import fr.umontpellier.iut.dominionJavaFX.dominion.playerstate.TreasurePhase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

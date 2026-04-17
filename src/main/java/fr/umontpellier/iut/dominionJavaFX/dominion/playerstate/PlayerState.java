@@ -1,6 +1,7 @@
 package fr.umontpellier.iut.dominionJavaFX.dominion.playerstate;
 
-import fr.umontpellier.iut.dominionJavaFX.dominion.*;
+import fr.umontpellier.iut.dominionJavaFX.dominion.Game;
+import fr.umontpellier.iut.dominionJavaFX.dominion.Player;
 
 public abstract class PlayerState {
     protected final Player currentPlayer;
