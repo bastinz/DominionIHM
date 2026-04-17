@@ -465,7 +465,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     @Override
-    protected Void call() throws Exception {
+    protected Void call() {
         run();
         return null;
     }
