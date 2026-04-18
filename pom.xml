@@ -43,6 +43,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit5</artifactId>
+            <version>4.0.18</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>jakarta.websocket</groupId>
             <artifactId>jakarta.websocket-api</artifactId>
             <version>2.1.1</version>
@@ -72,7 +78,8 @@
                     <forkedProcessTimeoutInSeconds>10</forkedProcessTimeoutInSeconds>
 
                     <argLine>
-                        --add-exports=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                        --add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                        <!--&#45;&#45;add-exports=javafx.graphics/com.sun.javafx.application=ALL-UNNAMED-->
                     </argLine>
                 </configuration>
             </plugin>

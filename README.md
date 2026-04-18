@@ -80,9 +80,9 @@ _**Le non-respect des consignes aura de fortes implications sur la note finale.*
 
 ## Architecture générale du code
 
-Le projet est structuré en 3 paquetages : `fr.umontpellier.iut.dominion`, `fr.umontpellier.iut.dominion.cards`, `fr.umontpellier.iut.dominion.gui`. Les classes du paquetage `fr.umontpellier.iut.dominion.gui` servent uniquement à l'interface graphique et, sauf indication contraire, vous n'aurez pas à les modifier.
+Le projet est structuré en 3 paquetages : `fr.umontpellier.iut.dominionfx`, `fr.umontpellier.iut.dominionfx.cards`, `fr.umontpellier.iut.dominionfx.gui`. Les classes du paquetage `fr.umontpellier.iut.dominionfx.gui` servent uniquement à l'interface graphique et, sauf indication contraire, vous n'aurez pas à les modifier.
 
-Les 2 autres paquetages `fr.umontpellier.iut.dominion` et `fr.umontpellier.iut.dominion.cards`, représentent le code métier du projet. Voici son diagramme de classes **simplifié** :
+Les 2 autres paquetages `fr.umontpellier.iut.dominionfx` et `fr.umontpellier.iut.dominionfx.cards`, représentent le code métier du projet. Voici son diagramme de classes **simplifié** :
 
 ![](ressources/diagramme_classes_squelette.png)
 
