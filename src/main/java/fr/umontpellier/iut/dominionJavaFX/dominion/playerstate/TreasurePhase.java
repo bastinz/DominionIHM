@@ -1,6 +1,7 @@
 package fr.umontpellier.iut.dominionJavaFX.dominion.playerstate;
 
 import fr.umontpellier.iut.dominionJavaFX.dominion.Player;
+import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 
 import java.util.List;
 
@@ -32,5 +33,10 @@ public class TreasurePhase extends PlayerState {
             if (currentPlayer.areBuysCompleted())
                 endOfCurrentPlayersTurn();
         }
+    }
+
+    public void startProcess(Card cardName) {
+        currentPlayer.disablePlayActions();
+        currentPlayer.playCard(cardName);
     }
 }

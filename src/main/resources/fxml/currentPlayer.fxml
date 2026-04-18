@@ -9,7 +9,7 @@
         <Label id="drawLabel" fx:id="drawLabel"/>
         <Label id="discardLabel" fx:id="discardLabel"/>
     </HBox>
-    <HBox id="inPlayPane" fx:id="inPlayPane"/>
-    <HBox id="handPane" fx:id="handPane"/>
+    <HBox id="inPlayPane" fx:id="inPlayPane" minHeight="50.0"/>
+    <HBox id="handPane" fx:id="handPane" minHeight="50.0"/>
     <Button fx:id="playTreasuresButton" onMouseClicked="#playTreasures" text="Play treasures"/>
 </fx:root>

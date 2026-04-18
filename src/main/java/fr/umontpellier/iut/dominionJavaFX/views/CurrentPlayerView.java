@@ -109,6 +109,7 @@ public class CurrentPlayerView extends VBox {
          if (newPlayer != null) {
              nameLabel.setText(newPlayer.getName());
              refreshHand();
+             refreshInPlay();
              moneyLabel.textProperty().bind(Bindings.concat("Money : ", currentPlayer().moneyProperty().asString()));
              drawLabel.textProperty().bind(Bindings.concat("Draw : ", Bindings.size(currentPlayer().getDraw()).asString()));
              discardLabel.textProperty().bind(Bindings.concat("Discard : ", Bindings.size(currentPlayer().getDiscard()).asString()));
@@ -129,11 +130,11 @@ public class CurrentPlayerView extends VBox {
 
     private void refreshInPlay() {
         inPlayPane.getChildren().clear();
-/*        inPlayPane.getChildren().setAll(
-                currentPlayer.getValue().getInPlay().stream()
+        inPlayPane.getChildren().setAll(
+                currentPlayer().getInPlay().stream()
                         .map(this::createCardNodeInPlay)
                         .toList()
-        );*/
+        );
     }
 
     private Node createCardNodeInHand(Card card) {
@@ -147,10 +148,11 @@ public class CurrentPlayerView extends VBox {
 
     private Node createCardNodeInPlay(Card card) {
         Button cardButton = new Button(card.getName());
+        cardButton.setDisable(true);
         cardButton.setUserData(card);
-        cardButton.setOnMouseClicked(event -> {/*
-            currentPlayer().cardInPlayWasChosen(card.getName());*/}
-        );
+/*        cardButton.setOnMouseClicked(event -> {*//*
+            currentPlayer().cardInPlayWasChosen(card.getName());*//*}
+        );*/
         return cardButton;
     }
 

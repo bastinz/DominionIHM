@@ -542,9 +542,9 @@ public class Player implements IPlayer {
     @Override
     public String toString() {
         String r = String.format("     -- %s --\n", name);
-        r += String.format("Actions: %d     Money: %d     Buys: %d     Draw: %d     Discard: %d\n",
+ /*       r += String.format("Actions: %d     Money: %d     Buys: %d     Draw: %d     Discard: %d\n",
                 numberOfActions,
-                money, numberOfBuys, draw.size(), discard.size());
+                money, numberOfBuys, draw.size(), discard.size());*/
         r += String.format("In play: %s\n", inPlay.toString());
         r += String.format("Hand: %s\n", hand.toString());
         return r;
@@ -1125,20 +1125,21 @@ public class Player implements IPlayer {
         currentState.cardInHandWasChosen(cardName);
     }
 
-    public void switchToStateByCardType(String cardName) {
+    public Card switchToStateByCardType(String cardName) {
         Card cardToPlay = hand.stream()
                 .filter(card -> card.getName().equals(cardName))
                 .findFirst()
                 .orElse(null);
         if (cardToPlay.hasType(CardType.ACTION)) {
-            numberOfActions -= 1;
-            playCard(cardToPlay);
+/*            numberOfActions -= 1;
+            playCard(cardToPlay);*/
             setCurrentState(new ActionPhase(this));
         } else if (cardToPlay.hasType(CardType.TREASURE)) {
-            canPlayActions = false;
-            playCard(cardToPlay);
+/*            canPlayActions = false;
+            playCard(cardToPlay);*/
             setCurrentState(new TreasurePhase(this));
         }
+        return cardToPlay;
     }
 
     public void playTreasureCard(String cardName) {
@@ -1187,4 +1188,11 @@ public class Player implements IPlayer {
         return currentState;
     }
 
+    public void decreaseNumberOfActions() {
+        numberOfActions -= 1;
+    }
+
+    public void disablePlayActions() {
+        canPlayActions = false;
+    }
 }

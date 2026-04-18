@@ -1,6 +1,7 @@
 package fr.umontpellier.iut.dominionJavaFX.dominion.playerstate;
 
 import fr.umontpellier.iut.dominionJavaFX.dominion.Player;
+import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class StartTurn extends PlayerState {
     public void cardInHandWasChosen(String cardName) {
         List<String> choixPossibles = currentPlayer.getNamesOfCardsInHand();
         if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
-            currentPlayer.switchToStateByCardType(cardName);
+            Card cardToPlay = currentPlayer.switchToStateByCardType(cardName);
+            currentPlayer.getCurrentState().startProcess(cardToPlay);
         }
     }
 

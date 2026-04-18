@@ -2,6 +2,7 @@ package fr.umontpellier.iut.dominionJavaFX.dominion.playerstate;
 
 import fr.umontpellier.iut.dominionJavaFX.dominion.Game;
 import fr.umontpellier.iut.dominionJavaFX.dominion.Player;
+import fr.umontpellier.iut.dominionJavaFX.dominion.cards.Card;
 
 public abstract class PlayerState {
     protected final Player currentPlayer;
@@ -18,16 +19,18 @@ public abstract class PlayerState {
     public void playTreasuresWasChosen() {
     }
 
-    public void cardInHandWasChosen(String carteChoisie) {
+    public void cardInHandWasChosen(String cardName) {
     }
 
-    public void supplyCardWasChosen(String carteChoisie) {
+    public void supplyCardWasChosen(String cardName) {
+    }
+
+    public void startProcess(Card cardToPlay)  {
     }
 
     public void endOfCurrentPlayersTurn() {
         // on vérifie si fin de partie ??
-        getGame().moveToNextPlayerState(); // fait le cleanUp
-        currentPlayer.startTurn();
+        getGame().moveToNextPlayerState(); // fait le cleanUp et startTurn
     }
 
     protected Game getGame() {
