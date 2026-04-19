@@ -16,9 +16,9 @@ import java.io.IOException;
 
 /**
  * Cette classe correspond à la fenêtre principale de l'application.
- *
+ * <p>
  * Elle est initialisée avec une référence sur la partie en cours (Jeu).
- *
+ * <p>
  * On y définit les bindings sur les éléments internes qui peuvent changer
  * (le joueur courant, les 5 cartes Wagons visibles, les destinations lors de l'étape d'initialisation de la partie, ...)
  * ainsi que les listeners à exécuter lorsque ces éléments changent
@@ -62,7 +62,8 @@ public class GameView extends HBox {
     private Node createSupplyPile(SupplyPile pile) {
         Button pileButton = new Button(pile.getName());
         pileButton.setId(pile.getName());
-        pileButton.textProperty().bind(Bindings.concat(pile.getName(), " ", pile.getCost(), " ", pile.sizeProperty().asString()));
+        pileButton.textProperty().bind(Bindings.concat(pile.getName(), " ", pile.getCost(), " ", pile.sizeProperty().asString(),
+                Bindings.when(Bindings.notEqual(0, pile.nbEmbargoTokensProperty())).then(Bindings.concat(" E", pile.nbEmbargoTokensProperty().asString())).otherwise("")));
         pileButton.setUserData(pile);
         pileButton.setOnMouseClicked(event -> {game.supplyCardWasChosen(pile.getName());});
         return pileButton;

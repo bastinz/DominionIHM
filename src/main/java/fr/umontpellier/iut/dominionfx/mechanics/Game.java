@@ -5,8 +5,6 @@ import fr.umontpellier.iut.dominionfx.IPlayer;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.FactorySupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurn;
-import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.concurrent.Task;
@@ -344,6 +342,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     public void runNew() {
         currentTurnPlayer.setValue(players.getFirst());
         currentPlayer().setCurrentState(new StartTurn(currentPlayer())) ;
+//        currentTurnPlayer.getValue().playTurn();
     }
 
     /**
@@ -354,7 +353,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * final et les cartes possédées par chacun des joueurs.
      */
     public void run() {
-        currentTurnPlayer.setValue(players.get(0));
+        currentTurnPlayer.setValue(players.getFirst());
         while (!isFinished()) {
             // joue le tour du joueur courant
             if (currentTurnPlayer.getValue() != previousTurnPlayer.getValue()) {
@@ -425,9 +424,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         System.out.println(toString());
         System.out.println(currentTurnPlayer.getValue().toString());
         String ligneInstruction = ">>> " + instruction + "<<<";
-        Platform.runLater(() -> {
-            this.instruction.set(instruction);
-        });
+        this.instruction.set(instruction);
         System.out.println(ligneInstruction);
 
         // Prépare la représentation envoyée à l'UI

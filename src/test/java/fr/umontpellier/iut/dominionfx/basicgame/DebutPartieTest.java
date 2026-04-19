@@ -8,10 +8,6 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.util.WaitForAsyncUtils;
-
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -72,10 +68,7 @@ public class DebutPartieTest extends BaseTestClass {
     }
 
     private void miseEnPlaceDebut() {
-//        cliquerMain("Salamèche");
-//        cliquerPasser();
-//        cliquerMain("Ponyta");
-//        cliquerPasser();
+//        clickOnSkip();
 //        WaitForAsyncUtils.sleep(2, TimeUnit.SECONDS);
     }
 

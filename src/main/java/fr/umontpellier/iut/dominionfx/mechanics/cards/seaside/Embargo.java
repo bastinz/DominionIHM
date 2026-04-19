@@ -1,10 +1,8 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
-
-import java.util.ArrayList;
-import java.util.List;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.EmbargoState;
 
 /**
  * Carte Embargo
@@ -24,9 +22,13 @@ public class Embargo extends ActionCard {
     public void play(Player p) {
         p.incrementMoney(2);
         p.moveToTrash(this);
-        List<String> options = new ArrayList<>();
+        p.setCurrentState(new EmbargoState(p));
+    }
+}
+
+/*List<String> options = new ArrayList<>();
         for (String name : p.getGame().getAllSupplyPileNames()) {
-            options.add("SUPPLY:" + name);
+        options.add("SUPPLY:" + name);
         }
         String choice = p.choose(
                 "%s: Choose a supply pile".formatted(this),
@@ -35,6 +37,4 @@ public class Embargo extends ActionCard {
                 false);
         String supplyName = choice.split(":")[1];
         p.log("adds an Embargo token on %s".formatted(supplyName));
-        p.getGame().addEmbargoToken(supplyName);
-    }
-}
+        p.getGame().addEmbargoToken(supplyName);*/

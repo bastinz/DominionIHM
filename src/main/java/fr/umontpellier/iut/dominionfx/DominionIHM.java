@@ -4,7 +4,6 @@ import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.views.GameView;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.concurrent.Worker;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -92,10 +91,10 @@ public class DominionIHM extends Application {
         // String[] kingdomCards = new String[]{};
 
         // Option 2. Liste explicite de cartes royaume à utiliser (le nombre de cartes peut être quelconque)
-//        String[] kingdomCards = new String[]{"Embargo", "Lighthouse", "Pirate", "Sailor"};
+        String[] kingdomCards = new String[]{"Embargo", "Lighthouse", "Pirate", "Sailor"};
 
         // Option 3. Choix aléatoire de 10 cartes parmi la liste complète allKingdomCards définie précédemment
-          String[] kingdomCards = allKingdomCards.subList(0, 10).toArray(new String[10]);
+//          String[] kingdomCards = allKingdomCards.subList(0, 10).toArray(new String[10]);
         return kingdomCards;
     }
     public static String[] getRandomKingdomCards() {

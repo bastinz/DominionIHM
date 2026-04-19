@@ -137,13 +137,6 @@ public class Player implements IPlayer {
         while (!discard.isEmpty()) {
             discard.getLast().moveTo(draw);
         }
-/*        for (int i = 0; i < 5; i++) {
-            draw.getLast().moveTo(hand);
-        }*/
-        setHandAndDraw();
-    }
-
-    private void setHandAndDraw() {
         for (int i = 0; i < 5; i++) {
             draw.getLast().moveTo(hand);
         }
@@ -1173,6 +1166,10 @@ public class Player implements IPlayer {
 
     public boolean areBuysCompleted() {
         return numberOfBuys == 0;
+    }
+
+    public boolean areActionsCompleted() {
+        return numberOfActions == 0;
     }
 
     /**

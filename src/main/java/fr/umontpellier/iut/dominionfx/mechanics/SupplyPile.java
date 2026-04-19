@@ -11,10 +11,11 @@ import java.util.function.Supplier;
 public class SupplyPile extends SimpleListProperty<Card> {
     private final String name;
     private final int cost;
-    private int nbEmbargoTokens = 0;
+    private IntegerProperty nbEmbargoTokens;
 
     public SupplyPile(Supplier<Card> cardSupplier, int numberOfCopies) {
         super(FXCollections.observableArrayList());
+        nbEmbargoTokens = new SimpleIntegerProperty(0);
         Card card = cardSupplier.get();
         name = card.getName();
         cost = card.getCost();
@@ -32,10 +33,14 @@ public class SupplyPile extends SimpleListProperty<Card> {
     }
 
     public void addEmbargoToken() {
-        nbEmbargoTokens++;
+        nbEmbargoTokens.setValue(nbEmbargoTokens.getValue() + 1);
     }
 
     public int getNbEmbargoTokens() {
+        return nbEmbargoTokens.getValue();
+    }
+
+    public IntegerProperty nbEmbargoTokensProperty() {
         return nbEmbargoTokens;
     }
 }

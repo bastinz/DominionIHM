@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class BaseTestClass extends ApplicationTest {
@@ -53,6 +54,27 @@ public class BaseTestClass extends ApplicationTest {
             nodeToSelect = findNodeMatchingCondition(supplyPane, n -> n.getId().startsWith(nomCarte));
         }
         clickOn(nodeToSelect);
+    }
+
+    public void skipUntilHandHasCard(String nomCarte) {
+        Node nodeToSelect = findNodeMatchingCondition(handPane, n -> n.getId().startsWith(nomCarte));
+        while (nodeToSelect == null) {
+            clickOnSkip();
+            nodeToSelect = findNodeMatchingCondition(handPane, n -> n.getId().startsWith(nomCarte));
+        }
+    }
+
+    public void skipUntilHandHasEnoughTreasures(int nbTreasures) {
+        while (handPane.getChildrenUnmodifiable().stream()
+                .mapToInt(node -> switch (node.getId()) {
+                    case "Copper" -> 1;
+                    case "Silver" -> 2;
+                    case "Gold"   -> 3;
+                    default       -> 0;
+                })
+                .sum() < nbTreasures) {
+            clickOnSkip();
+        }
     }
 
     public void clickOnTreasures() {
@@ -144,18 +166,14 @@ public class BaseTestClass extends ApplicationTest {
     }*/
 
     public Node findNodeMatchingCondition(Node root, Predicate<Node> condition) {
-        if (condition.test(root)) {
-            return root;
-        }
-        if (root instanceof Parent) {
-            for (Node child : ((Parent) root).getChildrenUnmodifiable()) {
-                if (child.getId() != null) {
-                    Node resultat = findNodeMatchingCondition(child, condition);
-                    if (resultat != null) {
-                        return resultat;
-                    }
-                }
-            }
+        if (condition.test(root)) return root;
+        if (root instanceof Parent parent) {
+            return parent.getChildrenUnmodifiable().stream()
+                    .filter(child -> child.getId() != null)
+                    .map(child -> findNodeMatchingCondition(child, condition))
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
         }
         return null;
     }
