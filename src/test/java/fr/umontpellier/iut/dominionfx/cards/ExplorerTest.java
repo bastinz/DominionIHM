@@ -2,10 +2,18 @@ package fr.umontpellier.iut.dominionfx.cards;
 
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
+import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class ExplorerTest extends BaseTestClass {
 
@@ -23,16 +31,55 @@ public class ExplorerTest extends BaseTestClass {
     }
 
     @Test
-    public void playExplorer() {
+    public void explorerWithProvinceAddsGold() {
         miseEnPlaceDebut();
-        long initialNumberOfGold = game.currentPlayer().getHand().stream()
+        Player currentPlayer = game.currentPlayer();
+        long initialNumberOfGold = currentPlayer.getHand().stream()
                 .filter(card -> "Gold".equals(card.getName()))
                 .count();
         clickOnCardInHand("Province");
-        long currentNumberOfGold = game.currentPlayer().getHand().stream()
+        long currentNumberOfGold = currentPlayer.getHand().stream()
                 .filter(card -> "Gold".equals(card.getName()))
                 .count();
         assertEquals(initialNumberOfGold + 1, currentNumberOfGold);
+        assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+    }
+
+    @Test
+    public void explorerWithoutProvinceAddsSilver() {
+        miseEnPlaceDebut();
+        Player currentPlayer = game.currentPlayer();
+        long initialNumberOfSilver = currentPlayer.getHand().stream()
+                .filter(card -> "Silver".equals(card.getName()))
+                .count();
+        clickOnSkip();
+        long currentNumberOfSilver = currentPlayer.getHand().stream()
+                .filter(card -> "Silver".equals(card.getName()))
+                .count();
+        assertEquals(initialNumberOfSilver + 1, currentNumberOfSilver);
+        assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+    }
+
+    @Test
+    public void explorerWithoutProvinceAndEmptySilverPile() {
+        miseEnPlaceDebut();
+        Platform.runLater(() -> {
+            Optional<SupplyPile> silverPile = game.getSupplyPiles().stream()
+                    .filter(p -> p.getName().equals("Silver"))
+                    .findFirst();
+            silverPile.ifPresent(p -> p.clear());        });
+        WaitForAsyncUtils.waitForFxEvents();
+
+        Player currentPlayer = game.currentPlayer();
+        long initialNumberOfSilver = currentPlayer.getHand().stream()
+                .filter(card -> "Silver".equals(card.getName()))
+                .count();
+        clickOnSkip();
+        long currentNumberOfSilver = currentPlayer.getHand().stream()
+                .filter(card -> "Silver".equals(card.getName()))
+                .count();
+        assertEquals(initialNumberOfSilver, currentNumberOfSilver);
+        assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
     }
 /*
     @Test

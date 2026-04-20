@@ -2,10 +2,13 @@ package fr.umontpellier.iut.dominionfx.cards;
 
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
+import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class EmbargoTest extends BaseTestClass {
 
@@ -26,6 +29,7 @@ public class EmbargoTest extends BaseTestClass {
                 .findFirst()
                 .get().getNbEmbargoTokens();
         assertEquals(1, numberOfEmbargoTokens);
+        assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState());
 //        pause(2);
     }
 
@@ -45,6 +49,7 @@ public class EmbargoTest extends BaseTestClass {
                 .findFirst()
                 .get().getNbEmbargoTokens();
         assertEquals(2, numberOfEmbargoTokens);
+        assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState());
 //        pause(2);
     }
 
@@ -69,6 +74,7 @@ public class EmbargoTest extends BaseTestClass {
                 .findFirst()
                 .get().getNbEmbargoTokens();
         assertEquals(1, numberOfEmbargoTokensSailor);
+        assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState());
 //        pause(2);
     }
 

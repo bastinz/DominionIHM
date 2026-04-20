@@ -10,7 +10,7 @@ public class ActionPhase extends PlayerState {
     }
 
     public void skip() {
-        endOfCurrentPlayersTurn();
+        moveToNextPhase();
     }
 
     public void startProcess(Card cardName) {
@@ -21,6 +21,13 @@ public class ActionPhase extends PlayerState {
     public void playTreasuresWasChosen() {
         currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
         currentPlayer.getCurrentState().playTreasuresWasChosen();
+    }
+
+    public void moveToNextPhase() {
+        if (currentPlayer.areActionsCompleted())
+            currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
+        else
+            currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
     }
 
 }
