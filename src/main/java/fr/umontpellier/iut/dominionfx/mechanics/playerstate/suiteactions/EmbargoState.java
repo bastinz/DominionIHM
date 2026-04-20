@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
+package fr.umontpellier.iut.dominionfx.mechanics.playerstate.suiteactions;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 

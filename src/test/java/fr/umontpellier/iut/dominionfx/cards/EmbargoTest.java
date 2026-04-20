@@ -2,8 +2,6 @@ package fr.umontpellier.iut.dominionfx.cards;
 
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
-import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.EmbargoState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -20,9 +18,14 @@ public class EmbargoTest extends BaseTestClass {
         super.start(stage);
     }
 
+    @Override
+    public void setPlayersHands() {
+        addToFirstPlayersHand("Embargo");
+        addToFirstPlayersHand("Embargo");
+    }
+
     @Test
     public void addsEmbargoOnSupply() {
-        miseEnPlaceDebut();
         clickOnCardInHand("Embargo");
         clickOnSupplyPile("Lighthouse");
         int numberOfEmbargoTokens = game.getSupplyPiles().stream()
@@ -36,12 +39,10 @@ public class EmbargoTest extends BaseTestClass {
 
     @Test
     public void addsTwoEmbargosOnSameSupplyPile() {
-        miseEnPlaceDebut();
         clickOnCardInHand("Embargo");
         clickOnSupplyPile("Lighthouse");
-        skipUntilHandHasEnoughTreasures(2);
-        clickOnTreasures();
-        clickOnSupplyPile("Embargo");
+        clickOnSkip();
+        clickOnSkip();
         skipUntilHandHasCard("Embargo");
         clickOnCardInHand("Embargo");
         clickOnSupplyPile("Lighthouse");
@@ -56,12 +57,10 @@ public class EmbargoTest extends BaseTestClass {
 
     @Test
     public void addsTwoEmbargosOnDifferentSupplyPiles() {
-        miseEnPlaceDebut();
         clickOnCardInHand("Embargo");
         clickOnSupplyPile("Lighthouse");
-        skipUntilHandHasEnoughTreasures(2);
-        clickOnTreasures();
-        clickOnSupplyPile("Embargo");
+        clickOnSkip();
+        clickOnSkip();
         skipUntilHandHasCard("Embargo");
         clickOnCardInHand("Embargo");
         clickOnSupplyPile("Sailor");
@@ -80,11 +79,6 @@ public class EmbargoTest extends BaseTestClass {
     }
 
     private void miseEnPlaceDebut() {
-        clickOnTreasures();
-        clickOnSupplyPile("Embargo");
-        clickOnSkip();
-        clickOnSkip();
-        skipUntilHandHasCard("Embargo");
 //        pause(2);
     }
 
