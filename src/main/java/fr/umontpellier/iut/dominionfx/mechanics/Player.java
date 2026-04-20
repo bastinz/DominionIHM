@@ -1193,4 +1193,15 @@ public class Player implements IPlayer {
         canPlayActions = false;
     }
 
+    public List<String> getProvincesInHand() {
+        return hand.stream().filter(c -> c.hasName("Province")).map(c -> c.getName())
+                .collect(Collectors.toList());
+    }
+
+    public void gainTreasure(String cardName) {
+        Card gainedCard = getCardFromSupply(cardName);
+        if (gainedCard != null) {
+            gainToHand(gainedCard);
+        }
+    }
 }
