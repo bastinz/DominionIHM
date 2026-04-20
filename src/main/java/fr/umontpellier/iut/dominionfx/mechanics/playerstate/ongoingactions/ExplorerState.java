@@ -1,10 +1,10 @@
-package fr.umontpellier.iut.dominionfx.mechanics.playerstate.suiteactions;
+package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 
 import java.util.List;
 
-public class ExplorerState extends SuiteAction {
+public class ExplorerState extends OnGoingActionState {
     public ExplorerState(Player currentPlayer) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("You may reveal a Province or skip");

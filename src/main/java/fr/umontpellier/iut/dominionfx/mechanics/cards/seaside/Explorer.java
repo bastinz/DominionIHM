@@ -2,7 +2,7 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.suiteactions.ExplorerState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.ExplorerState;
 
 /**
  * Carte Explorateur (Explorer)

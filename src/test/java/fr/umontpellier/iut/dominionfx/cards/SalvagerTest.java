@@ -5,7 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurn;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.suiteactions.SalvagerState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.SalvagerState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 

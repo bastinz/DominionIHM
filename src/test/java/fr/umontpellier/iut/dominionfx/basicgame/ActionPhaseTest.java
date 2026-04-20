@@ -3,12 +3,8 @@ package fr.umontpellier.iut.dominionfx.basicgame;
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ActionPhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurn;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +15,7 @@ public class ActionPhaseTest extends BaseTestClass {
     @Override
     public void start(Stage stage) {
         game = new Game(new String[]{"PlayerTest1", "PlayerTest2"},
-                        new String[]{"Bazaar", "Warehouse", "Smugglers", "Sea Hag"});
+                        new String[]{"Bazaar", "Warehouse", "Fishing Village", "Sea Hag", "Blockade"});
         super.start(stage);
     }
 
@@ -27,6 +23,8 @@ public class ActionPhaseTest extends BaseTestClass {
     public void setPlayersHands() {
         addToFirstPlayersHand("Sea Hag");
         addToFirstPlayersHand("Sea Hag");
+        addToFirstPlayersHand("Fishing Village");
+        addToFirstPlayersHand("Blockade");
         addToFirstPlayersHand("Bazaar");
     }
 
@@ -55,4 +53,29 @@ public class ActionPhaseTest extends BaseTestClass {
 //        pause(2);
     }
 
+    @Test
+    public void durationRemainsInPlayTillNextTurn() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Fishing Village");
+        clickOnSkip();
+        assertTrue(listContainsCard(game.getPreviousTurnPlayer().getInPlay(), "Fishing Village"));
+        clickOnSkip();
+        assertTrue(listContainsCard(currentPlayer.getInPlay(), "Fishing Village"));// les cartes InPlay restent jusqu'au cleanUp
+//        pause(2);
+    }
+
+    @Test
+    public void durationTillNextTurnWhenMoreThanOnAction() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Fishing Village");
+        clickOnCardInHand("Blockade");
+        clickOnSupplyPile("Warehouse");
+        clickOnSkip();
+        assertTrue(listContainsCard(game.getPreviousTurnPlayer().getInPlay(), "Fishing Village"));
+        assertTrue(listContainsCard(game.getPreviousTurnPlayer().getInPlay(), "Blockade"));
+        clickOnSkip();
+        assertTrue(listContainsCard(currentPlayer.getInPlay(), "Blockade"));
+        assertTrue(listContainsCard(currentPlayer.getInPlay(), "Fishing Village"));
+//        pause(2);
+    }
 }

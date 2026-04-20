@@ -1,10 +1,10 @@
-package fr.umontpellier.iut.dominionfx.mechanics.playerstate.suiteactions;
+package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 
 import java.util.List;
 
-public class EmbargoState extends SuiteAction {
+public class EmbargoState extends OnGoingActionState {
     public EmbargoState(Player currentPlayer) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Choose a supply pile");

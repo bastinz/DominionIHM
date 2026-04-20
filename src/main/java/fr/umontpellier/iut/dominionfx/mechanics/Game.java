@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.StringJoiner;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -321,7 +322,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     public void moveToNextPlayer() {
         currentPlayer().cleanup();
-         Player next = players.get((players.indexOf(currentTurnPlayer.getValue()) + 1) % players.size());
+        Player next = players.get((players.indexOf(currentTurnPlayer.getValue()) + 1) % players.size());
         previousTurnPlayer.setValue(currentPlayer());
         if (!samePlayerShouldPlayExtraTurn) {
             // passe au joueur suivant
@@ -341,7 +342,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     public void runNew() {
         currentTurnPlayer.setValue(players.getFirst());
-        currentPlayer().setCurrentState(new StartTurn(currentPlayer())) ;
+        currentPlayer().setCurrentState(new StartTurn(currentPlayer(), true)) ;
         currentPlayer().startTurn();
     }
 
@@ -500,13 +501,21 @@ public class Game extends Task<Void> implements Runnable, IGame {
 
     public void moveToNextPlayerState() {
         moveToNextPlayer();
-        currentPlayer().setCurrentState(new StartTurn(currentPlayer())) ;
+        currentPlayer().setCurrentState(new StartTurn(currentPlayer(), true)) ;
         currentPlayer().startTurn();
     }
 
     public Player getOtherPlayer() {
         int nextPlayerIndex = (players.indexOf(currentTurnPlayer.getValue()) + 1) % players.size();
         return players.get(nextPlayerIndex);
+    }
+
+    public List<String> getCardsFromSupplyMatchingCondition(Predicate<Card> filter) {
+        return getAvailableSupplyCards().stream()
+                .filter(filter)
+                .map(Card::getName)
+                .collect(Collectors.toList());
+
     }
 
 }

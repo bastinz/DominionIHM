@@ -2,6 +2,7 @@ package fr.umontpellier.iut.dominionfx;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
@@ -39,6 +41,10 @@ public class BaseTestClass extends ApplicationTest {
     public void addToSecondPlayersHand(String cardName) {
         Player secondPlayer = game.getPlayers().getLast();
         secondPlayer.moveToHand(secondPlayer.getCardFromSupply(cardName));
+    }
+
+    public boolean listContainsCard(List<Card> cards, String cardName) {
+        return cards.stream().map(Card::getName).toList().contains(cardName);
     }
 
     public void initPanes() {

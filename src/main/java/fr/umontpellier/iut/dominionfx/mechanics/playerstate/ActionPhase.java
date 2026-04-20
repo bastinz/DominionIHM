@@ -20,12 +20,6 @@ public class ActionPhase extends PlayerState {
             moveToNextPhase();
         }
     }
-/*
-
-    public boolean endOfAction() {
-        return true;
-    }
-*/
 
     public void playTreasuresWasChosen() {
         currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
@@ -35,8 +29,9 @@ public class ActionPhase extends PlayerState {
     public void moveToNextPhase() {
         if (currentPlayer.areActionsCompleted())
             currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
-        else
-            currentPlayer.setCurrentState(new StartTurn(currentPlayer));
+        else {
+            currentPlayer.setCurrentState(new StartTurn(currentPlayer, false));
+        }
     }
 
 }

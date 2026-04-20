@@ -14,12 +14,11 @@ import java.util.Collections;
 public class DominionIHM extends Application {
 
     public static final double pourcentageEcran = .55;/*.95*/
-    private GameView gameView;
-/*    private ChoosePlayersView choosePlayersView;*/
+    /*    private ChoosePlayersView choosePlayersView;*/
     private Stage primaryStage;
     private static Game game;
 
-    private boolean withChoosePlayersView = false;
+    final private boolean withChoosePlayersView = false;
 
     @Override
     public void start(Stage primaryStage) {
@@ -39,7 +38,7 @@ public class DominionIHM extends Application {
     }
 
     public void startGame() {
-        gameView = new GameView(game);
+        GameView gameView = new GameView(game);
 //        Scene scene = new Scene(gameView, Screen.getPrimary().getBounds().getWidth() * pourcentageEcran,  Screen.getPrimary().getBounds().getHeight() * pourcentageEcran); // la scene doit être créée avant de mettre en place les bindings
         Scene scene = new Scene(gameView, 1200,  500); // la scene doit être créée avant de mettre en place les bindings
         game.runNew();
@@ -47,7 +46,7 @@ public class DominionIHM extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Dominion-Seaside");
-        primaryStage.centerOnScreen();
+//        primaryStage.centerOnScreen();
         primaryStage.setOnCloseRequest(event -> {
             this.onStopGame();
             event.consume();
@@ -75,8 +74,7 @@ public class DominionIHM extends Application {
         this.partieTest = partieTest;
     }
 
-    public DominionIHM() {
-    }
+    public DominionIHM() {} // pour une partie sans tests
 
     public static void setGame(Game game) {
         DominionIHM.game = game;

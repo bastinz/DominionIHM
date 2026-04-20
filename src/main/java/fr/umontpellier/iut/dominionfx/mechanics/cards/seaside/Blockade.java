@@ -1,9 +1,10 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.AttackCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.BlockadeState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,8 @@ public class Blockade extends AttackCard {
     public void action(Player p) {
         player = p;
         attackedPlayers.clear();
-        Card chosenCard = p.chooseCardFromSupply(
+        p.setCurrentState(new BlockadeState(p, this));
+/*        Card chosenCard = p.chooseCardFromSupply(
                 "%s: Gain a card costing up to 4$".formatted(this),
                 c -> c.getCost() <= 4,
                 false);
@@ -43,7 +45,7 @@ public class Blockade extends AttackCard {
             // tard chercher la carte mise de côté dans la liste des cartes mises
             // de côté du joueur (à cause de l'interaction possible avec Sailor)
             player = p;
-        }
+        }*/
     }
 
     @Override
@@ -80,4 +82,28 @@ public class Blockade extends AttackCard {
         }
         cardSetAside = null;
     }
+
+    public void setCardSetAside(Card cardSetAside) {
+        this.cardSetAside = cardSetAside;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
 }
+
+
+/*
+Card chosenCard = p.chooseCardFromSupply(
+        "%s: Gain a card costing up to 4$".formatted(this),
+        c -> c.getCost() <= 4,
+        false);
+        if (chosenCard != null) {
+Card card = p.getCardFromSupply(chosenCard.getName());
+            p.log("gains %s and sets it aside".formatted(card.toLog()));
+        p.gainToSetAside(card);
+cardSetAside = card;
+// il faut mémoriser le joueur qui a joué la carte pour pouvoir plus
+// tard chercher la carte mise de côté dans la liste des cartes mises
+// de côté du joueur (à cause de l'interaction possible avec Sailor)
+player = p;*/

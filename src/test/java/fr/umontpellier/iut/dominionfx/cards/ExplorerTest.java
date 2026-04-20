@@ -4,9 +4,10 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.suiteactions.ExplorerState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.ExplorerState;
 import javafx.application.Platform;
+import javafx.beans.binding.ListExpression;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.util.WaitForAsyncUtils;
@@ -69,7 +70,7 @@ public class ExplorerTest extends BaseTestClass {
             Optional<SupplyPile> silverPile = game.getSupplyPiles().stream()
                     .filter(p -> p.getName().equals("Silver"))
                     .findFirst();
-            silverPile.ifPresent(p -> p.clear());        });
+            silverPile.ifPresent(ListExpression::clear);        });
         WaitForAsyncUtils.waitForFxEvents();
 
         Player currentPlayer = game.currentPlayer();

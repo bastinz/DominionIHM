@@ -6,10 +6,15 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import java.util.List;
 
 public class StartTurn extends PlayerState {
-    public StartTurn(Player currentPlayer) {
+
+    public StartTurn(Player currentPlayer, boolean firstEnter) {
         super(currentPlayer);
-//        currentPlayer.startTurn();
         getGame().instructionProperty().setValue("Action phase or skip");
+        if (firstEnter) {
+            for (Card c : currentPlayer.getInPlay()) {
+                c.atStartOfTurn(currentPlayer);
+            }
+        }
     }
 
     public void skip() {
