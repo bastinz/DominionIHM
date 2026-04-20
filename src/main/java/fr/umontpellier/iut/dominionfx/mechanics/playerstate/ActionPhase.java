@@ -16,7 +16,16 @@ public class ActionPhase extends PlayerState {
     public void startProcess(Card cardName) {
         currentPlayer.decreaseNumberOfActions();
         currentPlayer.playCard(cardName);
+        if (currentPlayer.getCurrentState().endOfAction()) {
+            moveToNextPhase();
+        }
     }
+/*
+
+    public boolean endOfAction() {
+        return true;
+    }
+*/
 
     public void playTreasuresWasChosen() {
         currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
@@ -27,7 +36,7 @@ public class ActionPhase extends PlayerState {
         if (currentPlayer.areActionsCompleted())
             currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
         else
-            currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
+            currentPlayer.setCurrentState(new StartTurn(currentPlayer));
     }
 
 }

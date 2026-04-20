@@ -8,7 +8,7 @@ import java.util.List;
 public class StartTurn extends PlayerState {
     public StartTurn(Player currentPlayer) {
         super(currentPlayer);
-        currentPlayer.startTurn();
+//        currentPlayer.startTurn();
         getGame().instructionProperty().setValue("Action phase or skip");
     }
 
@@ -21,6 +21,7 @@ public class StartTurn extends PlayerState {
         currentPlayer.getCurrentState().playTreasuresWasChosen();
     }
 
+    @Override
     public void cardInHandWasChosen(String cardName) {
         List<String> choixPossibles = currentPlayer.getNamesOfCardsInHand();
         if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {

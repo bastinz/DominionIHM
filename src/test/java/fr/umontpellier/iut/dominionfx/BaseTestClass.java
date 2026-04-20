@@ -23,6 +23,7 @@ public class BaseTestClass extends ApplicationTest {
     public void start(Stage stage) {
         dominionIHM.setGame(game);
         setPlayersHands();
+        stage.setY(0);
         dominionIHM.start(stage);
         initPanes();
     }

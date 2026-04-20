@@ -3,6 +3,7 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.EmbargoState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ExplorerState;
 
 /**
  * Carte Embargo

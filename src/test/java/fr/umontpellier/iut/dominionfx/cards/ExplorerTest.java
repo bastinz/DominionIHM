@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ExplorerState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurn;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -37,12 +39,13 @@ public class ExplorerTest extends BaseTestClass {
         long initialNumberOfGold = currentPlayer.getHand().stream()
                 .filter(card -> "Gold".equals(card.getName()))
                 .count();
+        assertInstanceOf(ExplorerState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Province");
         long currentNumberOfGold = currentPlayer.getHand().stream()
                 .filter(card -> "Gold".equals(card.getName()))
                 .count();
-        assertEquals(initialNumberOfGold + 1, currentNumberOfGold);
         assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+        assertEquals(initialNumberOfGold + 1, currentNumberOfGold);
     }
 
     @Test
@@ -56,8 +59,8 @@ public class ExplorerTest extends BaseTestClass {
         long currentNumberOfSilver = currentPlayer.getHand().stream()
                 .filter(card -> "Silver".equals(card.getName()))
                 .count();
-        assertEquals(initialNumberOfSilver + 1, currentNumberOfSilver);
         assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+        assertEquals(initialNumberOfSilver + 1, currentNumberOfSilver);
     }
 
     @Test

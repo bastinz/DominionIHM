@@ -3,6 +3,7 @@ package fr.umontpellier.iut.dominionfx.cards;
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.EmbargoState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,8 @@ public class EmbargoTest extends BaseTestClass {
                 .filter(pile -> "Lighthouse".equals(pile.getName()))
                 .findFirst()
                 .get().getNbEmbargoTokens();
-        assertEquals(1, numberOfEmbargoTokens);
         assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState());
+        assertEquals(1, numberOfEmbargoTokens);
 //        pause(2);
     }
 

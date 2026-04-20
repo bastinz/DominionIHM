@@ -342,7 +342,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     public void runNew() {
         currentTurnPlayer.setValue(players.getFirst());
         currentPlayer().setCurrentState(new StartTurn(currentPlayer())) ;
-//        currentTurnPlayer.getValue().playTurn();
+        currentPlayer().startTurn();
     }
 
     /**
@@ -501,6 +501,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     public void moveToNextPlayerState() {
         moveToNextPlayer();
         currentPlayer().setCurrentState(new StartTurn(currentPlayer())) ;
+        currentPlayer().startTurn();
     }
 
     public Player getOtherPlayer() {
