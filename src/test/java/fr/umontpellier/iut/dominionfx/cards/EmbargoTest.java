@@ -26,7 +26,7 @@ public class EmbargoTest extends BaseTestClass {
                 .findFirst()
                 .get().getNbEmbargoTokens();
         assertEquals(1, numberOfEmbargoTokens);
-//        WaitForAsyncUtils.sleep(2, TimeUnit.SECONDS);
+//        pause(2);
     }
 
     @Test
@@ -45,7 +45,7 @@ public class EmbargoTest extends BaseTestClass {
                 .findFirst()
                 .get().getNbEmbargoTokens();
         assertEquals(2, numberOfEmbargoTokens);
-//        WaitForAsyncUtils.sleep(2, TimeUnit.SECONDS);
+//        pause(2);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class EmbargoTest extends BaseTestClass {
                 .findFirst()
                 .get().getNbEmbargoTokens();
         assertEquals(1, numberOfEmbargoTokensSailor);
-//        WaitForAsyncUtils.sleep(2, TimeUnit.SECONDS);
+//        pause(2);
     }
 
     private void miseEnPlaceDebut() {
@@ -78,7 +78,7 @@ public class EmbargoTest extends BaseTestClass {
         clickOnSkip();
         clickOnSkip();
         skipUntilHandHasCard("Embargo");
-//        WaitForAsyncUtils.sleep(2, TimeUnit.SECONDS);
+//        pause(2);
     }
 
 }

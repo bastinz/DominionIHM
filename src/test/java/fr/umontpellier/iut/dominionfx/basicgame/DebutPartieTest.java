@@ -30,7 +30,7 @@ public class DebutPartieTest extends BaseTestClass {
         assertNotEquals(initialPlayer, otherPlayer);
         clickOnSkip();
         assertEquals(initialPlayer, game.currentPlayer());
-//        WaitForAsyncUtils.sleep(2, TimeUnit.SECONDS);
+//        pause(2);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class DebutPartieTest extends BaseTestClass {
         clickOnSupplyPile("Lighthouse");
         assertEquals(initialSize - 1, lightHousePile.size());
         assertNotEquals(initialPlayer, game.currentPlayer());
-//        WaitForAsyncUtils.sleep(2, TimeUnit.SECONDS);
+//        pause(2);
     }
 
     @Test
@@ -64,12 +64,7 @@ public class DebutPartieTest extends BaseTestClass {
         clickOnSupplyPile("Lighthouse");
         assertEquals(initialSupplyPileSize - 1, lightHousePile.size());
         assertNotEquals(initialPlayer, game.currentPlayer());
-//        WaitForAsyncUtils.sleep(2, TimeUnit.SECONDS);
-    }
-
-    private void miseEnPlaceDebut() {
-//        clickOnSkip();
-//        WaitForAsyncUtils.sleep(2, TimeUnit.SECONDS);
+//       pause(2);
     }
 
 }

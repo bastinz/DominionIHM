@@ -1,13 +1,16 @@
 package fr.umontpellier.iut.dominionfx;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
+import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.util.WaitForAsyncUtils;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 public class BaseTestClass extends ApplicationTest {
@@ -19,8 +22,22 @@ public class BaseTestClass extends ApplicationTest {
     @Override
     public void start(Stage stage) {
         dominionIHM.setGame(game);
+        setPlayersHands();
         dominionIHM.start(stage);
         initPanes();
+    }
+
+    public void setPlayersHands() {
+    }
+
+    public void addToFirstPlayersHand(String cardName) {
+        Player firstPlayer = game.getPlayers().getFirst();
+        firstPlayer.moveToHand(firstPlayer.getCardFromSupply(cardName));
+    }
+
+    public void addToSecondPlayersHand(String cardName) {
+        Player secondPlayer = game.getPlayers().getLast();
+        secondPlayer.moveToHand(secondPlayer.getCardFromSupply(cardName));
     }
 
     public void initPanes() {
@@ -183,5 +200,9 @@ public class BaseTestClass extends ApplicationTest {
         Parent panneauDuPlayerActif = (Parent) findNodeMatchingCondition(root, node -> node.getId().startsWith(idNode));
         return panneauDuPlayerActif;
     }*/
+
+    public void pause(int nbSeconds) {
+        WaitForAsyncUtils.sleep(nbSeconds, TimeUnit.SECONDS);
+    }
 
 }
