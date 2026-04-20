@@ -1,0 +1,86 @@
+package fr.umontpellier.iut.dominionfx.cards;
+
+import fr.umontpellier.iut.dominionfx.BaseTestClass;
+import fr.umontpellier.iut.dominionfx.mechanics.Game;
+import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurn;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.suiteactions.SalvagerState;
+import javafx.stage.Stage;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
+public class SalvagerTest extends BaseTestClass {
+
+    @Override
+    public void start(Stage stage) {
+        game = new Game(new String[]{"PlayerTest1", "PlayerTest2"},
+                new String[]{"Salvager", "Lighthouse", "Bazaar", "Sailor"});
+        super.start(stage);
+    }
+
+    @Override
+    public void setPlayersHands() {
+        addToFirstPlayersHand("Salvager");
+        addToFirstPlayersHand("Lighthouse");
+        addToFirstPlayersHand("Bazaar");
+    }
+
+    @Test
+    public void addsBuys() {
+        Player currentPlayer = game.currentPlayer();
+        assertEquals(1, currentPlayer.getNumberOfBuys());
+        int initialNbOfBuys = currentPlayer.getNumberOfBuys();
+        clickOnCardInHand("Salvager");
+        assertEquals(initialNbOfBuys + 1, currentPlayer.getNumberOfBuys());
+//        pause(2);
+    }
+
+    @Test
+    public void trashes() {
+        Player currentPlayer = game.currentPlayer();
+        assertEquals(1, currentPlayer.getNumberOfBuys());
+        int initialNbOfBuys = currentPlayer.getNumberOfBuys();
+        int initialNbOfCardsInHand = currentPlayer.getCardsInHand().size();
+        clickOnCardInHand("Salvager");
+        clickOnCardInHand("Lighthouse");
+        assertEquals(initialNbOfCardsInHand -2, currentPlayer.getCardsInHand().size());
+//        pause(2);
+    }
+
+    @Test
+    public void increasesMoney() {
+        Player currentPlayer = game.currentPlayer();
+        int initialMoney = currentPlayer.getMoney();
+        clickOnCardInHand("Salvager");
+        clickOnCardInHand("Lighthouse");
+        assertEquals(initialMoney + 2, currentPlayer.getMoney());
+//        pause(2);
+    }
+
+    @Test
+    public void movesToRightStates() {
+        Player currentPlayer = game.currentPlayer();
+        assertInstanceOf(StartTurn.class, currentPlayer.getCurrentState());
+        clickOnCardInHand("Salvager");
+        assertInstanceOf(SalvagerState.class, currentPlayer.getCurrentState());
+        clickOnCardInHand("Lighthouse");
+        assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+//        pause(2);
+    }
+
+    @Test
+    public void movesToRightStatesWithRemainingActions() {
+        clickOnCardInHand("Bazaar");
+        Player currentPlayer = game.currentPlayer();
+        assertInstanceOf(StartTurn.class, currentPlayer.getCurrentState());
+        clickOnCardInHand("Salvager");
+        assertInstanceOf(SalvagerState.class, currentPlayer.getCurrentState());
+        clickOnCardInHand("Lighthouse");
+        assertInstanceOf(StartTurn.class, currentPlayer.getCurrentState());
+//        pause(2);
+    }
+
+}

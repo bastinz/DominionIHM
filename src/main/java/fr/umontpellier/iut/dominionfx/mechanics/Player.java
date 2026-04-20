@@ -1204,4 +1204,13 @@ public class Player implements IPlayer {
             gainToHand(gainedCard);
         }
     }
+
+    public void salvagerAction(String cardName) {
+        Card cardToTrash = getCardsInHand().stream()
+                .filter(card -> card.getName().equals(cardName))
+                .findFirst()
+                .orElse(null);
+        incrementMoney(cardToTrash.getCost());
+        moveToTrash(cardToTrash);
+    }
 }
