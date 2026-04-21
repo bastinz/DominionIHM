@@ -30,12 +30,12 @@ public class Player implements IPlayer {
     /**
      * Nombre d'actions disponibles
      */
-    private int numberOfActions;
+    private IntegerProperty numberOfActions;
 
     /**
      * Nombre d'achats disponibles
      */
-    private int numberOfBuys;
+    private IntegerProperty numberOfBuys;
 
     /**
      * Nombre de pièces disponibles pour acheter des cartes
@@ -114,6 +114,8 @@ public class Player implements IPlayer {
         this.name = name;
         this.game = game;
         money = new SimpleIntegerProperty(0);
+        numberOfActions = new SimpleIntegerProperty(0);
+        numberOfBuys = new SimpleIntegerProperty(0);
         // Prépare les listes de cartes
         hand = FXCollections.observableArrayList();
         discard = FXCollections.observableArrayList();
@@ -162,11 +164,11 @@ public class Player implements IPlayer {
     }
 
     public int getNumberOfActions() {
-        return numberOfActions;
+        return numberOfActions.getValue();
     }
 
     public int getNumberOfBuys() {
-        return numberOfBuys;
+        return numberOfBuys.getValue();
     }
 
     public int getPirateShipCounter() {
@@ -331,7 +333,7 @@ public class Player implements IPlayer {
      *          l'on diminuer le nombre d'actions)
      */
     public void incrementActions(int n) {
-        numberOfActions += n;
+        numberOfActions.setValue(numberOfActions.getValue() + n);
     }
 
     /**
@@ -351,7 +353,7 @@ public class Player implements IPlayer {
      *          souhaite diminuer le nombre d'achats)
      */
     public void incrementBuys(int n) {
-        numberOfBuys += n;
+        numberOfBuys.setValue(numberOfBuys.getValue() + n);
     }
 
     public void incrementPirateShipCounter() {
@@ -898,9 +900,9 @@ public class Player implements IPlayer {
      * initialisés
      */
     public void startTurn() {
-        numberOfActions = 1;
+        numberOfActions.setValue(1);
         money.setValue(0);
-        numberOfBuys = 1;
+        numberOfBuys.setValue(1);
         nbSilverOrGoldPlayed = 0;
         cardsGainedThisTurn.clear();
         cardsBoughtThisTurn.clear();
@@ -942,14 +944,14 @@ public class Player implements IPlayer {
             List<String> options = new ArrayList<>();
             List<Button> buttons = new ArrayList<>();
             for (Card c : hand) {
-                if (canPlayActions && numberOfActions > 0 && c.hasType(CardType.ACTION)) {
+                if (canPlayActions && numberOfActions.getValue() > 0 && c.hasType(CardType.ACTION)) {
                     options.add("HAND:" + c.getName());
                 }
                 if (canPlayTreasures && c.hasType(CardType.TREASURE)) {
                     options.add("HAND:" + c.getName());
                 }
             }
-            if (numberOfBuys > 0) {
+            if (numberOfBuys.getValue() > 0) {
                 for (Card c : game.getAvailableSupplyCards()) {
                     if (c.getCost() <= money.getValue()) {
                         options.add("SUPPLY:" + c.getName());
@@ -989,7 +991,7 @@ public class Player implements IPlayer {
                             .findFirst()
                             .orElse(null);
                     if (cardToPlay.hasType(CardType.ACTION)) {
-                        numberOfActions -= 1;
+                        numberOfActions.setValue(numberOfActions.getValue() - 1);
                         playCard(cardToPlay);
                     } else if (cardToPlay.hasType(CardType.TREASURE)) {
                         canPlayActions = false;
@@ -1018,7 +1020,7 @@ public class Player implements IPlayer {
                         log("gains %s from Embargo tokens".formatted(Utils.toLog(gainedCurses)));
                     }
                     unindentLog();
-                    numberOfBuys -= 1;
+                    numberOfBuys.setValue(numberOfBuys.getValue() - 1);
                     money.setValue(money.getValue() - c.getCost());
                     cardsBoughtThisTurn.add(c);
                 }
@@ -1039,9 +1041,9 @@ public class Player implements IPlayer {
      * mais parfois moins selon les effets de certaines cartes)
      */
     public void cleanup() {
-        numberOfActions = 0;
+        numberOfActions.setValue(0);
         money.setValue(0);
-        numberOfBuys = 0;
+        numberOfBuys.setValue(0);
         // défausse la main
         moveToDiscard(hand);
         // cleanup
@@ -1080,7 +1082,7 @@ public class Player implements IPlayer {
     }
 
     public List<String> getAvailableSupplyCards() {
-        if (numberOfBuys > 0) {
+        if (numberOfBuys.getValue() > 0) {
             return game.getAvailableSupplyCards().stream()
                     .filter(c -> c.getCost() <= money.getValue())
                     .map(c -> c.getName())
@@ -1103,6 +1105,17 @@ public class Player implements IPlayer {
     public ObservableList<Card> getDiscard() {
         return discard;
     }
+
+    @Override
+    public IntegerProperty numberOfActionsProperty() {
+        return numberOfActions;
+    }
+
+    @Override
+    public IntegerProperty numberOfBuysProperty() {
+        return numberOfBuys;
+    }
+
     @Override
     public ObservableList<Card> getInPlay() {
         return inPlay;
@@ -1159,17 +1172,17 @@ public class Player implements IPlayer {
                 gainToDiscard(curse);
             }
         }
-        numberOfBuys -= 1;
+        numberOfBuys.setValue(numberOfBuys.getValue() - 1);
         money.setValue(money.getValue() - c.getCost());
         cardsBoughtThisTurn.add(c);
     }
 
     public boolean areBuysCompleted() {
-        return numberOfBuys == 0;
+        return numberOfBuys.getValue() == 0;
     }
 
     public boolean areActionsCompleted() {
-        return numberOfActions == 0;
+        return numberOfActions.getValue() == 0;
     }
 
     /**
@@ -1186,7 +1199,7 @@ public class Player implements IPlayer {
     }
 
     public void decreaseNumberOfActions() {
-        numberOfActions -= 1;
+        numberOfActions.setValue(numberOfActions.getValue() - 1);
     }
 
     public void disablePlayActions() {

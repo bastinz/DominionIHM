@@ -8,6 +8,8 @@
         <Label id="moneyLabel" fx:id="moneyLabel"/>
         <Label id="drawLabel" fx:id="drawLabel"/>
         <Label id="discardLabel" fx:id="discardLabel"/>
+        <Label id="actionsLabel" fx:id="actionsLabel"/>
+        <Label id="buysLabel" fx:id="buysLabel"/>
     </HBox>
     <HBox id="inPlayPane" fx:id="inPlayPane" minHeight="50.0"/>
     <HBox id="handPane" fx:id="handPane" minHeight="50.0"/>

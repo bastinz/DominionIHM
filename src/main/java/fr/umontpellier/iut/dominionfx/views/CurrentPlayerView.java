@@ -28,16 +28,10 @@ public class CurrentPlayerView extends VBox {
     private ObjectProperty<? extends IPlayer> currentPlayer;
 
     @FXML
-    private Label nameLabel;
+    private Label nameLabel, moneyLabel, drawLabel, discardLabel, actionsLabel, buysLabel;
 
-    @FXML
-    private Label moneyLabel;
-
-    @FXML
-    private Label drawLabel;
-
-    @FXML
-    private Label discardLabel;
+/*    @FXML
+    private Label discardLabel;*/
 
     @FXML
     private HBox handPane;
@@ -113,6 +107,8 @@ public class CurrentPlayerView extends VBox {
              moneyLabel.textProperty().bind(Bindings.concat("Money : ", currentPlayer().moneyProperty().asString()));
              drawLabel.textProperty().bind(Bindings.concat("Draw : ", Bindings.size(currentPlayer().getDraw()).asString()));
              discardLabel.textProperty().bind(Bindings.concat("Discard : ", Bindings.size(currentPlayer().getDiscard()).asString()));
+             actionsLabel.textProperty().bind(Bindings.concat("Actions : ", currentPlayer().numberOfActionsProperty().asString()));
+             buysLabel.textProperty().bind(Bindings.concat("Buys : ", currentPlayer().numberOfBuysProperty().asString()));
          }
      };
 

@@ -35,7 +35,7 @@ SVGPath {
     -fx-font-size: 30;
 }
 
-#moneyLabel, #drawLabel, #discardLabel {
+#moneyLabel, #drawLabel, #discardLabel, #buysLabel, #actionsLabel {
     -fx-font-size: 25;
 }
 

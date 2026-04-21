@@ -15,5 +15,7 @@ public interface IPlayer {
     ObservableList<Card> getInPlay();
     ObservableList<Card> getDraw(); // A REVOIR : est-ce que la size suffirait?
     ObservableList<Card> getDiscard(); // A REVOIR : est-ce que la size suffirait?
+    IntegerProperty numberOfActionsProperty();
+    IntegerProperty numberOfBuysProperty();
     IntegerProperty moneyProperty();
 }
