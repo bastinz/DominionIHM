@@ -106,12 +106,12 @@ public class BaseTestClass extends ApplicationTest {
         clickOn(treasuresButton);
     }
 
-/*    public void cliquerPremiereCarteMain() {
+   public void clickOnFirstCardInHand() {
         Node nodeACliquer = handPane.getChildrenUnmodifiable().getFirst();
         clickOn(nodeACliquer);
     }
 
-    public void ajouterDeLaMainAuBanc(String nomCarte) {
+/*     public void ajouterDeLaMainAuBanc(String nomCarte) {
         Node bancChoisi = inPlayPane.getChildrenUnmodifiable().getFirst();
         clickOnCardInHand(nomCarte);
         clickOn(bancChoisi);

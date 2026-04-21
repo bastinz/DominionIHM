@@ -4,7 +4,7 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurn;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.BlockadeState;
 import javafx.stage.Stage;
@@ -69,11 +69,11 @@ public class BlockadeTest extends BaseTestClass {
     public void movesToRightStatesWithRemainingActions() {
         clickOnCardInHand("Bazaar");
         Player currentPlayer = game.currentPlayer();
-        assertInstanceOf(StartTurn.class, currentPlayer.getCurrentState());
+        assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Blockade");
         assertInstanceOf(BlockadeState.class, currentPlayer.getCurrentState());
         clickOnSupplyPile("Lighthouse");
-        assertInstanceOf(StartTurn.class, currentPlayer.getCurrentState());
+        assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
 //        pause(2);
     }
 
@@ -92,7 +92,7 @@ public class BlockadeTest extends BaseTestClass {
         assertTrue(listContainsCard(game.getPreviousTurnPlayer().getInPlay(), "Blockade"));
         clickOnSkip();
         assertTrue(listContainsCard(currentPlayer.getHand(), "Fishing Village"));
-        pause(2);
+//        pause(2);
     }
 
     @Test

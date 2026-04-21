@@ -1,9 +1,9 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.TidePoolsState;
 
 /**
  * Carte Marée (Tide Pools)
@@ -29,15 +29,16 @@ public class TidePools extends ActionCard {
     @Override
     public void atStartOfTurn(Player p) {
         int nbCardsToDiscard = 2;
-        while (!p.getCardsInHand().isEmpty() && nbCardsToDiscard > 0) {
+        p.setCurrentState(new TidePoolsState(p, 2));
+/*        while (!p.getCardsInHand().isEmpty() && nbCardsToDiscard > 0) {
             Card cardToDiscard = p.chooseCardFromHand(
                     "%s: Discard %d card(s)".formatted(this, nbCardsToDiscard),
                     false);
             p.log("discards %s".formatted(cardToDiscard.toLog()));
             p.moveToDiscard(cardToDiscard);
-            nbCardsToDiscard -= 1;
-        }
-        setHasDurationEffect(false);
+            nbCardsToDiscard -= 1;*/
+//        }
+//        setHasDurationEffect(false);
     }
 
 }

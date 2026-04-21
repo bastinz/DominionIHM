@@ -4,7 +4,7 @@ import fr.umontpellier.iut.dominionfx.IGame;
 import fr.umontpellier.iut.dominionfx.IPlayer;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.FactorySupplyPile;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurn;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.concurrent.Task;
@@ -342,7 +342,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     public void runNew() {
         currentTurnPlayer.setValue(players.getFirst());
-        currentPlayer().setCurrentState(new StartTurn(currentPlayer(), true)) ;
+        currentPlayer().setCurrentState(new StartTurnState(currentPlayer(), true)) ;
         currentPlayer().startTurn();
     }
 
@@ -501,7 +501,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
 
     public void moveToNextPlayerState() {
         moveToNextPlayer();
-        currentPlayer().setCurrentState(new StartTurn(currentPlayer(), true)) ;
+        currentPlayer().setCurrentState(new StartTurnState(currentPlayer(), true)) ;
         currentPlayer().startTurn();
     }
 

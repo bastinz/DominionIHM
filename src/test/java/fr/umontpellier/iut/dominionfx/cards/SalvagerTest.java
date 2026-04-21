@@ -3,7 +3,7 @@ package fr.umontpellier.iut.dominionfx.cards;
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurn;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.SalvagerState;
 import javafx.stage.Stage;
@@ -63,7 +63,7 @@ public class SalvagerTest extends BaseTestClass {
     @Test
     public void movesToRightStates() {
         Player currentPlayer = game.currentPlayer();
-        assertInstanceOf(StartTurn.class, currentPlayer.getCurrentState());
+        assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Salvager");
         assertInstanceOf(SalvagerState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Lighthouse");
@@ -75,11 +75,11 @@ public class SalvagerTest extends BaseTestClass {
     public void movesToRightStatesWithRemainingActions() {
         clickOnCardInHand("Bazaar");
         Player currentPlayer = game.currentPlayer();
-        assertInstanceOf(StartTurn.class, currentPlayer.getCurrentState());
+        assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Salvager");
         assertInstanceOf(SalvagerState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Lighthouse");
-        assertInstanceOf(StartTurn.class, currentPlayer.getCurrentState());
+        assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
 //        pause(2);
     }
 

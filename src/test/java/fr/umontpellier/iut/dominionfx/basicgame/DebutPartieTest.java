@@ -64,7 +64,7 @@ public class DebutPartieTest extends BaseTestClass {
         clickOnSupplyPile("Lighthouse");
         assertEquals(initialSupplyPileSize - 1, lightHousePile.size());
         assertNotEquals(initialPlayer, game.currentPlayer());
-//       pause(2);
+//        pause(2);
     }
 
 }
