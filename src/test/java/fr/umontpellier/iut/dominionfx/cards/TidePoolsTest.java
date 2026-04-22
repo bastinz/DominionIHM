@@ -63,13 +63,11 @@ public class TidePoolsTest extends BaseTestClass {
         assertEquals(initialNumberOfCardsInHand + 1, currentPlayer.getCardsInHand().size());
         clickOnSkip();
         clickOnSkip();
-        assertEquals(6, currentPlayer.getCardsInHand().size()); // Blockade
-        pause(4);
-        clickOnFirstCardInHand();
         assertEquals(5, currentPlayer.getCardsInHand().size());
-        pause(4);
-        clickOnFirstCardInHand(); // -1 discard +1 carte Warehouse
+        clickOnFirstCardInHand();
         assertEquals(4, currentPlayer.getCardsInHand().size());
+        clickOnFirstCardInHand(); // -1 discard +1 carte Warehouse
+        assertEquals(3, currentPlayer.getCardsInHand().size());
 //        pause(2);
     }
 

@@ -2,6 +2,8 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +27,7 @@ public abstract class Card {
 
     private List<Card> location;
 
-    private boolean hasDurationEffect = false;
+    private BooleanProperty hasDurationEffect = new SimpleBooleanProperty(false);
 
     /**
      * Constructeur simple
@@ -79,11 +81,15 @@ public abstract class Card {
     }
 
     public boolean getHasDurationEffect() {
-        return hasDurationEffect;
+        return hasDurationEffect.getValue();
     }
 
     public void setHasDurationEffect(boolean hasDurationEffect) {
-        this.hasDurationEffect = hasDurationEffect;
+        this.hasDurationEffect.setValue(hasDurationEffect);
+    }
+
+    public BooleanProperty hasDurationEffectProperty() {
+        return hasDurationEffect;
     }
 
     /**

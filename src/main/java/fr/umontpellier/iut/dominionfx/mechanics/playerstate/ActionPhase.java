@@ -30,7 +30,7 @@ public class ActionPhase extends PlayerState {
         if (currentPlayer.areActionsCompleted())
             currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
         else {
-            currentPlayer.setCurrentState(new StartTurnState(currentPlayer, false));
+            currentPlayer.setCurrentState(new StartTurnState(currentPlayer));
         }
     }
 

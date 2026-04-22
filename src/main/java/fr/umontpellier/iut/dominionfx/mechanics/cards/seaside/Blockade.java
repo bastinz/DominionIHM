@@ -31,6 +31,7 @@ public class Blockade extends AttackCard {
     public void action(Player p) {
         player = p;
         attackedPlayers.clear();
+        setHasDurationEffect(true);
         p.setCurrentState(new BlockadeState(p, this));
 /*        Card chosenCard = p.chooseCardFromSupply(
                 "%s: Gain a card costing up to 4$".formatted(this),
@@ -72,6 +73,7 @@ public class Blockade extends AttackCard {
             // la carte n'est plus mise de côté
             cardSetAside = null;
         }
+        setHasDurationEffect(cardSetAside != null);
         return cardSetAside != null;
     }
 
@@ -81,6 +83,7 @@ public class Blockade extends AttackCard {
             p.moveToHand(cardSetAside);
         }
         cardSetAside = null;
+        setHasDurationEffect(false);
     }
 
     public void setCardSetAside(Card cardSetAside) {

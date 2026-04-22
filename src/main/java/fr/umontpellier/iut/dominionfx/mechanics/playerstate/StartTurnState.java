@@ -7,20 +7,17 @@ import java.util.List;
 
 public class StartTurnState extends PlayerState {
 
-    public StartTurnState(Player currentPlayer, boolean firstEnter) {
+    public StartTurnState(Player currentPlayer) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Action phase or skip");
-        if (firstEnter) {
-            for (Card c : currentPlayer.getInPlay()) {
-                c.atStartOfTurn(currentPlayer);
-            }
-        }
     }
 
+    @Override
     public void skip() {
         endOfCurrentPlayersTurn();
     }
 
+    @Override
     public void playTreasuresWasChosen() {
         currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
         currentPlayer.getCurrentState().playTreasuresWasChosen();

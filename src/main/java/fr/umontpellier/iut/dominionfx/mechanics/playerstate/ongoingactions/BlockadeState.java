@@ -8,8 +8,6 @@ import java.util.List;
 
 public class BlockadeState extends OnGoingActionState {
     final private Blockade blocadeCard;
-//    private Player player;
-//    private final List<Player> attackedPlayers = new ArrayList<>();
 
     public BlockadeState(Player currentPlayer, Blockade blocadeCard) {
         super(currentPlayer);

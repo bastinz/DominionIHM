@@ -3,6 +3,7 @@ package fr.umontpellier.iut.dominionfx.basicgame;
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.TidePoolsState;
@@ -96,4 +97,21 @@ public class ActionPhaseTest extends BaseTestClass {
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
 //        pause(2);
     }
+
+    @Test
+    public void durationEffectsDisabledOnNextTurn() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Tide Pools");
+        clickOnSkip();
+        clickOnSkip();
+        Card cardInPlay = currentPlayer.getInPlay().stream().filter(c -> c.getName().equals("Tide Pools")).findFirst().get();
+        assertEquals(true, cardInPlay.getHasDurationEffect());
+        assertInstanceOf(TidePoolsState.class, currentPlayer.getCurrentState());
+        clickOnFirstCardInHand();
+        assertInstanceOf(TidePoolsState.class, currentPlayer.getCurrentState());
+        clickOnFirstCardInHand();
+        assertEquals(false, cardInPlay.getHasDurationEffect());
+//        pause(2);
+    }
+
 }

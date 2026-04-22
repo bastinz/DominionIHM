@@ -8,13 +8,13 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -908,9 +908,40 @@ public class Player implements IPlayer {
         cardsBoughtThisTurn.clear();
         canPlayActions = true;
         canPlayTreasures = true;
-        for (Card c : inPlay) {
+        execDurationsSequentially();
+    }
+
+    private void execDurationsSequentially() {
+/*        for (Card c : inPlay) {
             c.atStartOfTurn(this);
+        }*/
+        Iterator<Card> it = getInPlay().iterator();
+        runNext(it, this);
+    }
+
+    private void runNext(Iterator<Card> it, Player player) {
+        if (!it.hasNext()) {
+            return; // fin du tour
         }
+        Card card = it.next();
+        runCard(card, player).thenRun(() -> {
+            runNext(it, player);
+        });
+    }
+    private CompletableFuture<Void> runCard(Card card, Player player) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        ChangeListener<Boolean> listener = new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> obs, Boolean oldVal, Boolean newVal) {
+                if (newVal) {
+                    card.hasDurationEffectProperty().removeListener(this);
+                    future.complete(null);
+                }
+            }
+        };
+        card.hasDurationEffectProperty().addListener(listener);
+        card.atStartOfTurn(player);
+        return future;
     }
 
     /**
