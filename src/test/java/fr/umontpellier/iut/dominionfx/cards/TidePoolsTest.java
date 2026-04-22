@@ -6,6 +6,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -22,7 +23,6 @@ public class TidePoolsTest extends BaseTestClass {
     @Override
     public void setPlayersHands() {
         addToFirstPlayersHand("Tide Pools");
-        addToFirstPlayersHand("Blockade");
     }
 
     @Test
@@ -56,6 +56,9 @@ public class TidePoolsTest extends BaseTestClass {
     @Test
     public void twoDurationsAndOneCardOnNextTurn() {
         Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Blockade");
+        WaitForAsyncUtils.waitForFxEvents();
+
         int initialNumberOfCardsInHand = currentPlayer.getCardsInHand().size();
         clickOnCardInHand("Tide Pools"); // -1 carte Tide Pools + 3 cards = +2
         clickOnCardInHand("Blockade"); // -1 carte Blockade

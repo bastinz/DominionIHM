@@ -12,8 +12,8 @@ public class ExplorerState extends OnGoingActionState {
 
     @Override
     public void cardInHandWasChosen(String cardName) {
-        List<String> choixPossibles = currentPlayer.getProvincesInHand();
-        if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
+        List<String> availableChoices = currentPlayer.getProvincesInHand();
+        if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             currentPlayer.gainTreasure("Gold");
             moveToNextPhase();
         }

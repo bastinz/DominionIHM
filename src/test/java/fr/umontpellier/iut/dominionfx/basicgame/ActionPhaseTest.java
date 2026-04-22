@@ -9,6 +9,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.TidePoolsState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,19 +22,12 @@ public class ActionPhaseTest extends BaseTestClass {
         super.start(stage);
     }
 
-    @Override
-    public void setPlayersHands() {
-        addToFirstPlayersHand("Sea Hag");
-        addToFirstPlayersHand("Tide Pools");
-        addToFirstPlayersHand("Sea Hag");
-        addToFirstPlayersHand("Fishing Village");
-        addToFirstPlayersHand("Blockade");
-        addToFirstPlayersHand("Bazaar");
-    }
-
     @Test
     public void moveToTreasureAfterAction() {
         Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Sea Hag");
+        WaitForAsyncUtils.waitForFxEvents();
+
         clickOnCardInHand("Sea Hag");
         assertEquals(currentPlayer, game.currentPlayer());
         assertEquals(0, game.currentPlayer().getNumberOfActions());
@@ -44,6 +38,11 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void remainInActionPhaseWhenMoreThanOneActionInPlay() {
         Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Bazaar");
+        getFromSupply(currentPlayer, "Sea Hag");
+        getFromSupply(currentPlayer, "Sea Hag");
+        WaitForAsyncUtils.waitForFxEvents();
+
         clickOnCardInHand("Bazaar");
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
         assertEquals(2, currentPlayer.getNumberOfActions());
@@ -59,6 +58,9 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void durationRemainsInPlayTillNextTurn() {
         Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Fishing Village");
+        WaitForAsyncUtils.waitForFxEvents();
+
         clickOnCardInHand("Fishing Village");
         clickOnSkip();
         assertTrue(listContainsCard(game.getPreviousTurnPlayer().getInPlay(), "Fishing Village"));
@@ -70,6 +72,11 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void durationTillNextTurnWhenMoreThanOnAction() {
         Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Fishing Village");
+        getFromSupply(currentPlayer, "Blockade");
+        getFromSupply(currentPlayer, "Warehouse");
+        WaitForAsyncUtils.waitForFxEvents();
+
         clickOnCardInHand("Fishing Village");
         clickOnCardInHand("Blockade");
         clickOnSupplyPile("Warehouse");
@@ -85,6 +92,11 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void handlesTwoDurationsSequentially() {
         Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Tide Pools");
+        getFromSupply(currentPlayer, "Blockade");
+        getFromSupply(currentPlayer, "Warehouse");
+        WaitForAsyncUtils.waitForFxEvents();
+
         clickOnCardInHand("Tide Pools");
         clickOnCardInHand("Blockade");
         clickOnSupplyPile("Warehouse");
@@ -101,16 +113,19 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void durationEffectsDisabledOnNextTurn() {
         Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Tide Pools");
+        WaitForAsyncUtils.waitForFxEvents();
+
         clickOnCardInHand("Tide Pools");
         clickOnSkip();
         clickOnSkip();
         Card cardInPlay = currentPlayer.getInPlay().stream().filter(c -> c.getName().equals("Tide Pools")).findFirst().get();
-        assertEquals(true, cardInPlay.getHasDurationEffect());
+        assertTrue(cardInPlay.getHasDurationEffect());
         assertInstanceOf(TidePoolsState.class, currentPlayer.getCurrentState());
         clickOnFirstCardInHand();
         assertInstanceOf(TidePoolsState.class, currentPlayer.getCurrentState());
         clickOnFirstCardInHand();
-        assertEquals(false, cardInPlay.getHasDurationEffect());
+        assertFalse(cardInPlay.getHasDurationEffect());
 //        pause(2);
     }
 

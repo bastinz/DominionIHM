@@ -2,9 +2,11 @@ package fr.umontpellier.iut.dominionfx.cards;
 
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
+import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -20,7 +22,6 @@ public class EmbargoTest extends BaseTestClass {
 
     @Override
     public void setPlayersHands() {
-        addToFirstPlayersHand("Embargo");
         addToFirstPlayersHand("Embargo");
     }
 
@@ -43,7 +44,11 @@ public class EmbargoTest extends BaseTestClass {
         clickOnSupplyPile("Lighthouse");
         clickOnSkip();
         clickOnSkip();
-        skipUntilHandHasCard("Embargo");
+
+        Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Embargo");
+        WaitForAsyncUtils.waitForFxEvents();
+
         clickOnCardInHand("Embargo");
         clickOnSupplyPile("Lighthouse");
         int numberOfEmbargoTokens = game.getSupplyPiles().stream()
@@ -61,7 +66,11 @@ public class EmbargoTest extends BaseTestClass {
         clickOnSupplyPile("Lighthouse");
         clickOnSkip();
         clickOnSkip();
-        skipUntilHandHasCard("Embargo");
+
+        Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Embargo");
+        WaitForAsyncUtils.waitForFxEvents();
+
         clickOnCardInHand("Embargo");
         clickOnSupplyPile("Sailor");
         int numberOfEmbargoTokensLighthouse = game.getSupplyPiles().stream()
@@ -75,10 +84,6 @@ public class EmbargoTest extends BaseTestClass {
                 .get().getNbEmbargoTokens();
         assertEquals(1, numberOfEmbargoTokensSailor);
         assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState());
-//        pause(2);
-    }
-
-    private void miseEnPlaceDebut() {
 //        pause(2);
     }
 

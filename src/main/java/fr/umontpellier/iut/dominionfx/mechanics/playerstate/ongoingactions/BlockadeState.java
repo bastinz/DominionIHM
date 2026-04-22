@@ -17,8 +17,8 @@ public class BlockadeState extends OnGoingActionState {
 
     @Override
     public void supplyCardWasChosen(String cardName) {
-        List<String> choixPossibles = currentPlayer.getGame().getCardsFromSupplyMatchingCondition(c -> c.getCost() <= 4);
-        if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
+        List<String> availableChoices = currentPlayer.getGame().getCardsFromSupplyMatchingCondition(c -> c.getCost() <= 4);
+        if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             Card card = currentPlayer.getCardFromSupply(cardName);
             currentPlayer.gainToSetAside(card);
             blocadeCard.setCardSetAside(card);

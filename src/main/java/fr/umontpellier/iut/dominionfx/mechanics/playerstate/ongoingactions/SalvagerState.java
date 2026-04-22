@@ -12,8 +12,8 @@ public class SalvagerState extends OnGoingActionState {
 
     @Override
     public void cardInHandWasChosen(String cardName) {
-        List<String> choixPossibles = currentPlayer.getNamesOfCardsInHand();
-        if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
+        List<String> availableChoices = currentPlayer.getNamesOfCardsInHand();
+        if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             currentPlayer.salvagerAction(cardName);
             moveToNextPhase();
         }

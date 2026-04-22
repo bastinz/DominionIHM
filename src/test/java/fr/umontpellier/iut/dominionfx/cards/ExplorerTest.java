@@ -29,13 +29,15 @@ public class ExplorerTest extends BaseTestClass {
     @Override
     public void setPlayersHands() {
         addToFirstPlayersHand("Explorer");
-        addToFirstPlayersHand("Province");
     }
 
     @Test
     public void explorerWithProvinceAddsGold() {
-        miseEnPlaceDebut();
+        clickOnCardInHand("Explorer");
         Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Province");
+        WaitForAsyncUtils.waitForFxEvents();
+
         long initialNumberOfGold = currentPlayer.getHand().stream()
                 .filter(card -> "Gold".equals(card.getName()))
                 .count();
@@ -50,7 +52,7 @@ public class ExplorerTest extends BaseTestClass {
 
     @Test
     public void explorerWithoutProvinceAddsSilver() {
-        miseEnPlaceDebut();
+        clickOnCardInHand("Explorer");
         Player currentPlayer = game.currentPlayer();
         long initialNumberOfSilver = currentPlayer.getHand().stream()
                 .filter(card -> "Silver".equals(card.getName()))
@@ -65,7 +67,7 @@ public class ExplorerTest extends BaseTestClass {
 
     @Test
     public void explorerWithoutProvinceAndEmptySilverPile() {
-        miseEnPlaceDebut();
+        clickOnCardInHand("Explorer");
         Platform.runLater(() -> {
             Optional<SupplyPile> silverPile = game.getSupplyPiles().stream()
                     .filter(p -> p.getName().equals("Silver"))
@@ -83,54 +85,6 @@ public class ExplorerTest extends BaseTestClass {
                 .count();
         assertEquals(initialNumberOfSilver, currentNumberOfSilver);
         assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
-    }
-/*
-    @Test
-    public void addsTwoEmbargosOnSameSupplyPile() {
-        miseEnPlaceDebut();
-        clickOnCardInHand("Embargo");
-        clickOnSupplyPile("Lighthouse");
-        skipUntilHandHasEnoughTreasures(2);
-        clickOnTreasures();
-        clickOnSupplyPile("Embargo");
-        skipUntilHandHasCard("Embargo");
-        clickOnCardInHand("Embargo");
-        clickOnSupplyPile("Lighthouse");
-        int numberOfEmbargoTokens = game.getSupplyPiles().stream()
-                .filter(pile -> "Lighthouse".equals(pile.getName()))
-                .findFirst()
-                .get().getNbEmbargoTokens();
-        assertEquals(2, numberOfEmbargoTokens);
-//        pause(2);
-    }
-
-    @Test
-    public void addsTwoEmbargosOnDifferentSupplyPiles() {
-        miseEnPlaceDebut();
-        clickOnCardInHand("Embargo");
-        clickOnSupplyPile("Lighthouse");
-        skipUntilHandHasEnoughTreasures(2);
-        clickOnTreasures();
-        clickOnSupplyPile("Embargo");
-        skipUntilHandHasCard("Embargo");
-        clickOnCardInHand("Embargo");
-        clickOnSupplyPile("Sailor");
-        int numberOfEmbargoTokensLighthouse = game.getSupplyPiles().stream()
-                .filter(pile -> "Lighthouse".equals(pile.getName()))
-                .findFirst()
-                .get().getNbEmbargoTokens();
-        assertEquals(1, numberOfEmbargoTokensLighthouse);
-        int numberOfEmbargoTokensSailor = game.getSupplyPiles().stream()
-                .filter(pile -> "Sailor".equals(pile.getName()))
-                .findFirst()
-                .get().getNbEmbargoTokens();
-        assertEquals(1, numberOfEmbargoTokensSailor);
-//        pause(2);
-    }*/
-
-    private void miseEnPlaceDebut() {
-        clickOnCardInHand("Explorer");
-//        pause(2);
     }
 
 }

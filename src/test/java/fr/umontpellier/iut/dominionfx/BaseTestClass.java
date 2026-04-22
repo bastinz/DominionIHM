@@ -3,6 +3,7 @@ package fr.umontpellier.iut.dominionfx;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
@@ -212,4 +213,7 @@ public class BaseTestClass extends ApplicationTest {
         WaitForAsyncUtils.sleep(nbSeconds, TimeUnit.SECONDS);
     }
 
+    public void getFromSupply(Player currentPlayer, String cardName) {
+        Platform.runLater(() -> currentPlayer.moveToHand(currentPlayer.getCardFromSupply(cardName)));
+    }
 }

@@ -17,8 +17,8 @@ public class TidePoolsState extends DurationState {
 
     @Override
     public void cardInHandWasChosen(String cardName) {
-        List<String> choixPossibles = currentPlayer.getNamesOfCardsInHand();
-        if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
+        List<String> availableChoices = currentPlayer.getNamesOfCardsInHand();
+        if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             Card cardToDiscard = currentPlayer.getCardsInHand().stream().findFirst().orElse(null);
             currentPlayer.moveToDiscard(cardToDiscard);
             nbCardsToDiscard -= 1;

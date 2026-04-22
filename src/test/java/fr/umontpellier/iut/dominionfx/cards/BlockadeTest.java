@@ -9,6 +9,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.BlockadeState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
 
 import java.util.ArrayList;
 
@@ -25,9 +26,7 @@ public class BlockadeTest extends BaseTestClass {
 
     @Override
     public void setPlayersHands() {
-        addToFirstPlayersHand("Blockade");
-        addToFirstPlayersHand("Bazaar");
-        addToSecondPlayersHand("Bazaar");
+       addToFirstPlayersHand("Blockade");
     }
 
     @Test
@@ -67,8 +66,11 @@ public class BlockadeTest extends BaseTestClass {
 
     @Test
     public void movesToRightStatesWithRemainingActions() {
-        clickOnCardInHand("Bazaar");
         Player currentPlayer = game.currentPlayer();
+        getFromSupply(currentPlayer, "Bazaar");
+        WaitForAsyncUtils.waitForFxEvents();
+
+        clickOnCardInHand("Bazaar");
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Blockade");
         assertInstanceOf(BlockadeState.class, currentPlayer.getCurrentState());

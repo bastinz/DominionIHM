@@ -25,8 +25,8 @@ public class StartTurnState extends PlayerState {
 
     @Override
     public void cardInHandWasChosen(String cardName) {
-        List<String> choixPossibles = currentPlayer.getNamesOfCardsInHand();
-        if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
+        List<String> availableChoices = currentPlayer.getNamesOfCardsInHand();
+        if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             Card cardToPlay = currentPlayer.switchToStateByCardType(cardName);
             currentPlayer.getCurrentState().startProcess(cardToPlay);
         }

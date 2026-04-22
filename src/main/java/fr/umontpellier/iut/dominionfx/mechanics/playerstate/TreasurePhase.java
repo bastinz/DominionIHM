@@ -16,8 +16,8 @@ public class TreasurePhase extends PlayerState {
     }
 
     public void cardInHandWasChosen(String cardName) {
-        List<String> choixPossibles = currentPlayer.getNamesOfTreasuresInHand();
-        if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
+        List<String> availableChoices = currentPlayer.getNamesOfTreasuresInHand();
+        if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             currentPlayer.playTreasureCard(cardName);
         }
     }
@@ -27,8 +27,8 @@ public class TreasurePhase extends PlayerState {
     }
 
     public void supplyCardWasChosen(String cardName) {
-        List<String> choixPossibles = currentPlayer.getAvailableSupplyCards();
-        if (!choixPossibles.isEmpty() && choixPossibles.contains(cardName)) {
+        List<String> availableChoices = currentPlayer.getAvailableSupplyCards();
+        if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             currentPlayer.buy(cardName);
             if (currentPlayer.areBuysCompleted())
                 endOfCurrentPlayersTurn();
