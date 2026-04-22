@@ -5,6 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import java.util.List;
 
 public class EmbargoState extends OnGoingActionState {
+
     public EmbargoState(Player currentPlayer) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Choose a supply pile");
@@ -21,5 +22,4 @@ public class EmbargoState extends OnGoingActionState {
 
     @Override
     public void skip() {}
-
 }

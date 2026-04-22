@@ -7,6 +7,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Corsaire (Corsair)
@@ -24,7 +25,7 @@ public class Corsair extends AttackCard {
     }
 
     @Override
-    public void action(Player p) {
+    public void action(Player p, CompletableFuture<Void> f) {
         p.incrementMoney(2);
         attackedPlayers.clear();
         setHasDurationEffect(true);

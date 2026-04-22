@@ -11,10 +11,12 @@ public class TreasurePhase extends PlayerState {
         getGame().instructionProperty().setValue("Treasure phase");
     }
 
+    @Override
     public void skip() {
         endOfCurrentPlayersTurn();
     }
 
+    @Override
     public void cardInHandWasChosen(String cardName) {
         List<String> availableChoices = currentPlayer.getNamesOfTreasuresInHand();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
@@ -22,10 +24,12 @@ public class TreasurePhase extends PlayerState {
         }
     }
 
+    @Override
     public void playTreasuresWasChosen() {
         currentPlayer.playTreasures();
     }
 
+    @Override
     public void supplyCardWasChosen(String cardName) {
         List<String> availableChoices = currentPlayer.getAvailableSupplyCards();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
@@ -35,6 +39,7 @@ public class TreasurePhase extends PlayerState {
         }
     }
 
+    @Override
     public void startProcess(Card cardName) {
         currentPlayer.disablePlayActions();
         currentPlayer.playCard(cardName);

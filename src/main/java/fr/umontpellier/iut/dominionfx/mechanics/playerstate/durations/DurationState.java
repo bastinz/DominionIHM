@@ -13,6 +13,7 @@ public class DurationState extends ActionPhase {
         this.durationCard = cardWithDuration;
     }
 
+    @Override
     public boolean endOfAction() {
         return false;
     }
@@ -22,5 +23,4 @@ public class DurationState extends ActionPhase {
         durationCard.setHasDurationEffect(false);
         currentPlayer.setCurrentState(new StartTurnState(currentPlayer));
     }
-
 }

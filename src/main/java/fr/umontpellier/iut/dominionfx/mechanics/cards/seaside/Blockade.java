@@ -8,6 +8,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.Block
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Blocus (Blockade)
@@ -28,25 +29,11 @@ public class Blockade extends AttackCard {
     }
 
     @Override
-    public void action(Player p) {
+    public void action(Player p, CompletableFuture<Void> f) {
         player = p;
         attackedPlayers.clear();
         setHasDurationEffect(true);
-        p.setCurrentState(new BlockadeState(p, this));
-/*        Card chosenCard = p.chooseCardFromSupply(
-                "%s: Gain a card costing up to 4$".formatted(this),
-                c -> c.getCost() <= 4,
-                false);
-        if (chosenCard != null) {
-            Card card = p.getCardFromSupply(chosenCard.getName());
-            p.log("gains %s and sets it aside".formatted(card.toLog()));
-            p.gainToSetAside(card);
-            cardSetAside = card;
-            // il faut mémoriser le joueur qui a joué la carte pour pouvoir plus
-            // tard chercher la carte mise de côté dans la liste des cartes mises
-            // de côté du joueur (à cause de l'interaction possible avec Sailor)
-            player = p;
-        }*/
+        p.setCurrentState(new BlockadeState(p, this, f));
     }
 
     @Override
@@ -94,19 +81,3 @@ public class Blockade extends AttackCard {
         this.player = player;
     }
 }
-
-
-/*
-Card chosenCard = p.chooseCardFromSupply(
-        "%s: Gain a card costing up to 4$".formatted(this),
-        c -> c.getCost() <= 4,
-        false);
-        if (chosenCard != null) {
-Card card = p.getCardFromSupply(chosenCard.getName());
-            p.log("gains %s and sets it aside".formatted(card.toLog()));
-        p.gainToSetAside(card);
-cardSetAside = card;
-// il faut mémoriser le joueur qui a joué la carte pour pouvoir plus
-// tard chercher la carte mise de côté dans la liste des cartes mises
-// de côté du joueur (à cause de l'interaction possible avec Sailor)
-player = p;*/

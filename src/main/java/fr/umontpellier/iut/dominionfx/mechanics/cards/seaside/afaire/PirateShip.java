@@ -8,6 +8,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Bateau pirate (Pirate Ship)
@@ -27,7 +28,7 @@ public class PirateShip extends AttackCard {
     }
 
     @Override
-    public void action(Player p) {
+    public void action(Player p, CompletableFuture<Void> f) {
         didTrashTreasure = false;
         String choice = p.chooseStringFromButtons(
                 "%s: Choose one".formatted(this),
@@ -65,7 +66,7 @@ public class PirateShip extends AttackCard {
     public void afterAttack(Player p) {
         if (didTrashTreasure) {
             p.incrementPirateShipCounter();
-            p.log("Pirate Ship mat has %d tokens".formatted(this, p.getPirateShipCounter()));
+            p.log("Pirate Ship mat has %d tokens".formatted(p.getPirateShipCounter()));
         }
     }
 }

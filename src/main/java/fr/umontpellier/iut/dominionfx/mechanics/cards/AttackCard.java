@@ -2,6 +2,8 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Les cartes Attaque
  * Rmq : les cartes Attaque sont toutes des cartes Action
@@ -14,7 +16,7 @@ public abstract class AttackCard extends ActionCard {
         super(name, cost);
     }
 
-    public abstract void action(Player p);
+    public abstract void action(Player p, CompletableFuture<Void> f);
 
     public abstract void attack(Player p, Player target);
 
@@ -23,10 +25,17 @@ public abstract class AttackCard extends ActionCard {
 
     @Override
     public void play(Player p) {
-        action(p);
+        CompletableFuture<Void> actionFuture = new CompletableFuture<>();
+        action(p, actionFuture);
+        actionFuture.thenRun(() -> attack(p));
+    }
+
+    private void attack(Player p) {
         for (Player target : p.getOtherPlayers())
             if (!target.isProtectedFromAttack())
                 attack(p, target);
         afterAttack(p);
     }
+
 }
+

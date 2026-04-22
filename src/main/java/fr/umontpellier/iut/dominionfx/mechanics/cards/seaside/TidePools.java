@@ -28,16 +28,6 @@ public class TidePools extends ActionCard {
 
     @Override
     public void atStartOfTurn(Player p) {
-        p.setCurrentState(new TidePoolsState(p, 2, this));
-/*        while (!p.getCardsInHand().isEmpty() && nbCardsToDiscard > 0) {
-            Card cardToDiscard = p.chooseCardFromHand(
-                    "%s: Discard %d card(s)".formatted(this, nbCardsToDiscard),
-                    false);
-            p.log("discards %s".formatted(cardToDiscard.toLog()));
-            p.moveToDiscard(cardToDiscard);
-            nbCardsToDiscard -= 1;
-//        }
-//        setHasDurationEffect(false);*/
+        p.setCurrentState(new TidePoolsState(p, this));
     }
-
 }

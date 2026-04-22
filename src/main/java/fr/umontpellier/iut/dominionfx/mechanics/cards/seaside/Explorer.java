@@ -21,19 +21,3 @@ public class Explorer extends ActionCard {
         p.setCurrentState(new ExplorerState(p));
     }
 }
-
-/*
-Card province = p.chooseCardFromHand(
-        "%s: You may reveal a Province".formatted(this),
-        c -> c.hasName("Province"), true);
-Card gainedCard;
-        if (province != null) {
-        p.log("reveals %s".formatted(province.toLog()));
-gainedCard = p.getCardFromSupply("Gold");
-        } else {
-gainedCard = p.getCardFromSupply("Silver");
-        }
-                if (gainedCard != null) {
-        p.log("gains %s in hand".formatted(gainedCard.toLog()));
-        p.gainToHand(gainedCard);
-        }*/

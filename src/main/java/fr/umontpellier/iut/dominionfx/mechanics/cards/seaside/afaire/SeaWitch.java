@@ -5,6 +5,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.AttackCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Sorcière marine (Sea Witch)
  * <p>
@@ -19,7 +21,7 @@ public class SeaWitch extends AttackCard {
     }
 
     @Override
-    public void action(Player p) {
+    public void action(Player p, CompletableFuture<Void> f) {
         p.drawToHand(2);
         setHasDurationEffect(true);
     }

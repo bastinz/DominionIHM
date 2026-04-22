@@ -31,5 +31,4 @@ public class StartTurnState extends PlayerState {
             currentPlayer.getCurrentState().startProcess(cardToPlay);
         }
     }
-
 }

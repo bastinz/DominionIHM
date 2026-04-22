@@ -24,5 +24,4 @@ public class ExplorerState extends OnGoingActionState {
         currentPlayer.gainTreasure("Silver");
         moveToNextPhase();
     }
-    
 }

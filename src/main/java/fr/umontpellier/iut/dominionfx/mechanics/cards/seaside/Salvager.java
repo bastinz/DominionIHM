@@ -20,15 +20,4 @@ public class Salvager extends ActionCard {
         p.incrementBuys(1);
         p.setCurrentState(new SalvagerState(p));
     }
-
 }
-
-/*        p.incrementBuys(1);
-Card cardToTrash = p.chooseCardFromHand(
-        "%s: Trash a card from your hand".formatted(this),
-        false);
-        if (cardToTrash != null) {
-        p.log("trashes %s".formatted(cardToTrash.toLog()));
-        p.incrementMoney(cardToTrash.getCost());
-        p.moveToTrash(cardToTrash);
-        }*/

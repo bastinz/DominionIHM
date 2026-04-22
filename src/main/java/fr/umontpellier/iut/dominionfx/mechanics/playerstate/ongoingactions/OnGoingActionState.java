@@ -8,8 +8,8 @@ public class OnGoingActionState extends ActionPhase {
         super(currentPlayer);
     }
 
+    @Override
     public boolean endOfAction() {
         return false;
     }
-
 }

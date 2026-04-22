@@ -30,17 +30,17 @@ public class Player implements IPlayer {
     /**
      * Nombre d'actions disponibles
      */
-    private IntegerProperty numberOfActions;
+    private final IntegerProperty numberOfActions;
 
     /**
      * Nombre d'achats disponibles
      */
-    private IntegerProperty numberOfBuys;
+    private final IntegerProperty numberOfBuys;
 
     /**
      * Nombre de pièces disponibles pour acheter des cartes
      */
-    private IntegerProperty money;
+    private final IntegerProperty money;
 
     /**
      * Indique si un Argent ou un Or a été joué ce tour ou non
@@ -556,9 +556,9 @@ public class Player implements IPlayer {
     public String toJSON() {
         StringJoiner joiner = new StringJoiner(", ");
         joiner.add(String.format("\"name\": \"%s\"", name));
-        joiner.add(String.format("\"actions\": %d", numberOfActions));
-        joiner.add(String.format("\"money\": %d", money));
-        joiner.add(String.format("\"buys\": %d", numberOfBuys));
+//        joiner.add(String.format("\"actions\": %d", numberOfActions));
+//        joiner.add(String.format("\"money\": %d", money));
+//        joiner.add(String.format("\"buys\": %d", numberOfBuys));
         joiner.add(String.format("\"draw\": %s", Utils.toJSON(draw)));
         joiner.add(String.format("\"discard\": %s", Utils.toJSON(discard)));
         joiner.add(String.format("\"in_play\": %s", Utils.toJSON(inPlay)));
@@ -912,9 +912,6 @@ public class Player implements IPlayer {
     }
 
     private void execDurationsSequentially() {
-/*        for (Card c : inPlay) {
-            c.atStartOfTurn(this);
-        }*/
         Iterator<Card> it = getInPlay().iterator();
         runNext(it, this);
     }
@@ -924,9 +921,7 @@ public class Player implements IPlayer {
             return; // fin du tour
         }
         Card card = it.next();
-        runCard(card, player).thenRun(() -> {
-            runNext(it, player);
-        });
+        runCard(card, player).thenRun(() -> runNext(it, player));
     }
     private CompletableFuture<Void> runCard(Card card, Player player) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -1011,7 +1006,7 @@ public class Player implements IPlayer {
                     break turnloop;
                 }
                 case "BUTTON:treasures" -> {
-                    List<Card> treasures = hand.stream().filter(c -> c.hasType(CardType.TREASURE)).toList();;
+                    List<Card> treasures = hand.stream().filter(c -> c.hasType(CardType.TREASURE)).toList();
                     for (Card c : treasures)
                         playCard(c);
                     canPlayActions = false;
@@ -1102,13 +1097,13 @@ public class Player implements IPlayer {
     }
 
     public List<String> getNamesOfCardsInHand() {
-        return hand.stream().map(c -> c.getName()).toList();
+        return hand.stream().map(Card::getName).toList();
     }
 
     public List<String> getNamesOfTreasuresInHand() {
         return hand.stream()
                 .filter(c -> c.hasType(CardType.TREASURE))
-                .map(c -> c.getName())
+                .map(Card::getName)
                 .toList();
     }
 
@@ -1116,7 +1111,7 @@ public class Player implements IPlayer {
         if (numberOfBuys.getValue() > 0) {
             return game.getAvailableSupplyCards().stream()
                     .filter(c -> c.getCost() <= money.getValue())
-                    .map(c -> c.getName())
+                    .map(Card::getName)
                     .toList();
         }
         return List.of();
@@ -1183,7 +1178,7 @@ public class Player implements IPlayer {
         Card cardToPlay = hand.stream()
                 .filter(card -> card.getName().equals(cardName))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow();
         canPlayActions = false;
         playCard(cardToPlay);
     }
@@ -1238,7 +1233,7 @@ public class Player implements IPlayer {
     }
 
     public List<String> getProvincesInHand() {
-        return hand.stream().filter(c -> c.hasName("Province")).map(c -> c.getName())
+        return hand.stream().filter(c -> c.hasName("Province")).map(Card::getName)
                 .collect(Collectors.toList());
     }
 
@@ -1253,8 +1248,13 @@ public class Player implements IPlayer {
         Card cardToTrash = getCardsInHand().stream()
                 .filter(card -> card.getName().equals(cardName))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow();
         incrementMoney(cardToTrash.getCost());
         moveToTrash(cardToTrash);
+    }
+
+    public void returnFromHandToSupply(String cardName) {
+        Card cardToReturnToSupply = hand.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
+        moveToSupply(cardToReturnToSupply);
     }
 }

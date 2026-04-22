@@ -25,16 +25,3 @@ public class Embargo extends ActionCard {
         p.setCurrentState(new EmbargoState(p));
     }
 }
-
-/*List<String> options = new ArrayList<>();
-        for (String name : p.getGame().getAllSupplyPileNames()) {
-        options.add("SUPPLY:" + name);
-        }
-        String choice = p.choose(
-                "%s: Choose a supply pile".formatted(this),
-                options,
-                new ArrayList<>(),
-                false);
-        String supplyName = choice.split(":")[1];
-        p.log("adds an Embargo token on %s".formatted(supplyName));
-        p.getGame().addEmbargoToken(supplyName);*/

@@ -5,14 +5,17 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.Blockade;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class BlockadeState extends OnGoingActionState {
     final private Blockade blocadeCard;
+    CompletableFuture<Void> future;
 
-    public BlockadeState(Player currentPlayer, Blockade blocadeCard) {
+    public BlockadeState(Player currentPlayer, Blockade blocadeCard, CompletableFuture<Void> future) {
         super(currentPlayer);
         this.blocadeCard = blocadeCard;
         getGame().instructionProperty().setValue("Gain a card costing up to 4");
+        this.future = future;
     }
 
     @Override
@@ -24,23 +27,7 @@ public class BlockadeState extends OnGoingActionState {
             blocadeCard.setCardSetAside(card);
             blocadeCard.setPlayer(currentPlayer);
             moveToNextPhase();
+            future.complete(null);
         }
     }
-    
 }
-
-/*
-Card chosenCard = p.chooseCardFromSupply(
-        "%s: Gain a card costing up to 4$".formatted(this),
-        c -> c.getCost() <= 4,
-        false);
-        if (chosenCard != null) {
-Card card = p.getCardFromSupply(chosenCard.getName());
-            p.log("gains %s and sets it aside".formatted(card.toLog()));
-        p.gainToSetAside(card);
-cardSetAside = card;
-// il faut mémoriser le joueur qui a joué la carte pour pouvoir plus
-// tard chercher la carte mise de côté dans la liste des cartes mises
-// de côté du joueur (à cause de l'interaction possible avec Sailor)
-player = p;
-*/

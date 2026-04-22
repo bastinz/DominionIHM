@@ -9,10 +9,12 @@ public class ActionPhase extends PlayerState {
         getGame().instructionProperty().setValue("Action phase or skip");
     }
 
+    @Override
     public void skip() {
         moveToNextPhase();
     }
 
+    @Override
     public void startProcess(Card cardName) {
         currentPlayer.decreaseNumberOfActions();
         currentPlayer.playCard(cardName);
@@ -21,6 +23,7 @@ public class ActionPhase extends PlayerState {
         }
     }
 
+    @Override
     public void playTreasuresWasChosen() {
         currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
         currentPlayer.getCurrentState().playTreasuresWasChosen();
@@ -33,5 +36,4 @@ public class ActionPhase extends PlayerState {
             currentPlayer.setCurrentState(new StartTurnState(currentPlayer));
         }
     }
-
 }
