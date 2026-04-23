@@ -1,7 +1,6 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.List;
 
@@ -37,11 +36,5 @@ public class TreasurePhase extends PlayerState {
             if (currentPlayer.areBuysCompleted())
                 endOfCurrentPlayersTurn();
         }
-    }
-
-    @Override
-    public void startProcess(Card cardName) {
-        currentPlayer.disablePlayActions();
-        currentPlayer.playCard(cardName);
     }
 }

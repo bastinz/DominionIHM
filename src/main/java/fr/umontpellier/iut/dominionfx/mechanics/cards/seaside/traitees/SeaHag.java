@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.AttackCard;
@@ -21,6 +21,7 @@ public class SeaHag extends AttackCard {
     @Override
     public void action(Player p, CompletableFuture<Void> f) {
         // rien à faire pour le joueur qui joue la carte
+        f.complete(null);
     }
     
     @Override

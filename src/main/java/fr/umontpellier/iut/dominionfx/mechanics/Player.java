@@ -578,9 +578,7 @@ public class Player implements IPlayer {
      * @param c carte à jouer
      */
     public void playCard(Card c) {
-        log("%s plays %s".formatted(toLog(), c.toLog()));
         moveToInPlay(c);
-        indentLog();
         c.play(this);
         // exécuter les effets onPlayerPlayCard de toutes les cartes en jeu des joueurs
         for (Player p : getPlayers()) {
@@ -588,7 +586,6 @@ public class Player implements IPlayer {
                 cardInPlay.onPlayerPlayCard(this, c, p);
             }
         }
-        unindentLog();
     }
 
     /**
@@ -918,7 +915,7 @@ public class Player implements IPlayer {
 
     private void runNext(Iterator<Card> it, Player player) {
         if (!it.hasNext()) {
-            return; // fin du tour
+            return;
         }
         Card card = it.next();
         runCard(card, player).thenRun(() -> runNext(it, player));
@@ -1015,7 +1012,7 @@ public class Player implements IPlayer {
                     Card cardToPlay = hand.stream()
                             .filter(card -> card.hasName(choice.split(":")[1]))
                             .findFirst()
-                            .orElse(null);
+                            .orElseThrow();
                     if (cardToPlay.hasType(CardType.ACTION)) {
                         numberOfActions.setValue(numberOfActions.getValue() - 1);
                         playCard(cardToPlay);
@@ -1157,21 +1154,20 @@ public class Player implements IPlayer {
         currentState.cardInHandWasChosen(cardName);
     }
 
-    public Card switchToStateByCardType(String cardName) {
+    public void switchToStateByCardType(String cardName) {
         Card cardToPlay = hand.stream()
                 .filter(card -> card.getName().equals(cardName))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow();
         if (cardToPlay.hasType(CardType.ACTION)) {
-/*            numberOfActions -= 1;
-            playCard(cardToPlay);*/
             setCurrentState(new ActionPhase(this));
+            numberOfActions.setValue(numberOfActions.getValue() - 1);
+            playCard(cardToPlay);
         } else if (cardToPlay.hasType(CardType.TREASURE)) {
-/*            canPlayActions = false;
-            playCard(cardToPlay);*/
             setCurrentState(new TreasurePhase(this));
+            canPlayActions = false;
+            playCard(cardToPlay);
         }
-        return cardToPlay;
     }
 
     public void playTreasureCard(String cardName) {
@@ -1190,11 +1186,9 @@ public class Player implements IPlayer {
         gainToDiscard(c);
         // gestion des token Embargo (uniquement lorsque le joueur achète une carte, pas
         // lorsqu'il en gagne une par un autre moyen)
-        List<Card> gainedCurses = new ArrayList<>();
-                        for (int i = 0; i < game.getNumberOfEmbargoTokens(cardName); i++) {
+        for (int i = 0; i < game.getNumberOfEmbargoTokens(cardName); i++) {
             Card curse = getCardFromSupply("Curse");
             if (curse != null) {
-                gainedCurses.add(curse);
                 gainToDiscard(curse);
             }
         }
@@ -1222,14 +1216,6 @@ public class Player implements IPlayer {
 
     public PlayerState getCurrentState() {
         return currentState;
-    }
-
-    public void decreaseNumberOfActions() {
-        numberOfActions.setValue(numberOfActions.getValue() - 1);
-    }
-
-    public void disablePlayActions() {
-        canPlayActions = false;
     }
 
     public List<String> getProvincesInHand() {

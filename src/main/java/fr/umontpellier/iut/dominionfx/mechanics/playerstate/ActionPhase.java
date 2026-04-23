@@ -1,7 +1,6 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 public class ActionPhase extends PlayerState {
     public ActionPhase(Player currentPlayer) {
@@ -12,15 +11,6 @@ public class ActionPhase extends PlayerState {
     @Override
     public void skip() {
         moveToNextPhase();
-    }
-
-    @Override
-    public void startProcess(Card cardName) {
-        currentPlayer.decreaseNumberOfActions();
-        currentPlayer.playCard(cardName);
-        if (currentPlayer.getCurrentState().endOfAction()) {
-            moveToNextPhase();
-        }
     }
 
     @Override

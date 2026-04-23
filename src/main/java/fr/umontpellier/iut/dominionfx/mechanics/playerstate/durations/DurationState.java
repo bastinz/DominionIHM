@@ -14,11 +14,6 @@ public class DurationState extends ActionPhase {
     }
 
     @Override
-    public boolean endOfAction() {
-        return false;
-    }
-
-    @Override
     public void skip() {
         durationCard.setHasDurationEffect(false);
         currentPlayer.setCurrentState(new StartTurnState(currentPlayer));

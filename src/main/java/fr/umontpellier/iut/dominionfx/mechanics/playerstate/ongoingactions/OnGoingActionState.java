@@ -7,9 +7,4 @@ public class OnGoingActionState extends ActionPhase {
     public OnGoingActionState(Player currentPlayer) {
         super(currentPlayer);
     }
-
-    @Override
-    public boolean endOfAction() {
-        return false;
-    }
 }

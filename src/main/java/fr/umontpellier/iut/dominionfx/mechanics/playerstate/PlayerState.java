@@ -2,7 +2,6 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 public abstract class PlayerState {
     protected final Player currentPlayer;
@@ -13,8 +12,7 @@ public abstract class PlayerState {
 //        nextState = this;
     }
 
-    public boolean endOfAction() {
-        return true;
+    public void moveToNextPhase() {
     }
 
     public void skip() {
@@ -27,9 +25,6 @@ public abstract class PlayerState {
     }
 
     public void supplyCardWasChosen(String cardName) {
-    }
-
-    public void startProcess(Card cardToPlay)  {
     }
 
     public void endOfCurrentPlayersTurn() {

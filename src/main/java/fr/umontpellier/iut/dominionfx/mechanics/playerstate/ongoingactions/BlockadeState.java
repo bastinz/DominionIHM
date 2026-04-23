@@ -2,7 +2,7 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.Blockade;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.Blockade;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -26,7 +26,7 @@ public class BlockadeState extends OnGoingActionState {
             currentPlayer.gainToSetAside(card);
             blocadeCard.setCardSetAside(card);
             blocadeCard.setPlayer(currentPlayer);
-            moveToNextPhase();
+//            moveToNextPhase(); non parce que c'est une carte attaque
             future.complete(null);
         }
     }

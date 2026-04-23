@@ -4,6 +4,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.common.*;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.*;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire.*;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.*;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -100,8 +101,6 @@ public class FactorySupplyPile {
      */
     public static SupplyPile createSupplyPile(String cardName, int numberOfPlayers) {
         PileConfig config = PILE_CONFIGS.get(cardName);
-        SupplyPile temp =  new SupplyPile(config.cardSupplier(), config.countFunction().apply(numberOfPlayers));
-
-        return temp;
+        return new SupplyPile(config.cardSupplier(), config.countFunction().apply(numberOfPlayers));
     }
 }

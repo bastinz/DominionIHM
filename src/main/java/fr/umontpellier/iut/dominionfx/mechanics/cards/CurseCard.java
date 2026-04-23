@@ -19,5 +19,4 @@ public abstract class CurseCard extends Card {
     @Override
     public void play(Player p) {
     }
-
 }

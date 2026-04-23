@@ -35,7 +35,7 @@ public abstract class AttackCard extends ActionCard {
             if (!target.isProtectedFromAttack())
                 attack(p, target);
         afterAttack(p);
+        p.getCurrentState().moveToNextPhase();
     }
-
 }
 
