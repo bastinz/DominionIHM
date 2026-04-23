@@ -1239,8 +1239,12 @@ public class Player implements IPlayer {
         moveToTrash(cardToTrash);
     }
 
-    public void returnFromHandToSupply(String cardName) {
+    public void moveFromHandToSupply(String cardName) {
         Card cardToReturnToSupply = hand.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
         moveToSupply(cardToReturnToSupply);
+    }
+
+    public Card getCardFromHand(String cardName) {
+        return hand.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
     }
 }

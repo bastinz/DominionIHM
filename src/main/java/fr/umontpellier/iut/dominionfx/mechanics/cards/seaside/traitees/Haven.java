@@ -1,9 +1,10 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.HavenState;
 
 /**
  * Carte Havre (Haven)
@@ -25,16 +26,8 @@ public class Haven extends ActionCard {
     public void play(Player p) {
         p.drawToHand();
         p.incrementActions(1);
-        Card c = p.chooseCardFromHand(
-                "%s: Set aside a card from your hand".formatted(this),
-                false);
-        if (c != null) {
-            p.log("sets %s aside".formatted(c.toLog()));
-            p.moveToSetAside(c);
-            cardSetAside = c;
-            setHasDurationEffect(true);
-        }
-        p.getCurrentState().moveToNextPhase();
+        setHasDurationEffect(true);
+        p.setCurrentState(new HavenState(p, this));
     }
 
     @Override
@@ -43,4 +36,18 @@ public class Haven extends ActionCard {
         cardSetAside = null;
         setHasDurationEffect(false);
     }
+
+
+    public void setCardSetAside(Card cardSetAside) {
+        this.cardSetAside = cardSetAside;
+    }
 }
+
+/*Card c = p.chooseCardFromHand(
+        "%s: Set aside a card from your hand".formatted(this),
+        false);
+        if (c != null) {
+        p.log("sets %s aside".formatted(c.toLog()));
+        p.moveToSetAside(c);
+cardSetAside = c;
+setHasDurationEffect(true);*/

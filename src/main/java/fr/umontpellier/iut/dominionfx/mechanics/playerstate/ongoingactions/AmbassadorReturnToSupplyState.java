@@ -29,7 +29,7 @@ public class AmbassadorReturnToSupplyState extends OnGoingActionState {
     @Override
     public void cardInHandWasChosen(String cardName) {
         if (cardName.equals(revealedCardName)) {
-            currentPlayer.returnFromHandToSupply(cardName);
+            currentPlayer.moveFromHandToSupply(cardName);
             nbCardsToReveal--;
             if (nbCardsToReveal == 0)
                 skip();
