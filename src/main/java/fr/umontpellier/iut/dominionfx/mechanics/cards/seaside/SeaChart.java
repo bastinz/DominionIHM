@@ -28,6 +28,7 @@ public class SeaChart extends ActionCard {
                 p.moveToHand(topCard);
             }
         }
+        p.getCurrentState().moveToNextPhase();
     }
 
 }

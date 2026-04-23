@@ -48,5 +48,6 @@ public class TreasureMap extends ActionCard {
                 }
             }
         }
+        p.getCurrentState().moveToNextPhase();
     }
 }

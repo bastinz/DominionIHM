@@ -26,6 +26,7 @@ public class Outpost extends ActionCard {
         if (game.getPreviousTurnPlayer() != p) {
             game.setSamePlayerShouldPlayExtraTurn(true);
         }
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override

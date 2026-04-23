@@ -24,6 +24,7 @@ public class Monkey extends ActionCard {
     public void play(Player p) {
         isActive = true;
         setHasDurationEffect(true);
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override

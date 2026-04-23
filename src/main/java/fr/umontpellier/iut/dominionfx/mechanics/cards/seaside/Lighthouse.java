@@ -26,6 +26,7 @@ public class Lighthouse extends ActionCard {
         p.incrementMoney(1);
         isProtection = true;
         setHasDurationEffect(true);
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override

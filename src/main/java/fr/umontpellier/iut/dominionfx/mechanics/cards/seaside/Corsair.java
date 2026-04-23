@@ -29,6 +29,7 @@ public class Corsair extends AttackCard {
         p.incrementMoney(2);
         attackedPlayers.clear();
         setHasDurationEffect(true);
+        f.complete(null);
     }
 
     @Override

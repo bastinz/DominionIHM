@@ -22,6 +22,7 @@ public class Caravan extends ActionCard {
         p.drawToHand();
         p.incrementActions(1);
         setHasDurationEffect(true);
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override

@@ -21,6 +21,7 @@ public class Wharf extends ActionCard {
         p.drawToHand(2);
         p.incrementBuys(1);
         setHasDurationEffect(true);
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override

@@ -19,6 +19,7 @@ public class MerchantShip extends ActionCard {
     public void play(Player p) {
         p.incrementMoney(2);
         setHasDurationEffect(true);
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override

@@ -22,6 +22,7 @@ public class Cutpurse extends AttackCard {
     @Override
     public void action(Player p, CompletableFuture<Void>f) {
         p.incrementMoney(2);
+        f.complete(null);
     }
 
     @Override

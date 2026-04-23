@@ -22,6 +22,7 @@ public class Tactician extends ActionCard {
             p.moveToDiscard(p.getCardsInHand());
             setHasDurationEffect(true);
         }
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override
