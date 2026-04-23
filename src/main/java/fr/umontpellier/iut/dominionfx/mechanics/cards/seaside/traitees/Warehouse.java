@@ -1,8 +1,8 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.WarehouseState;
 
 /**
  * Carte Entrepôt (Warehouse)
@@ -21,6 +21,10 @@ public class Warehouse extends ActionCard {
     public void play(Player p) {
         p.drawToHand(3);
         p.incrementActions(1);
+        p.setCurrentState(new WarehouseState(p));
+    }
+/*
+    public void endPlay(Player p) {
         int nbCardsToDiscard = 3;
         while (!p.getCardsInHand().isEmpty() && nbCardsToDiscard > 0) {
             Card cardToDiscard = p.chooseCardFromHand(
@@ -31,5 +35,5 @@ public class Warehouse extends ActionCard {
             nbCardsToDiscard -= 1;
         }
         p.getCurrentState().moveToNextPhase();
-    }
+    }*/
 }

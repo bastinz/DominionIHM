@@ -4,7 +4,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.common.*;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.*;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire.*;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.avantblocade.*;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.*;
 
 import java.util.Map;
 import java.util.function.Function;
