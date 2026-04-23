@@ -1,9 +1,10 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.AttackCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.SeaWitchState;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -39,7 +40,7 @@ public class SeaWitch extends AttackCard {
     @Override
     public void atStartOfTurn(Player p) {
         p.drawToHand(2);
-        int n = 2;
+/*        int n = 2;
         while (!p.getCardsInHand().isEmpty() && n > 0) {
             Card cardToDiscard = p.chooseCardFromHand(
                     "%s: Discard %d card(s)".formatted(this.toLog(), n),
@@ -48,6 +49,7 @@ public class SeaWitch extends AttackCard {
             p.moveToDiscard(cardToDiscard);
             n -= 1;
         }
-        setHasDurationEffect(false);
+        setHasDurationEffect(false);*/
+        p.setCurrentState(new SeaWitchState(p, this));
     }
 }
