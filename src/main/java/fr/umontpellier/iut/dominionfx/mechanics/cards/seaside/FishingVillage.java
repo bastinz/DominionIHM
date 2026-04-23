@@ -5,29 +5,30 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 
 /**
- * Carte Caravane (Caravan)
+ * Carte Village de pêcheurs (Fishing Village)
  * <p>
- * +1 Carte
- * +1 Action
- * Au début de votre prochain tour, +1 Carte.
+ * +2 Actions
+ * +1 Pièce
+ * Au début de votre prochain tour, +1 Action et +1 Pièce.
  */
-public class Caravan extends ActionCard {
-    public Caravan() {
-        super("Caravan", 4);
+public class FishingVillage extends ActionCard {
+    public FishingVillage() {
+        super("Fishing Village", 3);
         addType(CardType.DURATION);
     }
 
     @Override
     public void play(Player p) {
-        p.drawToHand();
-        p.incrementActions(1);
+        p.incrementActions(2);
+        p.incrementMoney(1);
         setHasDurationEffect(true);
         p.getCurrentState().moveToNextPhase();
     }
 
     @Override
     public void atStartOfTurn(Player p) {
-        p.drawToHand();
+        p.incrementActions(1);
+        p.incrementMoney(1);
         setHasDurationEffect(false);
     }
 }
