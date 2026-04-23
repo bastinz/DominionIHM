@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class DebutPartieTest extends BaseTestClass {
+public class SkipEtBuysTest extends BaseTestClass {
 
     @Override
     public void start(Stage stage) {
@@ -39,7 +39,7 @@ public class DebutPartieTest extends BaseTestClass {
         SupplyPile lightHousePile = game.getSupplyPiles().stream()
                 .filter(pile -> "Lighthouse".equals(pile.getName()))
                 .findFirst()
-                .get();
+                .orElseThrow();
         int initialSize = lightHousePile.size();
         ObservableList<Card> hand =  game.currentPlayer().getHand();
         int initialHandSize = hand.size();
@@ -58,7 +58,7 @@ public class DebutPartieTest extends BaseTestClass {
         SupplyPile lightHousePile = game.getSupplyPiles().stream()
             .filter(pile -> "Lighthouse".equals(pile.getName()))
             .findFirst()
-            .get();
+            .orElseThrow();
         int initialSupplyPileSize = lightHousePile.size();
         clickOnTreasures();
         clickOnSupplyPile("Lighthouse");
