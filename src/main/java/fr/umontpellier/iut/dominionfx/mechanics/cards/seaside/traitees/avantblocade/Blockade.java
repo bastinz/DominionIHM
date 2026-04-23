@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.avantblocade;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
@@ -23,6 +23,8 @@ public class Blockade extends AttackCard {
     private Player player;
     private final List<Player> attackedPlayers = new ArrayList<>();
 
+    private CompletableFuture<Void> future;
+
     public Blockade() {
         super("Blockade", 4);
         addType(CardType.DURATION);
@@ -30,10 +32,18 @@ public class Blockade extends AttackCard {
 
     @Override
     public void action(Player p, CompletableFuture<Void> f) {
+        this.future = f;
         player = p;
         attackedPlayers.clear();
         setHasDurationEffect(true);
-        p.setCurrentState(new BlockadeState(p, this, f));
+        p.setCurrentState(new BlockadeState(p, this));
+    }
+
+    public void endAction(String cardName) {
+        Card card = player.getCardFromSupply(cardName);
+        player.gainToSetAside(card);
+        this.cardSetAside = card;
+        future.complete(null);
     }
 
     @Override
@@ -71,13 +81,5 @@ public class Blockade extends AttackCard {
         }
         cardSetAside = null;
         setHasDurationEffect(false);
-    }
-
-    public void setCardSetAside(Card cardSetAside) {
-        this.cardSetAside = cardSetAside;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 }
