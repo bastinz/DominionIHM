@@ -34,6 +34,7 @@ public class Haven extends ActionCard {
             cardSetAside = c;
             setHasDurationEffect(true);
         }
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override

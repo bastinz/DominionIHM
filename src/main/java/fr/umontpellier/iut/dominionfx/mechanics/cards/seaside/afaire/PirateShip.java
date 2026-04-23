@@ -42,6 +42,7 @@ public class PirateShip extends AttackCard {
             p.log("chooses to attack");
             isAttacking = true;
         }
+        f.complete(null);
     }
 
     @Override

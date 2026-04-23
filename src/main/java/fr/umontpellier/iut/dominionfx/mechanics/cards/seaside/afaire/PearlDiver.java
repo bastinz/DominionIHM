@@ -36,5 +36,6 @@ public class PearlDiver extends ActionCard {
                 p.moveToDraw(c); // retire la carte du bas de la pioche et la place sur le dessus
             }
         }
+        p.getCurrentState().moveToNextPhase();
     }
 }

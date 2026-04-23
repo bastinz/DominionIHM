@@ -44,6 +44,7 @@ public class Lookout extends ActionCard {
         // carte à remettre sur le dessus de la pioche
         p.log("places %s on top of deck".formatted(Utils.toLog(topCards)));
         p.moveToDraw(topCards);
+        p.getCurrentState().moveToNextPhase();
     }
 
 }

@@ -30,6 +30,7 @@ public class Island extends ActionCard {
         } else {
             p.log("puts %s on Island mat".formatted(this.toLog()));
         }
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override

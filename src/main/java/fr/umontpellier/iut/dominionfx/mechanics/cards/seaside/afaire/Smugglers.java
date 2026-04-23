@@ -32,5 +32,6 @@ public class Smugglers extends ActionCard {
             Card gainedCard = p.getCardFromSupply(supplyCard.getName());
             p.gainToDiscard(gainedCard);
         }
+        p.getCurrentState().moveToNextPhase();
     }
 }

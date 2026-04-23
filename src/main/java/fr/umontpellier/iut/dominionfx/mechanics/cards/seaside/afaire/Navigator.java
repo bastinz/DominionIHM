@@ -49,6 +49,7 @@ public class Navigator extends ActionCard {
                 p.moveToDraw(c);
             }
         }
+        p.getCurrentState().moveToNextPhase();
     }
 
 }

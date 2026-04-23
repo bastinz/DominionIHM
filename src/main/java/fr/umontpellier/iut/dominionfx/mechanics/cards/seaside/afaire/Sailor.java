@@ -30,6 +30,7 @@ public class Sailor extends ActionCard {
         canPlayDuration = true;
         p.incrementActions(1);
         setHasDurationEffect(true);
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override

@@ -22,6 +22,7 @@ public class GhostShip extends AttackCard {
     @Override
     public void action(Player p, CompletableFuture<Void> f) {
         p.drawToHand(2);
+        f.complete(null);
     }
 
     @Override

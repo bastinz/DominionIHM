@@ -24,6 +24,7 @@ public class SeaWitch extends AttackCard {
     public void action(Player p, CompletableFuture<Void> f) {
         p.drawToHand(2);
         setHasDurationEffect(true);
+        f.complete(null);
     }
 
     @Override

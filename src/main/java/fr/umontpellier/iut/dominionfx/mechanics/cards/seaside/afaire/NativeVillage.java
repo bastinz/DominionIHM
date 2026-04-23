@@ -38,5 +38,6 @@ public class NativeVillage extends ActionCard {
             p.log("takes cards from mat");
             p.moveToHand(p.getCardsOnNativeVillageMat());
         }
+        p.getCurrentState().moveToNextPhase();
     }
 }

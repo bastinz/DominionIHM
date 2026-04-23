@@ -30,5 +30,6 @@ public class Warehouse extends ActionCard {
             p.moveToDiscard(cardToDiscard);
             nbCardsToDiscard -= 1;
         }
+        p.getCurrentState().moveToNextPhase();
     }
 }

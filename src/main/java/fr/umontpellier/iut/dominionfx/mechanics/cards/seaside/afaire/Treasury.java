@@ -27,6 +27,7 @@ public class Treasury extends ActionCard {
         p.drawToHand(1);
         p.incrementActions(1);
         p.incrementMoney(1);
+        p.getCurrentState().moveToNextPhase();
     }
 
     @Override
