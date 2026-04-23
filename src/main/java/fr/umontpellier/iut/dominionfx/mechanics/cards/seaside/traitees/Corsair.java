@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
@@ -42,7 +42,6 @@ public class Corsair extends AttackCard {
         if (attackedPlayers.contains(p)
                 && (playedCard.hasName("Silver") || playedCard.hasName("Gold"))
                 && p.getNbSilverOrGoldPlayed() == 1) {
-            p.log("trashes it (%s)".formatted(this.toLog()));
             p.moveToTrash(playedCard);
         }
     }

@@ -322,12 +322,10 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     public void moveToNextPlayer() {
         currentPlayer().cleanup();
-        Player next = players.get((players.indexOf(currentTurnPlayer.getValue()) + 1) % players.size());
         previousTurnPlayer.setValue(currentPlayer());
         if (!samePlayerShouldPlayExtraTurn) {
             // passe au joueur suivant
             currentTurnPlayer.setValue(getOtherPlayer());
-            next = players.get((players.indexOf(currentTurnPlayer.getValue()) + 1) % players.size());
             turnNumber += 1;
         }
         samePlayerShouldPlayExtraTurn = false;
@@ -518,4 +516,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
 
     }
 
+    public int getNumberOfTrashedCards() { // pour les tests
+        return trashedCards.size();
+    }
 }
