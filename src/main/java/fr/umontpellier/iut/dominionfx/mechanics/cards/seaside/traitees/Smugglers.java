@@ -1,8 +1,9 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.SmugglersState;
 
 import java.util.List;
 
@@ -24,14 +25,9 @@ public class Smugglers extends ActionCard {
                 .map(Card::getName)
                 .distinct()
                 .toList();
-        Card supplyCard = p.chooseCardFromSupply(
-                "%s: Choose a card to gain".formatted(this),
-                c -> possibleCardNames.contains(c.getName()),
-                false);
-        if (supplyCard != null) {
-            Card gainedCard = p.getCardFromSupply(supplyCard.getName());
-            p.gainToDiscard(gainedCard);
-        }
-        p.getCurrentState().moveToNextPhase();
+        if (!possibleCardNames.isEmpty()) {
+            p.setCurrentState(new SmugglersState(p, possibleCardNames));
+        } else
+            p.getCurrentState().moveToNextPhase();
     }
 }
