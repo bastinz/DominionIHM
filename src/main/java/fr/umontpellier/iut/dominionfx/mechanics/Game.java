@@ -7,6 +7,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.FactorySupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 import java.util.ArrayList;
@@ -474,6 +475,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     @Override
+    public void temporaryCardWasChosen(String cardName) {
+        currentPlayer().getCurrentState().temporaryCardWasChosen(cardName);
+    }
+
+    @Override
     public void supplyCardWasChosen(String supplyName) {
         currentPlayer().getCurrentState().supplyCardWasChosen(supplyName);
     }
@@ -513,10 +519,24 @@ public class Game extends Task<Void> implements Runnable, IGame {
                 .filter(filter)
                 .map(Card::getName)
                 .collect(Collectors.toList());
-
     }
 
     public int getNumberOfTrashedCards() { // pour les tests
         return trashedCards.size();
+    }
+
+    private final ObjectProperty<ObservableList<Card>> temporaryCards = new SimpleObjectProperty<>();
+
+    @Override
+    public ObjectProperty<ObservableList<Card>> temporaryCardsProperty() {
+        return temporaryCards;
+    }
+
+    public void setTemporaryCards(ObservableList<Card> temporaryCardsList) {
+        temporaryCards.setValue(temporaryCardsList);
+    }
+
+    public List<String> getTemporaryCardsNames() {
+        return temporaryCards.getValue().stream().map(Card::getName).collect(Collectors.toList());
     }
 }

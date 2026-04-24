@@ -25,7 +25,7 @@ public class SeaHag extends AttackCard {
     }
     
     @Override
-    public void attack(Player p, Player target) {
+    public CompletableFuture<Void> attack(Player p, Player target) {
         Card c = target.getCardFromDeck();
         if (c != null) {
             target.log("%s discards %s".formatted(target.toLog(), c.toLog()));
@@ -36,5 +36,6 @@ public class SeaHag extends AttackCard {
             target.log("%s gains %s on deck".formatted(target.toLog(), curse.toLog()));
             target.gainToDraw(curse);
         }
+        return CompletableFuture.completedFuture(null);
     }
 }

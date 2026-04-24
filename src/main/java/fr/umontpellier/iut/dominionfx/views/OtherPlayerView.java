@@ -21,17 +21,10 @@ public class OtherPlayerView extends VBox {
 
     private ObjectProperty<? extends IPlayer> currentPlayer;
 
-    @FXML
-    private Label nameLabel;
-
-    @FXML
-    private Label handLabel;
-
-    @FXML
-    private Label drawLabel;
-
-    @FXML
-    private Label discardLabel;
+    @FXML private Label nameLabel;
+    @FXML private Label handLabel;
+    @FXML private Label drawLabel;
+    @FXML private Label discardLabel;
 
     public OtherPlayerView() {
         try {
@@ -67,5 +60,6 @@ public class OtherPlayerView extends VBox {
     protected void setCurrentPlayerChangeListener(ChangeListener<IPlayer> currentPlayerChangeListener) {
         currentPlayer.addListener(currentPlayerChangeListener);
     }
+
 
 }

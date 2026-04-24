@@ -2,7 +2,11 @@ package fr.umontpellier.iut.dominionfx.views;
 
 import fr.umontpellier.iut.dominionfx.IGame;
 import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -27,20 +31,12 @@ public class GameView extends HBox {
 
     private final IGame game;
 
-    @FXML
-    private VBox initialView;
-
-    @FXML
-    private Label instructionLabel;
-
-    @FXML
-    private FlowPane supplyPane;
-
-    @FXML
-    private CurrentPlayerView currentPlayerPane;
-
-    @FXML
-    private Button skipButton;
+    @FXML private VBox initialView;
+    @FXML private Label instructionLabel;
+    @FXML private FlowPane supplyPane;
+    @FXML private CurrentPlayerView currentPlayerPane;
+    @FXML private Button skipButton;
+    @FXML private HBox temporaryCards;
 
     public GameView(IGame game) {
         this.game = game;
@@ -57,6 +53,16 @@ public class GameView extends HBox {
     public void createBindings() {
         setSupplyPane();
         instructionLabel.textProperty().bind(game.instructionProperty());
+//        game.temporaryCardsProperty().getValue().addListener(temporaryCardsListener);
+        game.temporaryCardsProperty().addListener(temporaryListListener);
+    }
+
+    private void refreshTemporaryCards(ObservableList<Card> list) {
+        temporaryCards.getChildren().setAll(
+                game.temporaryCardsProperty().getValue().stream()
+                        .map(this::createTemporaryCardNode)
+                        .toList()
+        );
     }
 
     private Node createSupplyPile(SupplyPile pile) {
@@ -87,5 +93,40 @@ public class GameView extends HBox {
         createBindings();
     }
 
-}
+    public final ListChangeListener<? super Card> temporaryCardsListener = change -> {
+        while (change.next()) {
+            if (change.wasAdded()) {
+                for (Card card : change.getAddedSubList()) {
+                    temporaryCards.getChildren().add(createTemporaryCardNode(card));
+                }
+            }
+            if (change.wasRemoved()) {
+                for (Card card : change.getRemoved()) {
+                    temporaryCards.getChildren().removeIf(node -> node.getUserData() == card);
+                }
+            }
+        }
+    };
 
+    private final ChangeListener<ObservableList<Card>> temporaryListListener = (obs, oldList, newList) -> {
+        if (oldList != null) {
+            oldList.removeListener(temporaryCardsListener);
+            temporaryCards.getChildren().clear();
+        }
+        if (newList != null) {
+            newList.addListener(temporaryCardsListener);
+            refreshTemporaryCards(newList);
+        }
+    };
+
+
+    private Node createTemporaryCardNode(Card card) {
+        Button cardButton = new Button(card.getName());
+        cardButton.setUserData(card);
+        cardButton.setId(card.getName());
+        cardButton.setOnMouseClicked(event -> {
+            game.temporaryCardWasChosen(card.getName());}
+        );
+        return cardButton;
+    }
+}

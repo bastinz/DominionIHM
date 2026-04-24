@@ -70,18 +70,18 @@ public class CurrentPlayerView extends VBox {
     }
 
     private final ListChangeListener<? super Card> handListener = change -> {
-    while (change.next()) {
-        if (change.wasAdded()) {
-            for (Card card : change.getAddedSubList()) {
-                handPane.getChildren().add(createCardNodeInHand(card));
+        while (change.next()) {
+            if (change.wasAdded()) {
+                for (Card card : change.getAddedSubList()) {
+                    handPane.getChildren().add(createCardNodeInHand(card));
+                }
             }
-         }
-        if (change.wasRemoved()) {
-            for (Card card : change.getRemoved()) {
-                handPane.getChildren().removeIf(node -> node.getUserData() == card);
+            if (change.wasRemoved()) {
+                for (Card card : change.getRemoved()) {
+                    handPane.getChildren().removeIf(node -> node.getUserData() == card);
+                }
             }
         }
-    }
     };
 
     private final ListChangeListener<? super Card> inPlayListener = change -> {

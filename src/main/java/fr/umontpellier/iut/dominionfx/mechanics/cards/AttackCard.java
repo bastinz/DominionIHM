@@ -18,7 +18,7 @@ public abstract class AttackCard extends ActionCard {
 
     public abstract void action(Player p, CompletableFuture<Void> f);
 
-    public abstract void attack(Player p, Player target);
+    public abstract CompletableFuture<Void> attack(Player p, Player target);
 
     public void afterAttack(Player p) {
     }
@@ -27,15 +27,19 @@ public abstract class AttackCard extends ActionCard {
     public void play(Player p) {
         CompletableFuture<Void> actionFuture = new CompletableFuture<>();
         action(p, actionFuture);
-        actionFuture.thenRun(() -> attack(p));
+
+        actionFuture
+                .thenCompose(v -> attackAll(p))
+                .thenRun(() -> afterAttack(p))
+                .thenRun(() -> p.getCurrentState().moveToNextPhase());
     }
 
-    private void attack(Player p) {
-        for (Player target : p.getOtherPlayers())
-            if (!target.isProtectedFromAttack())
-                attack(p, target);
-        afterAttack(p);
-        p.getCurrentState().moveToNextPhase();
+    private CompletableFuture<Void> attackAll(Player p) {
+        CompletableFuture<Void> future = CompletableFuture.completedFuture(null);
+        for (Player target : p.getOtherPlayers()) {
+            future = future.thenCompose(v -> attack(p, target));
+        }
+        return future;
     }
+
 }
-

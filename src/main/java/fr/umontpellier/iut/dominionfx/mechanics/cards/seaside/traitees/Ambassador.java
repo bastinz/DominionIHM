@@ -32,10 +32,11 @@ public class Ambassador extends AttackCard {
     }
 
     @Override
-    public void attack(Player p, Player target) {
+    public CompletableFuture<Void> attack(Player p, Player target) {
         Card c = target.getCardFromSupply(revealedCardName.getValue());
         if (c != null) {
             target.gainToDiscard(c);
         }
+        return CompletableFuture.completedFuture(null);
     }
 }

@@ -29,12 +29,13 @@ public class SeaWitch extends AttackCard {
     }
 
     @Override
-    public void attack(Player p, Player target) {
+    public CompletableFuture<Void> attack(Player p, Player target) {
         Card curse = target.getCardFromSupply("Curse");
         if (curse != null) {
             target.log("%s gains %s".formatted(target.toLog(), curse.toLog()));
             target.gainToDiscard(curse);
         }
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

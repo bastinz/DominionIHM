@@ -26,7 +26,7 @@ public class Cutpurse extends AttackCard {
     }
 
     @Override
-    public void attack(Player p, Player target) {
+    public CompletableFuture<Void> attack(Player p, Player target) {
         Card copper = target.getCardsInHand().stream().filter(c -> c.hasName("Copper")).findFirst().orElse(null);
         if (copper != null) {
             target.log("%s discards %s".formatted(target.toLog(), copper.toLog()));
@@ -34,5 +34,6 @@ public class Cutpurse extends AttackCard {
         } else {
             target.log("%s reveals his hand: %s".formatted(target.toLog(), Utils.toLog(target.getCardsInHand())));
         }
+        return CompletableFuture.completedFuture(null);
     }
 }

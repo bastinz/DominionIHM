@@ -20,7 +20,7 @@ public class BaseTestClass extends ApplicationTest {
 
     protected DominionIHM dominionIHM = new DominionIHM(true);
     protected Game game;
-    protected Parent handPane, inPlayPane, supplyPane;
+    protected Parent handPane, inPlayPane, supplyPane, temporaryCards;
 
     @Override
     public void start(Stage stage) {
@@ -52,6 +52,7 @@ public class BaseTestClass extends ApplicationTest {
         handPane = lookup("#handPane").query();
         inPlayPane = lookup("#inPlayPane").query();
         supplyPane = lookup("#supplyPane").query();
+        temporaryCards = lookup("#temporaryCards").query();
     }
 
     public void clickOnSkip() {
@@ -77,6 +78,15 @@ public class BaseTestClass extends ApplicationTest {
         if (nodeToSelect == null) {
 //            moveBy(200, 0);
             nodeToSelect = findNodeMatchingCondition(supplyPane, n -> n.getId().startsWith(nomCarte));
+        }
+        clickOn(nodeToSelect);
+    }
+
+    public void clickOnTemporaryCard(String nomCarte) {
+        Node nodeToSelect = findNodeMatchingCondition(temporaryCards, n -> n.getId().startsWith(nomCarte));
+        if (nodeToSelect == null) {
+//            moveBy(200, 0);
+            nodeToSelect = findNodeMatchingCondition(temporaryCards, n -> n.getId().startsWith(nomCarte));
         }
         clickOn(nodeToSelect);
     }

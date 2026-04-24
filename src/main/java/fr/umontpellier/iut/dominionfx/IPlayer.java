@@ -8,6 +8,7 @@ public interface IPlayer {
 
     void playTreasuresWasChosen();
     void cardInHandWasChosen(String supplyName);
+    void temporaryCardWasChosen(String supplyName);
 
     String getName();
 

@@ -47,8 +47,9 @@ public class Blockade extends AttackCard {
     }
 
     @Override
-    public void attack(Player p, Player target) {
+    public CompletableFuture<Void> attack(Player p, Player target) {
         attackedPlayers.add(target);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

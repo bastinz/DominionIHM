@@ -46,7 +46,7 @@ public class PirateShip extends AttackCard {
     }
 
     @Override
-    public void attack(Player p, Player target) {
+    public  CompletableFuture<Void> attack(Player p, Player target) {
         if (isAttacking) {
             List<Card> revealedCards = target.drawCards(2);
             if (revealedCards.stream().anyMatch(c -> c.hasType(CardType.TREASURE))) {
@@ -61,6 +61,7 @@ public class PirateShip extends AttackCard {
             }
             target.moveToDiscard(revealedCards);
         }
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

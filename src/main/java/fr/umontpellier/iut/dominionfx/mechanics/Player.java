@@ -920,6 +920,7 @@ public class Player implements IPlayer {
         Card card = it.next();
         runCard(card, player).thenRun(() -> runNext(it, player));
     }
+
     private CompletableFuture<Void> runCard(Card card, Player player) {
         CompletableFuture<Void> future = new CompletableFuture<>();
         ChangeListener<Boolean> listener = new ChangeListener<>() {
@@ -1151,6 +1152,11 @@ public class Player implements IPlayer {
 
     @Override
     public void cardInHandWasChosen(String cardName) {
+        currentState.cardInHandWasChosen(cardName);
+    }
+
+    @Override
+    public void temporaryCardWasChosen(String cardName) {
         currentState.cardInHandWasChosen(cardName);
     }
 
