@@ -30,8 +30,15 @@ public abstract class PlayerState {
     public void temporaryCardWasChosen(String cardName) {
     }
 
+    public void addToMat() {
+    }
+
+    public void takeFromMat() {
+    }
+
+
     public void endOfCurrentPlayersTurn() {
-        // on vérifie si fin de partie ??
+    // on vérifie si fin de partie ??
         getGame().moveToNextPlayerState(); // fait le cleanUp et startTurn
     }
 

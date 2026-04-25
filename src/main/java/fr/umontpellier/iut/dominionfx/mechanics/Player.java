@@ -6,7 +6,9 @@ import fr.umontpellier.iut.dominionfx.mechanics.gui.Utils;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ActionPhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -81,6 +83,7 @@ public class Player implements IPlayer {
     private final ObservableList<Card> islandMat;
 
     private final ObservableList<Card> nativeVillageMat;
+    private BooleanProperty nativeVillagePlayed;
 
     private final ObservableList<Card> cardsGainedThisTurn;
 
@@ -124,6 +127,7 @@ public class Player implements IPlayer {
         cardsSetAside = FXCollections.observableArrayList();
         islandMat = FXCollections.observableArrayList();
         nativeVillageMat = FXCollections.observableArrayList();
+        nativeVillagePlayed = new SimpleBooleanProperty(false);
         cardsGainedThisTurn = FXCollections.observableArrayList();
         cardsBoughtThisTurn = FXCollections.observableArrayList();
 
@@ -1188,8 +1192,13 @@ public class Player implements IPlayer {
     }
 
     @Override
-    public void temporaryCardWasChosen(String cardName) {
-        currentState.cardInHandWasChosen(cardName);
+    public void addToMat() {
+        currentState.addToMat();
+    }
+
+    @Override
+    public void takeFromMat() {
+        currentState.takeFromMat();
     }
 
     public void switchToStateByCardType(String cardName) {
@@ -1289,4 +1298,17 @@ public class Player implements IPlayer {
     public Card getCardFromInPlay(String cardName) {
         return inPlay.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
     }
+
+    public boolean getNativeVillagePlayed() {
+        return nativeVillagePlayed.get();
+    }
+
+    public BooleanProperty nativeVillagePlayedProperty() {
+        return nativeVillagePlayed;
+    }
+
+    public void setNativeVillagePlayed(boolean nativeVillagePlayed) {
+        this.nativeVillagePlayed.set(nativeVillagePlayed);
+    }
+
 }

@@ -15,7 +15,13 @@
     <HBox id="handPane" fx:id="handPane" minHeight="50.0"/>
     <HBox spacing="100">
         <HBox id="islandMat" fx:id="islandMat" minHeight="50.0"/>
-        <HBox id="nativeVillage" fx:id="nativeVillage" minHeight="50.0"/>
+        <HBox id="nativeVillageMat" fx:id="nativeVillageMat" minHeight="50.0"/>
     </HBox>
-    <Button fx:id="playTreasuresButton" onMouseClicked="#playTreasures" text="Play treasures"/>
+    <HBox spacing="60">
+        <Button fx:id="playTreasuresButton" onMouseClicked="#playTreasures" text="Play treasures"/>
+        <HBox id="nativeVillageButtons" fx:id="nativeVillageButtons" spacing="20" visible="false">
+            <Button id="addToNativeVillageMat" fx:id="addToMat" onMouseClicked="#addToMat" text="Add to mat"/>
+            <Button id="takeFromNativeVillageMat" fx:id="takefromMat" onMouseClicked="#takeFromMat" text="Take form mat"/>
+        </HBox>
+    </HBox>
 </fx:root>

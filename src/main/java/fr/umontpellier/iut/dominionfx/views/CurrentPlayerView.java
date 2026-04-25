@@ -31,7 +31,10 @@ public class CurrentPlayerView extends VBox {
     private Label nameLabel, moneyLabel, drawLabel, discardLabel, actionsLabel, buysLabel;
 
     @FXML
-    private HBox handPane, inPlayPane, islandMat, nativeVillageMat;
+    private HBox handPane, inPlayPane, islandMat, nativeVillageMat, nativeVillageButtons;
+
+    @FXML
+    private Button addToNativeVillageMat, takeFromNativeVillageMat;
 
     public CurrentPlayerView() {
         try {
@@ -63,6 +66,16 @@ public class CurrentPlayerView extends VBox {
     @FXML
     void playTreasures() {
         currentPlayer().playTreasuresWasChosen();
+    }
+
+    @FXML
+    void addToMat() {
+        currentPlayer().addToMat();
+    }
+
+    @FXML
+    void takeFromMat() {
+        currentPlayer().takeFromMat();
     }
 
     private ListChangeListener<? super Card> generateListener(Pane p) {
@@ -122,6 +135,7 @@ public class CurrentPlayerView extends VBox {
              discardLabel.textProperty().bind(Bindings.concat("Discard : ", Bindings.size(currentPlayer().getDiscard()).asString()));
              actionsLabel.textProperty().bind(Bindings.concat("Actions : ", currentPlayer().numberOfActionsProperty().asString()));
              buysLabel.textProperty().bind(Bindings.concat("Buys : ", currentPlayer().numberOfBuysProperty().asString()));
+             nativeVillageButtons.visibleProperty().bind(currentPlayer().nativeVillagePlayedProperty());
          }
      };
 

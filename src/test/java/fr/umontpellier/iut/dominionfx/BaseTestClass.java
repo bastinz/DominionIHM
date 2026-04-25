@@ -232,4 +232,13 @@ public class BaseTestClass extends ApplicationTest {
 //        System.out.println("SOOO " + player.getName() + " " + player.getHand());
     }
 
+    protected void clickOnAddToNativeVillageMat() {
+        Node n = lookup("#addToNativeVillageMat").query();
+        clickOn(n);
+    }
+
+    protected void clickOnTakeFromNativeVillageMat() {
+        Node n = lookup("#takeFromNativeVillageMat").query();
+        clickOn(n);
+    }
 }
