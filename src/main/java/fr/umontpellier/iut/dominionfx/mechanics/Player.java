@@ -578,6 +578,7 @@ public class Player implements IPlayer {
      * @param c carte à jouer
      */
     public void playCard(Card c) {
+//        System.out.println("SOOO joueur " + getName() + " joue " + c.getName());
         moveToInPlay(c);
         c.play(this);
         // exécuter les effets onPlayerPlayCard de toutes les cartes en jeu des joueurs
@@ -600,7 +601,7 @@ public class Player implements IPlayer {
         if (gainedCard == null) {
             return;
         }
-        indentLog();
+//        indentLog();
         gainedCard.moveTo(location);
         cardsGainedThisTurn.add(gainedCard);
         // exécuter les effets déclenchés par le gain d'une carte
@@ -613,7 +614,26 @@ public class Player implements IPlayer {
                 cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
             }
             // révéler et activer une carte réaction
-            while (cardOwner.hand.stream().anyMatch(c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner))) {
+//            System.out.println("SOOO avant listOfReact " + cardOwner.getName() + " " + cardOwner.getHand());
+            List<Card> listOfReactingCards = cardOwner.hand.stream()
+                    .filter(c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner)).toList();
+//            game.setTemporaryCards(listOfReactingCards.stream().collect(Collectors.toCollection(FXCollections::observableArrayList)));
+            if (!listOfReactingCards.isEmpty()) {
+//                System.out.println("SOOO " +cardOwner.getName() + " peut reagir " + listOfReactingCards);
+                game.setTemporaryCards(cardOwner.getHand());
+                CompletableFuture<Void> chain = new CompletableFuture<>();
+                for (Card card : listOfReactingCards) {
+                    chain = chain.thenCompose(v -> card.reaction(this, gainedCard, cardOwner));
+                }
+            }
+/*            for (Card reactingCard : listOfReactingCards) {
+                System.out.println("SOOO reactingCard: " + reactingCard);
+                reactingCard.reaction(this, gainedCard, cardOwner);
+            }*/
+
+
+// Version de Victor
+/*            while (cardOwner.hand.stream().anyMatch(c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner))) {
                 Card choice = cardOwner.chooseCardFromHand(
                         "Reaction: you may reveal a Reaction card from your hand",
                         c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner),
@@ -623,9 +643,10 @@ public class Player implements IPlayer {
                 } else {
                     cardOwner.playCard(choice);
                 }
-            }
+            }*/
         }
-        unindentLog();
+//        unindentLog();
+// Fin Version de Victor
     }
 
     public void gainToDiscard(Card c) {
@@ -897,6 +918,7 @@ public class Player implements IPlayer {
      * initialisés
      */
     public void startTurn() {
+        game.setUITarget(this);
         numberOfActions.setValue(1);
         money.setValue(0);
         numberOfBuys.setValue(1);

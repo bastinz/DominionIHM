@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Représentation des cartes du jeu Dominion
@@ -124,6 +125,10 @@ public abstract class Card {
     }
 
     public void atStartOfTurn(Player p) {
+    }
+
+    public CompletableFuture<Void> reaction(Player p, Card gainedCard, Player owner) {
+        return CompletableFuture.completedFuture(null);
     }
 
     public boolean isProtectionFromAttack() {

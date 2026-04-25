@@ -4,6 +4,10 @@ import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateReactionState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateState;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Pirate
@@ -14,6 +18,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
  * main.
  */
 public class Pirate extends ActionCard {
+
     public Pirate() {
         super("Pirate", 5);
         addType(CardType.DURATION);
@@ -38,16 +43,26 @@ public class Pirate extends ActionCard {
     }
 
     @Override
+    public CompletableFuture<Void> reaction(Player p, Card gainedCard, Player owner) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        p.setCurrentState(new PirateReactionState(p, owner, this, future));
+        return future;
+    }
+
+    @Override
     public void atStartOfTurn(Player p) {
-        Card supplyCard = p.chooseCardFromSupply(
-                "%s: Gain a Treasure costing up to 6$".formatted(this),
-                c -> c.hasType(CardType.TREASURE) && c.getCost() <= 6,
-                false);
-        if (supplyCard != null) {
-            Card gainedCard = p.getCardFromSupply(supplyCard.getName());
-            p.log("%s gains %s (%s)".formatted(p.toLog(), gainedCard.toLog(), this.toLog()));
-            p.gainToHand(gainedCard);
-        }
-        setHasDurationEffect(false);
+        p.setCurrentState(new PirateState(p,this));
     }
 }
+
+/*
+Card supplyCard = p.chooseCardFromSupply(
+        "%s: Gain a Treasure costing up to 6$".formatted(this),
+        c -> c.hasType(CardType.TREASURE) && c.getCost() <= 6,
+        false);
+        if (supplyCard != null) {
+Card gainedCard = p.getCardFromSupply(supplyCard.getName());
+            p.log("%s gains %s (%s)".formatted(p.toLog(), gainedCard.toLog(), this.toLog()));
+        p.gainToHand(gainedCard);
+        }
+setHasDurationEffect(false);*/

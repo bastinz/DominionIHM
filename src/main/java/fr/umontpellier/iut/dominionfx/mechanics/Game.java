@@ -25,7 +25,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     /**
      * Tableau contenant les joueurs de la partie
      */
-    /*private*/ final ArrayList<Player> players;
+    private final ArrayList<Player> players;
 
     public ArrayList<Player> getPlayers() {
         return players;
@@ -37,6 +37,8 @@ public class Game extends Task<Void> implements Runnable, IGame {
     private ObjectProperty<Player> currentTurnPlayer;
 
     private ObjectProperty<Player> previousTurnPlayer;
+
+    /*private*/ public Player uiTarget; // target of IU
 
     /**
      * Instruction à afficher au joueur actif
@@ -476,12 +478,16 @@ public class Game extends Task<Void> implements Runnable, IGame {
 
     @Override
     public void temporaryCardWasChosen(String cardName) {
+//        System.out.println("SOOO la cible est " + uiTarget.getName());
+//        System.out.println("SOOO currentState " + currentPlayer().getCurrentState());
+//        uiTarget.getCurrentState().temporaryCardWasChosen(cardName);
         currentPlayer().getCurrentState().temporaryCardWasChosen(cardName);
     }
 
     @Override
     public void supplyCardWasChosen(String supplyName) {
         currentPlayer().getCurrentState().supplyCardWasChosen(supplyName);
+//        uiTarget.getCurrentState().supplyCardWasChosen(supplyName);
     }
 
     @Override
@@ -538,5 +544,13 @@ public class Game extends Task<Void> implements Runnable, IGame {
 
     public List<String> getTemporaryCardsNames() {
         return temporaryCards.getValue().stream().map(Card::getName).collect(Collectors.toList());
+    }
+
+    public void switchCurrentPlayer(Player cardOwner) {
+        currentTurnPlayer.setValue(cardOwner);
+    }
+
+    public void setUITarget(Player uiTarget) {
+        this.uiTarget = uiTarget;
     }
 }

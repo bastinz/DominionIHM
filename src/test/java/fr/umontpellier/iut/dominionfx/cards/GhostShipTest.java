@@ -43,6 +43,7 @@ public class GhostShipTest extends BaseTestClass {
         assertInstanceOf(GhostShipState.class, currentPlayer.getCurrentState());
         clickOnTemporaryCard("Copper");
         assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+        assertEquals(7,currentPlayer.getHand().size());
         assertEquals(3,game.getPlayers().get(1).getHand().size());
 //        pause(2);
     }

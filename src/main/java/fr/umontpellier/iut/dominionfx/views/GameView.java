@@ -119,7 +119,6 @@ public class GameView extends HBox {
         }
     };
 
-
     private Node createTemporaryCardNode(Card card) {
         Button cardButton = new Button(card.getName());
         cardButton.setUserData(card);

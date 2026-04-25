@@ -8,9 +8,9 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 public class DurationState extends ActionPhase {
 
     protected Card durationCard;
-    public DurationState(Player currentPlayer, Card cardWithDuration) {
+    public DurationState(Player currentPlayer, Card durationCard) {
         super(currentPlayer);
-        this.durationCard = cardWithDuration;
+        this.durationCard = durationCard;
     }
 
     @Override
@@ -18,4 +18,5 @@ public class DurationState extends ActionPhase {
         durationCard.setHasDurationEffect(false);
         currentPlayer.setCurrentState(new StartTurnState(currentPlayer));
     }
+
 }
