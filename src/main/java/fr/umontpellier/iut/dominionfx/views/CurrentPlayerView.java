@@ -2,7 +2,6 @@ package fr.umontpellier.iut.dominionfx.views;
 
 import fr.umontpellier.iut.dominionfx.DominionIHM;
 import fr.umontpellier.iut.dominionfx.IPlayer;
-import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
@@ -15,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -30,14 +30,8 @@ public class CurrentPlayerView extends VBox {
     @FXML
     private Label nameLabel, moneyLabel, drawLabel, discardLabel, actionsLabel, buysLabel;
 
-/*    @FXML
-    private Label discardLabel;*/
-
     @FXML
-    private HBox handPane;
-
-    @FXML
-    private HBox inPlayPane;
+    private HBox handPane, inPlayPane, islandMat, nativeVillageMat;
 
     public CurrentPlayerView() {
         try {
@@ -58,15 +52,34 @@ public class CurrentPlayerView extends VBox {
     @FXML
     private void initialize() {
         bindCurrentPlayer();
-        for (Player p : DominionIHM.getGame().getPlayers()) {
+        for (IPlayer p : DominionIHM.getGame().getPlayers()) {
             p.getHand().addListener(handListener);
-            p.getInPlay().addListener(inPlayListener);
-        };
+            p.getInPlay().addListener(generateListener(inPlayPane));
+            p.getIslandMat().addListener(generateListener(islandMat));
+            p.getNativeVillageMat().addListener(generateListener(nativeVillageMat));
+        }
     }
 
     @FXML
     void playTreasures() {
         currentPlayer().playTreasuresWasChosen();
+    }
+
+    private ListChangeListener<? super Card> generateListener(Pane p) {
+        return change -> {
+            while (change.next()) {
+                if (change.wasAdded()) {
+                    for (Card card : change.getAddedSubList()) {
+                        p.getChildren().add(createCardNode(card));
+                    }
+                }
+                if (change.wasRemoved()) {
+                    for (Card card : change.getRemoved()) {
+                        p.getChildren().removeIf(node -> node.getUserData() == card);
+                    }
+                }
+            }
+        };
     }
 
     private final ListChangeListener<? super Card> handListener = change -> {
@@ -84,7 +97,7 @@ public class CurrentPlayerView extends VBox {
         }
     };
 
-    private final ListChangeListener<? super Card> inPlayListener = change -> {
+/*    private final ListChangeListener<? super Card> inPlayListener = change -> {
         while (change.next()) {
             if (change.wasAdded()) {
                 for (Card card : change.getAddedSubList()) {
@@ -97,7 +110,7 @@ public class CurrentPlayerView extends VBox {
                 }
             }
         }
-    };
+    };*/
 
     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) -> {
          if (newPlayer != null) {
@@ -142,6 +155,15 @@ public class CurrentPlayerView extends VBox {
         );
         return cardButton;
     }
+
+    private Node createCardNode(Card card) {
+        Button cardButton = new Button(card.getName());
+        cardButton.setUserData(card);
+        cardButton.setId(card.getName());
+        cardButton.setDisable(true);
+        return cardButton;
+    }
+
 
     private Node createCardNodeInPlay(Card card) {
         Button cardButton = new Button(card.getName());

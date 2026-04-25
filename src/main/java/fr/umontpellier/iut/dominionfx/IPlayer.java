@@ -14,6 +14,8 @@ public interface IPlayer {
 
     ObservableList<Card> getHand();
     ObservableList<Card> getInPlay();
+    ObservableList<Card> getIslandMat();
+    ObservableList<Card> getNativeVillageMat();
     ObservableList<Card> getDraw(); // A REVOIR : est-ce que la size suffirait?
     ObservableList<Card> getDiscard(); // A REVOIR : est-ce que la size suffirait?
     IntegerProperty numberOfActionsProperty();

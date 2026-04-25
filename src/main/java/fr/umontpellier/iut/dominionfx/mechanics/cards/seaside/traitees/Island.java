@@ -1,9 +1,9 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.IslandState;
 
 /**
  * Carte Île (Island)
@@ -19,7 +19,7 @@ public class Island extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public void play(Player p) {/*
         Card c = p.chooseCardFromHand(
                 "%s: Choose a card to set aside".formatted(this),
                 false);
@@ -30,7 +30,8 @@ public class Island extends ActionCard {
         } else {
             p.log("puts %s on Island mat".formatted(this.toLog()));
         }
-        p.getCurrentState().moveToNextPhase();
+        p.getCurrentState().moveToNextPhase();*/
+        p.setCurrentState(new IslandState(p));
     }
 
     @Override

@@ -13,5 +13,9 @@
     </HBox>
     <HBox id="inPlayPane" fx:id="inPlayPane" minHeight="50.0"/>
     <HBox id="handPane" fx:id="handPane" minHeight="50.0"/>
+    <HBox spacing="100">
+        <HBox id="islandMat" fx:id="islandMat" minHeight="50.0"/>
+        <HBox id="nativeVillage" fx:id="nativeVillage" minHeight="50.0"/>
+    </HBox>
     <Button fx:id="playTreasuresButton" onMouseClicked="#playTreasures" text="Play treasures"/>
 </fx:root>

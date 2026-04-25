@@ -1168,6 +1168,16 @@ public class Player implements IPlayer {
     }
 
     @Override
+    public ObservableList<Card> getNativeVillageMat() {
+        return nativeVillageMat;
+    }
+
+    @Override
+    public ObservableList<Card> getIslandMat() {
+        return islandMat;
+    }
+
+    @Override
     public void playTreasuresWasChosen() {
         currentState.playTreasuresWasChosen();
     }
@@ -1274,5 +1284,9 @@ public class Player implements IPlayer {
 
     public Card getCardFromHand(String cardName) {
         return hand.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
+    }
+
+    public Card getCardFromInPlay(String cardName) {
+        return inPlay.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
     }
 }
