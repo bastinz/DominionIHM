@@ -103,8 +103,18 @@ public class CurrentPlayerView extends VBox {
                 }
             }
             if (change.wasRemoved()) {
+/*                for (Card card : change.getRemoved()) {
+                    handPane.getChildren().removeIf(node -> node.getId() == card.getName());
+                }*/
+//            }
+
                 for (Card card : change.getRemoved()) {
-                    handPane.getChildren().removeIf(node -> node.getUserData() == card);
+                    for (Node node : handPane.getChildren()) {
+                        if (node.getUserData() == card) {
+                            handPane.getChildren().remove(node);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -126,7 +136,7 @@ public class CurrentPlayerView extends VBox {
     };*/
 
     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) -> {
-         if (newPlayer != null) {
+        if (newPlayer != null) {
              nameLabel.setText(newPlayer.getName());
              refreshHand();
              refreshInPlay();
@@ -144,10 +154,11 @@ public class CurrentPlayerView extends VBox {
     }
 
     private void refreshHand() {
+        handPane.getChildren().clear();
         handPane.getChildren().setAll(
                 currentPlayer().getHand().stream()
                         .map(this::createCardNodeInHand)
-                        .toList()
+                        .collect(java.util.stream.Collectors.toList())
         );
     }
 
@@ -182,6 +193,7 @@ public class CurrentPlayerView extends VBox {
     private Node createCardNodeInPlay(Card card) {
         Button cardButton = new Button(card.getName());
         cardButton.setDisable(true);
+        cardButton.setId(card.getName());
         cardButton.setUserData(card);
         return cardButton;
     }

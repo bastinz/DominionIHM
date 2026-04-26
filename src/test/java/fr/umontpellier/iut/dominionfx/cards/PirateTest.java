@@ -5,8 +5,11 @@ import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,29 +46,24 @@ public class PirateTest extends BaseTestClass {
 //        pause(2);
     }
 
-/*    @Test
+    @Test
     void reactsToOtherPlayersGainedTreasureAndRemainsOnSamePlayer() {
         Player pirateOwner = game.getPlayers().get(0);
         Player treasureGainer = game.getPlayers().get(1);
-        clickOnSkip();
-        assertEquals(treasureGainer, game.currentPlayer());
-        assertEquals(pirateOwner, game.getPlayers().get(0));
         addToPlayersHand(treasureGainer, "Gold");
+        clickOnSkip();
         Platform.runLater(() -> treasureGainer.incrementBuys(1));// pour rester sur ce joueur
         addToPlayersHand(pirateOwner, "Pirate");
         WaitForAsyncUtils.waitForFxEvents();
-//        pause(2);
         clickOnTreasures();
         clickOnSupplyPile("Gold"); // achat qui va declencher Reaction
-//        pause(2);
         clickOnTemporaryCard("Pirate"); // reponse reaction
-//        pause(2);
         assertTrue(pirateOwner.getInPlay().stream().map(Card::getName).toList().contains("Pirate"));
         assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState());
 //        pause(2);
     }
-    @Test
 
+    @Test
     void reactsToOtherPlayersGainedTreasureAndMovesToNextPlayer() {
         addToSecondPlayersHand("Gold");
         clickOnSkip();
@@ -73,7 +71,7 @@ public class PirateTest extends BaseTestClass {
         clickOnTreasures();
         clickOnSupplyPile("Gold"); // achat qui va declencher Reaction
         clickOnTemporaryCard("Pirate"); // reponse reaction
-        assertInstanceOf(PirateState.class, game.currentPlayer().getCurrentState());
+        assertInstanceOf(StartTurnState.class, game.currentPlayer().getCurrentState());
 //        pause(2);
-    }*/
+    }
 }

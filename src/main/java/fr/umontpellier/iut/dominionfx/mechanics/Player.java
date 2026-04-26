@@ -5,6 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.gui.Utils;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ActionPhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ReactionPhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -19,6 +20,8 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static fr.umontpellier.iut.dominionfx.mechanics.CardType.TREASURE;
 
 /**
  * Un joueur de Dominion
@@ -83,7 +86,7 @@ public class Player implements IPlayer {
     private final ObservableList<Card> islandMat;
 
     private final ObservableList<Card> nativeVillageMat;
-    private BooleanProperty nativeVillagePlayed;
+    private final BooleanProperty nativeVillagePlayed;
 
     private final ObservableList<Card> cardsGainedThisTurn;
 
@@ -604,7 +607,6 @@ public class Player implements IPlayer {
         if (gainedCard == null) {
             return;
         }
-//        indentLog();
         gainedCard.moveTo(location);
         cardsGainedThisTurn.add(gainedCard);
         // exécuter les effets déclenchés par le gain d'une carte
@@ -616,53 +618,8 @@ public class Player implements IPlayer {
             for (Card cardInPlay : new ArrayList<>(cardOwner.getInPlay()))
                 cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
         }
-
-//        setCurrentState(new ReactionPhase(this, gainedCard));
-
-/*        CompletableFuture<Void> chain = new CompletableFuture<>();
-        for (Player cardOwner : getPlayers()) {
-            // exécuter les effets onGain de toutes les cartes en jeu du joueur
-            for (Card cardInPlay : new ArrayList<>(cardOwner.inPlay)) {
-                cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
-            }
-            // révéler et activer une carte réaction
-            List<Card> listOfReactingCards = cardOwner.hand.stream()
-                    .filter(c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner)).toList();
-//            game.setTemporaryCards(listOfReactingCards.stream().collect(Collectors.toCollection(FXCollections::observableArrayList)));
-            if (!listOfReactingCards.isEmpty()) {
-                game.setTemporaryCards(cardOwner.getHand());
-                for (Card card : listOfReactingCards) {
-                    chain = chain.thenCompose(v -> card.reaction(this, gainedCard, cardOwner));
-                }
-            }*/
-/*            for (Card reactingCard : listOfReactingCards) {
-                reactingCard.reaction(this, gainedCard, cardOwner);
-            }*/
-
-
-// Version de Victor
-/*            while (cardOwner.hand.stream().anyMatch(c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner))) {
-                Card choice = cardOwner.chooseCardFromHand(
-                        "Reaction: you may reveal a Reaction card from your hand",
-                        c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner),
-                        true);
-                if (choice == null) {
-                    break;
-                } else {
-                    cardOwner.playCard(choice);
-                }
-            }*/
-//        }
-//        unindentLog();
-// Fin Version de Victor
-
-    }
-
-    public CompletableFuture<Void> moveToNextPlayer() {
-        if (areBuysCompleted()) {
-            currentState.endOfCurrentPlayersTurn();
-        }
-        return CompletableFuture.completedFuture(null);
+        if (gainedCard.hasType(TREASURE))
+            setCurrentState(new ReactionPhase(this, gainedCard));
     }
 
     public void gainToDiscard(Card c) {
@@ -1008,7 +965,7 @@ public class Player implements IPlayer {
                 if (canPlayActions && numberOfActions.getValue() > 0 && c.hasType(CardType.ACTION)) {
                     options.add("HAND:" + c.getName());
                 }
-                if (canPlayTreasures && c.hasType(CardType.TREASURE)) {
+                if (canPlayTreasures && c.hasType(TREASURE)) {
                     options.add("HAND:" + c.getName());
                 }
             }
@@ -1020,7 +977,7 @@ public class Player implements IPlayer {
                 }
             }
             if (canPlayTreasures
-                    && hand.stream().anyMatch(c -> c.hasType(CardType.TREASURE))) {
+                    && hand.stream().anyMatch(c -> c.hasType(TREASURE))) {
                 buttons.add(new Button("Play treasures", "treasures"));
             }
 
@@ -1041,7 +998,7 @@ public class Player implements IPlayer {
                     break turnloop;
                 }
                 case "BUTTON:treasures" -> {
-                    List<Card> treasures = hand.stream().filter(c -> c.hasType(CardType.TREASURE)).toList();
+                    List<Card> treasures = hand.stream().filter(c -> c.hasType(TREASURE)).toList();
                     for (Card c : treasures)
                         playCard(c);
                     canPlayActions = false;
@@ -1054,7 +1011,7 @@ public class Player implements IPlayer {
                     if (cardToPlay.hasType(CardType.ACTION)) {
                         numberOfActions.setValue(numberOfActions.getValue() - 1);
                         playCard(cardToPlay);
-                    } else if (cardToPlay.hasType(CardType.TREASURE)) {
+                    } else if (cardToPlay.hasType(TREASURE)) {
                         canPlayActions = false;
                         playCard(cardToPlay);
                     }
@@ -1126,7 +1083,7 @@ public class Player implements IPlayer {
     boolean canPlayTreasures = true;
 
     public void playTreasures() {
-        List<Card> treasures = hand.stream().filter(c -> c.hasType(CardType.TREASURE)).toList();
+        List<Card> treasures = hand.stream().filter(c -> c.hasType(TREASURE)).toList();
         for (Card c : treasures)
             playCard(c);
     }
@@ -1137,7 +1094,7 @@ public class Player implements IPlayer {
 
     public List<String> getNamesOfTreasuresInHand() {
         return hand.stream()
-                .filter(c -> c.hasType(CardType.TREASURE))
+                .filter(c -> c.hasType(TREASURE))
                 .map(Card::getName)
                 .toList();
     }
@@ -1221,7 +1178,7 @@ public class Player implements IPlayer {
             setCurrentState(new ActionPhase(this));
             numberOfActions.setValue(numberOfActions.getValue() - 1);
             playCard(cardToPlay);
-        } else if (cardToPlay.hasType(CardType.TREASURE)) {
+        } else if (cardToPlay.hasType(TREASURE)) {
             setCurrentState(new TreasurePhase(this));
             canPlayActions = false;
             playCard(cardToPlay);
@@ -1310,10 +1267,6 @@ public class Player implements IPlayer {
 
     public Card getCardFromInPlay(String cardName) {
         return inPlay.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
-    }
-
-    public boolean getNativeVillagePlayed() {
-        return nativeVillagePlayed.get();
     }
 
     public BooleanProperty nativeVillagePlayedProperty() {

@@ -8,17 +8,17 @@ import java.util.stream.Collectors;
 
 public class ReactionPhase extends PlayerState {
 
+    private List<Card> reactingCards;
+    private Player reactingCardOwner;
+    private final Card gainedCard;
+    private final Map<Player, List<Card>> allReactionsToProcess = new LinkedHashMap<>() ;
+
     public ReactionPhase(Player currentPlayer, Card gainedCard) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Reacting to " + gainedCard.getName());
         this.gainedCard = gainedCard;
         processReactingCard();
     }
-
-    private List<Card> reactingCards;
-    private Player reactingCardOwner;
-    private Card gainedCard;
-
 
     @Override
     public void skip() {
@@ -27,8 +27,10 @@ public class ReactionPhase extends PlayerState {
 
     @Override
     public void temporaryCardWasChosen(String cardName) {
-        if (!reactingCards.isEmpty() && reactingCards.contains(cardName)) {
+        List<String> availableCards = reactingCards.stream().map(Card::getName).toList();
+        if (!availableCards.isEmpty() && availableCards.contains(cardName)) {
             Card cardToPlay = reactingCardOwner.getCardFromHand(cardName);
+            reactingCards.remove(cardToPlay);
             cardToPlay.reaction(reactingCardOwner);
             getGame().setTemporaryCards(null);
             moveToNextStep();
@@ -37,21 +39,16 @@ public class ReactionPhase extends PlayerState {
 
     private void moveToNextStep() {
         if (noMoreReactingPlayersToProcess()) {
-/*            if (currentPlayer.areBuysCompleted())
+            if (currentPlayer.areBuysCompleted())
                 endOfCurrentPlayersTurn();
-            else*/
-            currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
+            else {
+                currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
+            }
         }
     }
 
-    private Map<Player, List<Card>> allReactionsToProcess = new LinkedHashMap<>() ;
-
     public void processReactingCard() {
         for (Player cardOwner : currentPlayer.getPlayers()) {
-/*            // exécuter les effets onGain de toutes les cartes en jeu du joueur
-            for (Card cardInPlay : new ArrayList<>(cardOwner.getInPlay())) {
-                cardInPlay.onPlayerGainCard(currentPlayer, gainedCard, cardOwner);
-            }*/
             // révéler et activer une carte réaction
             List<Card> listOfReactingCards = cardOwner.getHand().stream()
                     .filter(c -> c.canReactToPlayerGainCard(currentPlayer, gainedCard, cardOwner))
@@ -74,28 +71,11 @@ public class ReactionPhase extends PlayerState {
                 getGame().setTemporaryCards(reactingCardOwner.getHand());
                 reactingCards = listOfReactionCards;
                 return false;
-            }
-            else
-                iterator.remove();
-        }
-        return false;
-    }
-
-/*    private boolean noMoreReactionsToProcess() {
-        Iterator<Map.Entry<Player, List<Card>>> iterator = allReactionsToProcess.entrySet().iterator();
-        if (iterator.hasNext()) {
-            Map.Entry<Player, List<Card>> reactionsOfOwner = iterator.next();
-            reactingCardOwner = reactionsOfOwner.getKey();
-            List<Card> listOfReactionCards = reactionsOfOwner.getValue();
-            if (listOfReactionCards != null && !listOfReactionCards.isEmpty()) {
-                getGame().setTemporaryCards(reactingCardOwner.getHand());
-                reactingCard = listOfReactionCards.removeFirst();
-                return false;
             } else {
                 iterator.remove();
-                return false;
+                return !iterator.hasNext();
             }
         }
         return true;
-    }*/
+    }
 }
