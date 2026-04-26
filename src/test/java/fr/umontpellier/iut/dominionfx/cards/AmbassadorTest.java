@@ -38,8 +38,8 @@ public class AmbassadorTest extends BaseTestClass {
         clickOnCardInHand("Lighthouse");
         clickOnCardInHand("Lighthouse"); // -1 card
         clickOnSkip();
-        assertEquals(initialNbOfCardsInHand - 2, currentPlayer.getHand().size());
         assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+        assertEquals(initialNbOfCardsInHand - 2, currentPlayer.getHand().size());
 //        pause(2);
     }
 

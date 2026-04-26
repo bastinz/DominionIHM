@@ -3,6 +3,7 @@ package fr.umontpellier.iut.dominionfx;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
@@ -12,7 +13,6 @@ import org.testfx.util.WaitForAsyncUtils;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
@@ -42,6 +42,10 @@ public class BaseTestClass extends ApplicationTest {
     public void addToSecondPlayersHand(String cardName) {
         Player secondPlayer = game.getPlayers().getLast();
         getFromSupply(secondPlayer, cardName);
+    }
+
+    public void addToPlayersHand(Player player, String cardName) {
+        getFromSupply(player, cardName);
     }
 
     public boolean listContainsCard(List<Card> cards, String cardName) {
@@ -224,12 +228,10 @@ public class BaseTestClass extends ApplicationTest {
     }
 
     public void getFromSupply(Player player, String cardName) {
-        Future<?> future = WaitForAsyncUtils.asyncFx(() ->
-                player.moveToHand(player.getCardFromSupply(cardName))
-        );
-
-        WaitForAsyncUtils.waitFor(future);
-//        System.out.println("SOOO " + player.getName() + " " + player.getHand());
+        Platform.runLater(() -> {
+            player.moveToHand(player.getCardFromSupply(cardName));
+        });
+        WaitForAsyncUtils.waitForFxEvents();
     }
 
     protected void clickOnAddToNativeVillageMat() {

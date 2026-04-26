@@ -314,7 +314,7 @@ public class Player implements IPlayer {
      * @return une liste de tous les joueurs de la partie, dans le sens de rotation
      *          en commençant par le joueur lui-même.
      */
-    private List<Player> getPlayers() {
+    public List<Player> getPlayers() {
         List<Player> players = game.otherPlayers(this);
         players.addFirst(this);
         return players;
@@ -582,7 +582,6 @@ public class Player implements IPlayer {
      * @param c carte à jouer
      */
     public void playCard(Card c) {
-//        System.out.println("SOOO joueur " + getName() + " joue " + c.getName());
         moveToInPlay(c);
         c.play(this);
         // exécuter les effets onPlayerPlayCard de toutes les cartes en jeu des joueurs
@@ -614,24 +613,29 @@ public class Player implements IPlayer {
         // puis on demande au joueur s'il veut utiliser une carte réaction
         for (Player cardOwner : getPlayers()) {
             // exécuter les effets onGain de toutes les cartes en jeu du joueur
+            for (Card cardInPlay : new ArrayList<>(cardOwner.getInPlay()))
+                cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
+        }
+
+//        setCurrentState(new ReactionPhase(this, gainedCard));
+
+/*        CompletableFuture<Void> chain = new CompletableFuture<>();
+        for (Player cardOwner : getPlayers()) {
+            // exécuter les effets onGain de toutes les cartes en jeu du joueur
             for (Card cardInPlay : new ArrayList<>(cardOwner.inPlay)) {
                 cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
             }
             // révéler et activer une carte réaction
-//            System.out.println("SOOO avant listOfReact " + cardOwner.getName() + " " + cardOwner.getHand());
             List<Card> listOfReactingCards = cardOwner.hand.stream()
                     .filter(c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner)).toList();
 //            game.setTemporaryCards(listOfReactingCards.stream().collect(Collectors.toCollection(FXCollections::observableArrayList)));
             if (!listOfReactingCards.isEmpty()) {
-//                System.out.println("SOOO " +cardOwner.getName() + " peut reagir " + listOfReactingCards);
                 game.setTemporaryCards(cardOwner.getHand());
-                CompletableFuture<Void> chain = new CompletableFuture<>();
                 for (Card card : listOfReactingCards) {
                     chain = chain.thenCompose(v -> card.reaction(this, gainedCard, cardOwner));
                 }
-            }
+            }*/
 /*            for (Card reactingCard : listOfReactingCards) {
-                System.out.println("SOOO reactingCard: " + reactingCard);
                 reactingCard.reaction(this, gainedCard, cardOwner);
             }*/
 
@@ -648,9 +652,17 @@ public class Player implements IPlayer {
                     cardOwner.playCard(choice);
                 }
             }*/
-        }
+//        }
 //        unindentLog();
 // Fin Version de Victor
+
+    }
+
+    public CompletableFuture<Void> moveToNextPlayer() {
+        if (areBuysCompleted()) {
+            currentState.endOfCurrentPlayersTurn();
+        }
+        return CompletableFuture.completedFuture(null);
     }
 
     public void gainToDiscard(Card c) {
@@ -922,7 +934,6 @@ public class Player implements IPlayer {
      * initialisés
      */
     public void startTurn() {
-        game.setUITarget(this);
         numberOfActions.setValue(1);
         money.setValue(0);
         numberOfBuys.setValue(1);
@@ -1230,6 +1241,8 @@ public class Player implements IPlayer {
         canPlayActions = false;
         canPlayTreasures = false;
         Card c = getCardFromSupply(cardName);
+/*                numberOfBuys.setValue(numberOfBuys.getValue() - 1);
+        money.setValue(money.getValue() - c.getCost());*/
         gainToDiscard(c);
         // gestion des token Embargo (uniquement lorsque le joueur achète une carte, pas
         // lorsqu'il en gagne une par un autre moyen)

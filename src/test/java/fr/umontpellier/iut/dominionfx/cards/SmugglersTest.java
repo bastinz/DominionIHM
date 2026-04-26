@@ -71,14 +71,11 @@ public class SmugglersTest extends BaseTestClass {
         Player currentPlayer = game.currentPlayer();
         getFromSupply(currentPlayer, "Gold");
         WaitForAsyncUtils.waitForFxEvents();
-
         clickOnTreasures();
         clickOnSupplyPile("Province");
-
         currentPlayer = game.currentPlayer();
         getFromSupply(currentPlayer, "Smugglers");
         WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Smugglers");
         clickOnSupplyPile("Province");
         assertEquals(0, currentPlayer.getDiscard().size());

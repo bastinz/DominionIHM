@@ -38,8 +38,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
 
     private ObjectProperty<Player> previousTurnPlayer;
 
-    /*private*/ public Player uiTarget; // target of IU
-
     /**
      * Instruction à afficher au joueur actif
      */
@@ -341,7 +339,12 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * terminée. Lorsque la partie se termine, la méthode affiche le score
      * final et les cartes possédées par chacun des joueurs.
      */
-    public void runNew() {
+    public void run() {
+/*        if (Platform.isFxApplicationThread()) {
+            System.out.println("Nous sommes sur le thread JavaFX !");
+        } else {
+            System.out.println("Nous ne sommes PAS sur le thread JavaFX !");
+        }*/
         currentTurnPlayer.setValue(players.getFirst());
         currentPlayer().setCurrentState(new StartTurnState(currentPlayer())) ;
         currentPlayer().startTurn();
@@ -354,7 +357,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * terminée. Lorsque la partie se termine, la méthode affiche le score
      * final et les cartes possédées par chacun des joueurs.
      */
-    public void run() {
+    public void runOld() {
         currentTurnPlayer.setValue(players.getFirst());
         while (!isFinished()) {
             // joue le tour du joueur courant
@@ -466,7 +469,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     @Override
-    protected Void call() {
+    public Void call() {
         run();
         return null;
     }
@@ -478,16 +481,12 @@ public class Game extends Task<Void> implements Runnable, IGame {
 
     @Override
     public void temporaryCardWasChosen(String cardName) {
-//        System.out.println("SOOO la cible est " + uiTarget.getName());
-//        System.out.println("SOOO currentState " + currentPlayer().getCurrentState());
-//        uiTarget.getCurrentState().temporaryCardWasChosen(cardName);
         currentPlayer().getCurrentState().temporaryCardWasChosen(cardName);
     }
 
     @Override
     public void supplyCardWasChosen(String supplyName) {
         currentPlayer().getCurrentState().supplyCardWasChosen(supplyName);
-//        uiTarget.getCurrentState().supplyCardWasChosen(supplyName);
     }
 
     @Override
@@ -550,7 +549,4 @@ public class Game extends Task<Void> implements Runnable, IGame {
         currentTurnPlayer.setValue(cardOwner);
     }
 
-    public void setUITarget(Player uiTarget) {
-        this.uiTarget = uiTarget;
-    }
 }

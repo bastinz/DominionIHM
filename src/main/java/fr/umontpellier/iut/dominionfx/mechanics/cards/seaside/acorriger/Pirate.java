@@ -4,10 +4,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateReactionState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateState;
-
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Pirate
@@ -43,10 +40,9 @@ public class Pirate extends ActionCard {
     }
 
     @Override
-    public CompletableFuture<Void> reaction(Player p, Card gainedCard, Player owner) {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        p.setCurrentState(new PirateReactionState(p, owner, this, future));
-        return future;
+    public void reaction(Player p) {
+        p.moveToInPlay(this);
+        setHasDurationEffect(true);
     }
 
     @Override

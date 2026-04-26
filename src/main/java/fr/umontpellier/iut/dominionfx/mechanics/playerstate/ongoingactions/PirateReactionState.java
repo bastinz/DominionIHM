@@ -25,13 +25,13 @@ public class PirateReactionState extends TreasurePhase { // A voir quelle classe
         if (cardName.equals(reactingCard.getName())) {
             Card cardToPlay = reactingCardOwner.getCardFromHand(cardName);
             reactingCardOwner.playCard(cardToPlay);
-            future.complete(null);
+//            future.complete(null);
         }
     }
 
     @Override
     public void skip() {
-        future.complete(null);
+//        future.complete(null);
     }
 }
 
