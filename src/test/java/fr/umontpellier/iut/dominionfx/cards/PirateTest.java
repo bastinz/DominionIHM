@@ -77,4 +77,14 @@ public class PirateTest extends BaseTestClass {
         assertInstanceOf(StartTurnState.class, game.currentPlayer().getCurrentState());
 //        pause(2);
     }
+
+    @Disabled
+    @Test
+    void reactsWhenMoreThanTwoPlayers() {
+    }
+
+    @Disabled
+    @Test
+    void reactsWhenMoreThanTwoReactingCards() {
+    }
 }

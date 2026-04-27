@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.acorriger;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.aterminer;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
