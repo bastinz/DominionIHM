@@ -11,6 +11,7 @@ public interface IPlayer {
     void cardInHandWasChosen(String supplyName);
     void addToMat();
     void takeFromMat();
+    void answer(String yes);
 
     String getName();
 
@@ -24,4 +25,5 @@ public interface IPlayer {
     IntegerProperty numberOfBuysProperty();
     IntegerProperty moneyProperty();
     BooleanProperty nativeVillagePlayedProperty();
+    BooleanProperty waitForYesOrNoProperty();
 }

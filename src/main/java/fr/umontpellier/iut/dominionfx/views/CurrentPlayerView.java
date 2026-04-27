@@ -31,10 +31,10 @@ public class CurrentPlayerView extends VBox {
     private Label nameLabel, moneyLabel, drawLabel, discardLabel, actionsLabel, buysLabel;
 
     @FXML
-    private HBox handPane, inPlayPane, islandMat, nativeVillageMat, nativeVillageButtons;
+    private HBox handPane, inPlayPane, islandMat, nativeVillageMat, nativeVillageButtons, answerYesNo;
 
     @FXML
-    private Button addToNativeVillageMat, takeFromNativeVillageMat;
+    private Button addToNativeVillageMat, takeFromNativeVillageMat, answerYes, answerNo;
 
     public CurrentPlayerView() {
         try {
@@ -66,6 +66,16 @@ public class CurrentPlayerView extends VBox {
     @FXML
     void playTreasures() {
         currentPlayer().playTreasuresWasChosen();
+    }
+
+    @FXML
+    void answerYes() {
+        currentPlayer().answer("Yes");
+    }
+
+    @FXML
+    void answerNo() {
+        currentPlayer().answer("No");
     }
 
     @FXML
@@ -146,7 +156,8 @@ public class CurrentPlayerView extends VBox {
              actionsLabel.textProperty().bind(Bindings.concat("Actions : ", currentPlayer().numberOfActionsProperty().asString()));
              buysLabel.textProperty().bind(Bindings.concat("Buys : ", currentPlayer().numberOfBuysProperty().asString()));
              nativeVillageButtons.visibleProperty().bind(currentPlayer().nativeVillagePlayedProperty());
-         }
+             answerYesNo.visibleProperty().bind(currentPlayer().waitForYesOrNoProperty());
+        }
      };
 
     protected void setCurrentPlayerChangeListener(ChangeListener<IPlayer> currentPlayerChangeListener) {

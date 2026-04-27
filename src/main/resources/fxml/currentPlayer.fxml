@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 <fx:root fx:id="currentPlayerPane" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/">
     <Label id="nameLabel" fx:id="nameLabel"/>
     <HBox spacing="10">
@@ -11,6 +12,7 @@
         <Label id="actionsLabel" fx:id="actionsLabel"/>
         <Label id="buysLabel" fx:id="buysLabel"/>
     </HBox>
+
     <HBox id="inPlayPane" fx:id="inPlayPane" minHeight="50.0"/>
     <HBox id="handPane" fx:id="handPane" minHeight="50.0"/>
     <HBox spacing="100">
@@ -18,10 +20,19 @@
         <HBox id="nativeVillageMat" fx:id="nativeVillageMat" minHeight="50.0"/>
     </HBox>
     <HBox spacing="60">
+        <padding>
+            <Insets left="30" right="30"/>
+        </padding>
         <Button fx:id="playTreasuresButton" onMouseClicked="#playTreasures" text="Play treasures"/>
+        <Region HBox.hgrow="ALWAYS"/>
         <HBox id="nativeVillageButtons" fx:id="nativeVillageButtons" spacing="20" visible="false">
             <Button id="addToNativeVillageMat" fx:id="addToMat" onMouseClicked="#addToMat" text="Add to mat"/>
             <Button id="takeFromNativeVillageMat" fx:id="takefromMat" onMouseClicked="#takeFromMat" text="Take form mat"/>
+        </HBox>
+        <Region HBox.hgrow="ALWAYS"/>
+        <HBox id="answerYesNo" fx:id="answerYesNo" spacing="10" visible="false">
+            <Button id="answerYes" fx:id="answerYes" text="Yes" onMouseClicked="#answerYes"/>
+            <Button id="answerNo" fx:id="answerNo" text="No" onMouseClicked="#answerNo"/>
         </HBox>
     </HBox>
 </fx:root>

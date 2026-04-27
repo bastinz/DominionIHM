@@ -5,6 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.SailorStartOfTurnState;
 
 import java.util.Arrays;
 
@@ -42,19 +43,12 @@ public class Sailor extends ActionCard {
     @Override
     public void atStartOfTurn(Player p) {
         p.incrementMoney(2);
-        Card cardToTrash = p.chooseCardFromHand(
-                "%s: You may trash a card from your hand".formatted(this),
-                true);
-        if (cardToTrash != null) {
-            p.log("%s trashes %s (%s)".formatted(p.toLog(), cardToTrash.toLog(), this.toLog()));
-            p.moveToTrash(cardToTrash);
-        }
-        setHasDurationEffect(false);
+        p.setCurrentState(new SailorStartOfTurnState(p, this));
     }
 
     @Override
     public void onPlayerGainCard(Player p, Card gainedCard, Player owner) {
-        if (canPlayDuration && gainedCard.hasType(CardType.DURATION) && p == owner) {
+/*        if (canPlayDuration && gainedCard.hasType(CardType.DURATION) && p == owner) {
             String choice = p.chooseStringFromButtons(
                     "%s: Do you want to play %s?".formatted(this, gainedCard),
                     Arrays.asList(new Button("Yes", "y"), new Button("No", "n")),
@@ -63,6 +57,6 @@ public class Sailor extends ActionCard {
                 canPlayDuration = false;
                 p.playCard(gainedCard);
             }
-        }
+        }*/
     }
 }

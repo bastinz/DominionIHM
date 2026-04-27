@@ -87,6 +87,7 @@ public class Player implements IPlayer {
 
     private final ObservableList<Card> nativeVillageMat;
     private final BooleanProperty nativeVillagePlayed;
+    private final BooleanProperty waitForYesOrNo;
 
     private final ObservableList<Card> cardsGainedThisTurn;
 
@@ -131,6 +132,7 @@ public class Player implements IPlayer {
         islandMat = FXCollections.observableArrayList();
         nativeVillageMat = FXCollections.observableArrayList();
         nativeVillagePlayed = new SimpleBooleanProperty(false);
+        waitForYesOrNo = new SimpleBooleanProperty(false);
         cardsGainedThisTurn = FXCollections.observableArrayList();
         cardsBoughtThisTurn = FXCollections.observableArrayList();
 
@@ -1088,6 +1090,9 @@ public class Player implements IPlayer {
             playCard(c);
     }
 
+    public void answer(String answer) {
+    }
+
     public List<String> getNamesOfCardsInHand() {
         return hand.stream().map(Card::getName).toList();
     }
@@ -1277,4 +1282,11 @@ public class Player implements IPlayer {
         this.nativeVillagePlayed.set(nativeVillagePlayed);
     }
 
+    public boolean isWaitForYesOrNo() {
+        return waitForYesOrNo.get();
+    }
+
+    public BooleanProperty waitForYesOrNoProperty() {
+        return waitForYesOrNo;
+    }
 }
