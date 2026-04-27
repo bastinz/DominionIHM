@@ -46,7 +46,7 @@ public class EmbargoTest extends BaseTestClass {
         clickOnSkip();
 
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Embargo");
+        getFromSupplyToHand(currentPlayer, "Embargo");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Embargo");
@@ -68,7 +68,7 @@ public class EmbargoTest extends BaseTestClass {
         clickOnSkip();
 
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Embargo");
+        getFromSupplyToHand(currentPlayer, "Embargo");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Embargo");

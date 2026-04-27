@@ -56,7 +56,7 @@ public class TidePoolsTest extends BaseTestClass {
     @Test
     public void twoDurationsAndOneCardOnNextTurn() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Blockade");
+        getFromSupplyToHand(currentPlayer, "Blockade");
         WaitForAsyncUtils.waitForFxEvents();
 
         int initialNumberOfCardsInHand = currentPlayer.getCardsInHand().size();

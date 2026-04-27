@@ -8,6 +8,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.testfx.util.WaitForAsyncUtils;
 
@@ -40,6 +41,7 @@ public class PirateTest extends BaseTestClass {
 //        pause(2);
     }
 
+    @Disabled
     @Test
     public void doesNotGetATreasureCostingMoreThan6() {
         // none in this game
@@ -50,10 +52,11 @@ public class PirateTest extends BaseTestClass {
     void reactsToOtherPlayersGainedTreasureAndRemainsOnSamePlayer() {
         Player pirateOwner = game.getPlayers().get(0);
         Player treasureGainer = game.getPlayers().get(1);
-        addToPlayersHand(treasureGainer, "Gold");
+        addToPlayerSHand(treasureGainer, "Gold");
+//        addCardForNextTurn("Pirate");
         clickOnSkip();
+        addToPlayerSHand(pirateOwner, "Pirate");
         Platform.runLater(() -> treasureGainer.incrementBuys(1));// pour rester sur ce joueur
-        addToPlayersHand(pirateOwner, "Pirate");
         WaitForAsyncUtils.waitForFxEvents();
         clickOnTreasures();
         clickOnSupplyPile("Gold"); // achat qui va declencher Reaction

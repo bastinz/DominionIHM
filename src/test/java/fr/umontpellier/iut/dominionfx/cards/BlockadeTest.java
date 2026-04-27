@@ -67,7 +67,7 @@ public class BlockadeTest extends BaseTestClass {
     @Test
     public void movesToRightStatesWithRemainingActions() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Bazaar");
+        getFromSupplyToHand(currentPlayer, "Bazaar");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Bazaar");

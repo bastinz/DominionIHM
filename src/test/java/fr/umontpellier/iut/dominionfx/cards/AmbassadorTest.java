@@ -29,8 +29,8 @@ public class AmbassadorTest extends BaseTestClass {
     @Test
     public void returnsOneCardToSupply() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Lighthouse");
-        getFromSupply(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
         WaitForAsyncUtils.waitForFxEvents();
 
         int initialNbOfCardsInHand = currentPlayer.getHand().size();
@@ -46,8 +46,8 @@ public class AmbassadorTest extends BaseTestClass {
     @Test
     public void cannotReturnAnyOtherCardToSupply() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Lighthouse");
-        getFromSupply(currentPlayer, "Ambassador");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Ambassador");
         WaitForAsyncUtils.waitForFxEvents();
 
         int initialNbOfCardsInHand = currentPlayer.getHand().size();
@@ -63,8 +63,8 @@ public class AmbassadorTest extends BaseTestClass {
     @Test
     public void returnsTwoCardsToSupply() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Lighthouse");
-        getFromSupply(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
         WaitForAsyncUtils.waitForFxEvents();
 
         int initialNbOfCardsInHand = currentPlayer.getHand().size();
@@ -80,7 +80,7 @@ public class AmbassadorTest extends BaseTestClass {
     @Test
     public void otherPlayersGetACopyOfRevealedCard() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Ambassador");

@@ -35,7 +35,7 @@ public class ExplorerTest extends BaseTestClass {
     public void explorerWithProvinceAddsGold() {
         clickOnCardInHand("Explorer");
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Province");
+        getFromSupplyToHand(currentPlayer, "Province");
         WaitForAsyncUtils.waitForFxEvents();
 
         long initialNumberOfGold = currentPlayer.getHand().stream()

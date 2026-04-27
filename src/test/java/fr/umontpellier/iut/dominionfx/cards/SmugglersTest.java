@@ -33,7 +33,7 @@ public class SmugglersTest extends BaseTestClass {
         clickOnTreasures();
         clickOnSupplyPile("Lighthouse");
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Smugglers");
+        getFromSupplyToHand(currentPlayer, "Smugglers");
         WaitForAsyncUtils.waitForFxEvents();
         assertEquals(0, currentPlayer.getDiscard().size());
         clickOnCardInHand("Smugglers");
@@ -50,7 +50,7 @@ public class SmugglersTest extends BaseTestClass {
                 .findFirst()
                 .orElseThrow();
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Smugglers");
+        getFromSupplyToHand(currentPlayer, "Smugglers");
         WaitForAsyncUtils.waitForFxEvents();
         assertEquals(0, currentPlayer.getDiscard().size());
         clickOnCardInHand("Smugglers");
@@ -69,12 +69,12 @@ public class SmugglersTest extends BaseTestClass {
                 .findFirst()
                 .orElseThrow();
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Gold");
+        getFromSupplyToHand(currentPlayer, "Gold");
         WaitForAsyncUtils.waitForFxEvents();
         clickOnTreasures();
         clickOnSupplyPile("Province");
         currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Smugglers");
+        getFromSupplyToHand(currentPlayer, "Smugglers");
         WaitForAsyncUtils.waitForFxEvents();
         clickOnCardInHand("Smugglers");
         clickOnSupplyPile("Province");

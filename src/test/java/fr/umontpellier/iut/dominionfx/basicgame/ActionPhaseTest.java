@@ -25,7 +25,7 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void moveToTreasureAfterAction() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Sea Hag");
+        getFromSupplyToHand(currentPlayer, "Sea Hag");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Sea Hag");
@@ -38,9 +38,9 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void remainInActionPhaseWhenMoreThanOneActionInPlay() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Bazaar");
-        getFromSupply(currentPlayer, "Sea Hag");
-        getFromSupply(currentPlayer, "Sea Hag");
+        getFromSupplyToHand(currentPlayer, "Bazaar");
+        getFromSupplyToHand(currentPlayer, "Sea Hag");
+        getFromSupplyToHand(currentPlayer, "Sea Hag");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Bazaar");
@@ -58,7 +58,7 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void durationRemainsInPlayTillNextTurn() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Fishing Village");
+        getFromSupplyToHand(currentPlayer, "Fishing Village");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Fishing Village");
@@ -72,9 +72,9 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void durationTillNextTurnWhenMoreThanOnAction() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Fishing Village");
-        getFromSupply(currentPlayer, "Blockade");
-        getFromSupply(currentPlayer, "Warehouse");
+        getFromSupplyToHand(currentPlayer, "Fishing Village");
+        getFromSupplyToHand(currentPlayer, "Blockade");
+        getFromSupplyToHand(currentPlayer, "Warehouse");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Fishing Village");
@@ -92,9 +92,9 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void handlesTwoDurationsSequentially() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Tide Pools");
-        getFromSupply(currentPlayer, "Blockade");
-        getFromSupply(currentPlayer, "Warehouse");
+        getFromSupplyToHand(currentPlayer, "Tide Pools");
+        getFromSupplyToHand(currentPlayer, "Blockade");
+        getFromSupplyToHand(currentPlayer, "Warehouse");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Tide Pools");
@@ -113,7 +113,7 @@ public class ActionPhaseTest extends BaseTestClass {
     @Test
     public void durationEffectsDisabledOnNextTurn() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Tide Pools");
+        getFromSupplyToHand(currentPlayer, "Tide Pools");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Tide Pools");
@@ -128,5 +128,4 @@ public class ActionPhaseTest extends BaseTestClass {
         assertFalse(cardInPlay.getHasDurationEffect());
 //        pause(2);
     }
-
 }

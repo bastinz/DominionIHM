@@ -43,8 +43,8 @@ public class SeaWitchTest extends BaseTestClass {
         clickOnSkip();
         Player currentPlayer = game.currentPlayer();
         assertEquals(7, currentPlayer.getHand().size()); // 5 +2(duration)
-        getFromSupply(currentPlayer, "Lighthouse");
-        getFromSupply(currentPlayer, "Sailor");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Sailor");
         WaitForAsyncUtils.waitForFxEvents();
         assertInstanceOf(SeaWitchState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Lighthouse");

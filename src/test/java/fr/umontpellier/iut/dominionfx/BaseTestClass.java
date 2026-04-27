@@ -14,6 +14,7 @@ import org.testfx.util.WaitForAsyncUtils;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 
 public class BaseTestClass extends ApplicationTest {
@@ -25,10 +26,21 @@ public class BaseTestClass extends ApplicationTest {
     @Override
     public void start(Stage stage) {
         dominionIHM.setGame(game);
-        setPlayersHands();
+        stage.setX(0);
         stage.setY(0);
+        setPlayersHands();
         dominionIHM.start(stage);
         initPanes();
+    }
+
+    protected void afficheList() {
+        System.out.println("SOOO ============");
+        System.out.println("SOO "+game.getPlayers().get(0).getName() + " draw :" + game.getPlayers().get(0).getDraw());
+        System.out.println("SOO "+game.getPlayers().get(0).getName() + " discard :" + game.getPlayers().get(0).getDiscard());
+        System.out.println("SOO "+game.getPlayers().get(0).getName() + " dishand :" + game.getPlayers().get(0).getHand());
+        System.out.println("SOO "+game.getPlayers().get(1).getName() + " draw :" + game.getPlayers().get(1).getDraw());
+        System.out.println("SOO "+game.getPlayers().get(1).getName() + " discard :" + game.getPlayers().get(1).getDiscard());
+        System.out.println("SOO "+game.getPlayers().get(1).getName() + " dishand :" + game.getPlayers().get(1).getHand());
     }
 
     public void setPlayersHands() {
@@ -36,20 +48,16 @@ public class BaseTestClass extends ApplicationTest {
 
     public void addToFirstPlayersHand(String cardName) {
         Player firstPlayer = game.getPlayers().getFirst();
-        getFromSupply(firstPlayer, cardName);
+        getFromSupplyToHand(firstPlayer, cardName);
     }
 
     public void addToSecondPlayersHand(String cardName) {
         Player secondPlayer = game.getPlayers().getLast();
-        getFromSupply(secondPlayer, cardName);
+        getFromSupplyToHand(secondPlayer, cardName);
     }
 
-    public void addToPlayersHand(Player player, String cardName) {
-        getFromSupply(player, cardName);
-    }
-
-    public boolean listContainsCard(List<Card> cards, String cardName) {
-        return cards.stream().map(Card::getName).toList().contains(cardName);
+    public void addToPlayerSHand(Player player, String cardName) {
+        getFromSupplyToHand(player, cardName);
     }
 
     public void initPanes() {
@@ -125,6 +133,70 @@ public class BaseTestClass extends ApplicationTest {
         Node nodeACliquer = handPane.getChildrenUnmodifiable().getFirst();
         clickOn(nodeACliquer);
     }
+
+    public void pause(int nbSeconds) {
+        WaitForAsyncUtils.sleep(nbSeconds, TimeUnit.SECONDS);
+    }
+
+    public void getFromSupplyToHand(Player player, String cardName) {
+        Platform.runLater(() -> {
+            player.moveToHand(player.getCardFromSupply(cardName));
+        });
+        WaitForAsyncUtils.waitForFxEvents();
+    /*    try {
+            WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () ->
+                    listContainsCard(player.getHand(), cardName)
+            );
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }*/
+    }
+
+    public void addCardForNextTurn(String cardName) { // à faire avant le passage au prochain joueur
+        Player currentPlayer = game.currentPlayer();
+        Card c = currentPlayer.getCardFromSupply(cardName);;
+        Platform.runLater(() -> {
+
+            c.moveTo(currentPlayer.getDraw());
+        });
+//        WaitForAsyncUtils.waitForFxEvents();
+        try {
+            WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () ->
+                    listContainsCard(currentPlayer.getDraw(), c.getName())
+            );
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    protected void clickOnAddToNativeVillageMat() {
+        Node n = lookup("#addToNativeVillageMat").query();
+        clickOn(n);
+    }
+
+    protected void clickOnTakeFromNativeVillageMat() {
+        Node n = lookup("#takeFromNativeVillageMat").query();
+        clickOn(n);
+    }
+
+
+    public Node findNodeMatchingCondition(Node root, Predicate<Node> condition) {
+        if (condition.test(root)) return root;
+        if (root instanceof Parent parent) {
+            return parent.getChildrenUnmodifiable().stream()
+                    .filter(child -> child.getId() != null)
+                    .map(child -> findNodeMatchingCondition(child, condition))
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
+    }
+
+    public boolean listContainsCard(List<Card> cards, String cardName) {
+        return cards.stream().map(Card::getName).toList().contains(cardName);
+    }
+}
 
 /*     public void ajouterDeLaMainAuBanc(String nomCarte) {
         Node bancChoisi = inPlayPane.getChildrenUnmodifiable().getFirst();
@@ -204,43 +276,9 @@ public class BaseTestClass extends ApplicationTest {
         WaitForAsyncUtils.waitForFxEvents();
     }*/
 
-    public Node findNodeMatchingCondition(Node root, Predicate<Node> condition) {
-        if (condition.test(root)) return root;
-        if (root instanceof Parent parent) {
-            return parent.getChildrenUnmodifiable().stream()
-                    .filter(child -> child.getId() != null)
-                    .map(child -> findNodeMatchingCondition(child, condition))
-                    .filter(Objects::nonNull)
-                    .findFirst()
-                    .orElse(null);
-        }
-        return null;
-    }
 
 /*    private Parent trouverNodeAPartirDeLaRacine(String idNode) {
         Node root = lookup("#vueDuGame").query();
         Parent panneauDuPlayerActif = (Parent) findNodeMatchingCondition(root, node -> node.getId().startsWith(idNode));
         return panneauDuPlayerActif;
     }*/
-
-    public void pause(int nbSeconds) {
-        WaitForAsyncUtils.sleep(nbSeconds, TimeUnit.SECONDS);
-    }
-
-    public void getFromSupply(Player player, String cardName) {
-        Platform.runLater(() -> {
-            player.moveToHand(player.getCardFromSupply(cardName));
-        });
-        WaitForAsyncUtils.waitForFxEvents();
-    }
-
-    protected void clickOnAddToNativeVillageMat() {
-        Node n = lookup("#addToNativeVillageMat").query();
-        clickOn(n);
-    }
-
-    protected void clickOnTakeFromNativeVillageMat() {
-        Node n = lookup("#takeFromNativeVillageMat").query();
-        clickOn(n);
-    }
-}

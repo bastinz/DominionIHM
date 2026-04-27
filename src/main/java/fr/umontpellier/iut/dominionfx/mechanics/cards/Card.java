@@ -80,6 +80,7 @@ public abstract class Card {
         newLocation.add(this);
     }
 
+
     public boolean getHasDurationEffect() {
         return hasDurationEffect.getValue();
     }
@@ -174,5 +175,14 @@ public abstract class Card {
      */
     public int getVictoryValue() {
         return 0;
+    }
+
+    // pour les tests
+    public void moveToTop(List<Card> newLocation) {
+        if (location != null) {
+            location.remove(this);
+        }
+        location = newLocation;
+        newLocation.addLast(this);
     }
 }

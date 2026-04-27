@@ -40,7 +40,7 @@ public class SalvagerTest extends BaseTestClass {
     @Test
     public void trashes() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
         WaitForAsyncUtils.waitForFxEvents();
 
         assertEquals(1, currentPlayer.getNumberOfBuys());
@@ -54,7 +54,7 @@ public class SalvagerTest extends BaseTestClass {
     @Test
     public void increasesMoney() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
         WaitForAsyncUtils.waitForFxEvents();
 
         int initialMoney = currentPlayer.getMoney();
@@ -67,7 +67,7 @@ public class SalvagerTest extends BaseTestClass {
     @Test
     public void movesToRightStates() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
         WaitForAsyncUtils.waitForFxEvents();
 
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
@@ -81,8 +81,8 @@ public class SalvagerTest extends BaseTestClass {
     @Test
     public void movesToRightStatesWithRemainingActions() {
         Player currentPlayer = game.currentPlayer();
-        getFromSupply(currentPlayer, "Lighthouse");
-        getFromSupply(currentPlayer, "Bazaar");
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
+        getFromSupplyToHand(currentPlayer, "Bazaar");
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Bazaar");
