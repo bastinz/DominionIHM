@@ -22,7 +22,8 @@ public class ReactionPhase extends PlayerState {
 
     @Override
     public void skip() {
-        endOfCurrentPlayersTurn();
+//        endOfCurrentPlayersTurn();
+        moveToNextPhase();
     }
 
     @Override
@@ -39,18 +40,19 @@ public class ReactionPhase extends PlayerState {
 
     private void moveToNextStep() {
         if (noMoreReactingPlayersToProcess()) {
-            if (currentPlayer.areBuysCompleted())
+/*            if (currentPlayer.areBuysCompleted())
                 endOfCurrentPlayersTurn();
             else {
                 currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
-            }
+            }*/
+            moveToNextPhase();
         }
     }
 
     public void processReactingCard() {
         for (Player cardOwner : currentPlayer.getPlayers()) {
             // révéler et activer une carte réaction
-            List<Card> listOfReactingCards = cardOwner.getHand().stream()
+            List<Card> listOfReactingCards = cardOwner.getHand().stream() // ce ne serait pas InPlay ???
                     .filter(c -> c.canReactToPlayerGainCard(currentPlayer, gainedCard, cardOwner))
                     .collect(Collectors.toCollection(ArrayList::new));
             if (!listOfReactingCards.isEmpty()) {

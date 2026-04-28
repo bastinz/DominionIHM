@@ -31,10 +31,10 @@ public class CurrentPlayerView extends VBox {
     private Label nameLabel, moneyLabel, drawLabel, discardLabel, actionsLabel, buysLabel;
 
     @FXML
-    private HBox handPane, inPlayPane, islandMat, nativeVillageMat, nativeVillageButtons, answerYesNo;
+    private HBox handPane, inPlayPane, islandMat, nativeVillageMat, nativeVillageButtons, answerYesNoButtons;
 
     @FXML
-    private Button addToNativeVillageMat, takeFromNativeVillageMat, answerYes, answerNo;
+    private Button addToNativeVillageMat, takeFromNativeVillageMat, yesButton, noButton;
 
     public CurrentPlayerView() {
         try {
@@ -156,7 +156,7 @@ public class CurrentPlayerView extends VBox {
              actionsLabel.textProperty().bind(Bindings.concat("Actions : ", currentPlayer().numberOfActionsProperty().asString()));
              buysLabel.textProperty().bind(Bindings.concat("Buys : ", currentPlayer().numberOfBuysProperty().asString()));
              nativeVillageButtons.visibleProperty().bind(currentPlayer().nativeVillagePlayedProperty());
-             answerYesNo.visibleProperty().bind(currentPlayer().waitForYesOrNoProperty());
+             answerYesNoButtons.visibleProperty().bind(currentPlayer().waitForYesOrNoProperty());
         }
      };
 

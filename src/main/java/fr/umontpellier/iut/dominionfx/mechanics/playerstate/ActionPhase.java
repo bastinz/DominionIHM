@@ -13,11 +13,12 @@ public class ActionPhase extends PlayerState {
         moveToNextPhase();
     }
 
-    @Override
+/*    @Override
     public void playTreasuresWasChosen() {
+        currentPlayer.endActionPhase();
         currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
         currentPlayer.getCurrentState().playTreasuresWasChosen();
-    }
+    }*/
 
     public void moveToNextPhase() {
         if (currentPlayer.areActionsCompleted())

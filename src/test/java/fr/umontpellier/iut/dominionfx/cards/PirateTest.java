@@ -19,7 +19,7 @@ public class PirateTest extends BaseTestClass {
     @Override
     public void start(Stage stage) {
         game = new Game(new String[]{"PlayerTest1", "PlayerTest2"},
-                new String[]{"Pirate"/*, "Astrolabe"*/});
+                new String[]{"Pirate"});
         super.start(stage);
     }
 
@@ -52,18 +52,18 @@ public class PirateTest extends BaseTestClass {
     void reactsToOtherPlayersGainedTreasureAndRemainsOnSamePlayer() {
         Player pirateOwner = game.getPlayers().get(0);
         Player treasureGainer = game.getPlayers().get(1);
-        addToPlayerSHand(treasureGainer, "Gold");
-//        addCardForNextTurn("Pirate");
-        clickOnSkip();
-        addToPlayerSHand(pirateOwner, "Pirate");
+        addToPlayerSHand(treasureGainer, "Gold"); // pour pouvoir acheter un Treasure
+        clickOnSkip(); // on est sur treasureGainer
+        addToPlayerSHand(pirateOwner,  "Pirate");
         Platform.runLater(() -> treasureGainer.incrementBuys(1));// pour rester sur ce joueur
         WaitForAsyncUtils.waitForFxEvents();
         clickOnTreasures();
         clickOnSupplyPile("Gold"); // achat qui va declencher Reaction
         clickOnTemporaryCard("Pirate"); // reponse reaction
         assertTrue(pirateOwner.getInPlay().stream().map(Card::getName).toList().contains("Pirate"));
-        assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState());
-//        pause(2);
+        assertEquals(treasureGainer, game.currentPlayer());
+        assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState()); // il reste un buy
+        pause(2);
     }
 
     @Test

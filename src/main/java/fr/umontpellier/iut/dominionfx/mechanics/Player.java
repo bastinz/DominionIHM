@@ -615,10 +615,16 @@ public class Player implements IPlayer {
         // pour chaque joueur (en commençant par le joueur qui a gagné la carte)
         // on exécute tous les effets "on gain" des cartes en jeu du joueur
         // puis on demande au joueur s'il veut utiliser une carte réaction
+
+/*        Card sailor = getInPlay().getFirst();
+        System.out.println("SOOO 621 " + sailor);
+        sailor.onPlayerGainCard(this, gainedCard, this);*/
+
         for (Player cardOwner : getPlayers()) {
             // exécuter les effets onGain de toutes les cartes en jeu du joueur
-            for (Card cardInPlay : new ArrayList<>(cardOwner.getInPlay()))
+            for (Card cardInPlay : new ArrayList<>(cardOwner.getInPlay())) {
                 cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
+            }
         }
         if (gainedCard.hasType(TREASURE))
             setCurrentState(new ReactionPhase(this, gainedCard));
@@ -1091,6 +1097,7 @@ public class Player implements IPlayer {
     }
 
     public void answer(String answer) {
+        waitForYesOrNoProperty().setValue(false);
     }
 
     public List<String> getNamesOfCardsInHand() {
@@ -1203,8 +1210,6 @@ public class Player implements IPlayer {
         canPlayActions = false;
         canPlayTreasures = false;
         Card c = getCardFromSupply(cardName);
-/*                numberOfBuys.setValue(numberOfBuys.getValue() - 1);
-        money.setValue(money.getValue() - c.getCost());*/
         gainToDiscard(c);
         // gestion des token Embargo (uniquement lorsque le joueur achète une carte, pas
         // lorsqu'il en gagne une par un autre moyen)
@@ -1289,4 +1294,48 @@ public class Player implements IPlayer {
     public BooleanProperty waitForYesOrNoProperty() {
         return waitForYesOrNo;
     }
+
+    public void setWaitForYesOrNo(boolean waitForYesOrNo) {
+        this.waitForYesOrNo.set(waitForYesOrNo);
+    }
+
+    public void endActionPhase() {
+        numberOfActions.setValue(0);
+    }
+    public void endTreasurePhase() {
+        numberOfBuys.setValue(0);
+    }
 }
+
+
+/*
+public void processCardGains(Card gainedCard) {
+    // Crée une liste de futures pour chaque joueur
+    CompletableFuture<Void> allPlayersProcessed = CompletableFuture.completedFuture(null);
+
+    // Traite chaque joueur séquentiellement
+    for (Player cardOwner : getPlayers()) {
+        // Pour chaque joueur, on attend que son traitement précédent soit terminé
+        allPlayersProcessed = allPlayersProcessed.thenCompose(v -> processPlayerCards(cardOwner, gainedCard));
+    }
+
+    // Une fois tous les joueurs traités, on passe à la ReactionPhase si nécessaire
+    allPlayersProcessed.thenRun(() -> {
+        if (gainedCard.hasType(TREASURE)) {
+            setCurrentState(new ReactionPhase(this, gainedCard));
+        }
+    });
+}
+
+private CompletableFuture<Void> processPlayerCards(Player cardOwner, Card gainedCard) {
+    // Pour chaque joueur, on retourne un CompletableFuture pour traiter toutes ses cartes
+    List<CompletableFuture<Void>> cardFutures = cardOwner.getInPlay().stream()
+            .map(cardInPlay -> CompletableFuture.runAsync(() -> {
+                // Appelle onPlayerGainCard pour chaque carte en jeu (attente de l'entrée utilisateur gérée dans cette méthode)
+                cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
+            }))
+            .collect(Collectors.toList());
+
+    // On attend que toutes les cartes du joueur aient terminé avant de passer à la suite
+    return CompletableFuture.allOf(cardFutures.toArray(new CompletableFuture[0]));
+}*/

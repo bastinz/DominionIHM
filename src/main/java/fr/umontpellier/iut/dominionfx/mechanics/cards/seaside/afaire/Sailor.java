@@ -1,13 +1,13 @@
 package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
 
-import fr.umontpellier.iut.dominionfx.mechanics.Button;
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.SailorStartOfTurnState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.SailorAndDurationGainedState;
 
-import java.util.Arrays;
+import static java.lang.Thread.sleep;
 
 /**
  * Carte Navigatrice (Sailor)
@@ -48,15 +48,23 @@ public class Sailor extends ActionCard {
 
     @Override
     public void onPlayerGainCard(Player p, Card gainedCard, Player owner) {
-/*        if (canPlayDuration && gainedCard.hasType(CardType.DURATION) && p == owner) {
-            String choice = p.chooseStringFromButtons(
-                    "%s: Do you want to play %s?".formatted(this, gainedCard),
-                    Arrays.asList(new Button("Yes", "y"), new Button("No", "n")),
-                    false);
-            if (choice.equals("y")) {
-                canPlayDuration = false;
-                p.playCard(gainedCard);
-            }
-        }*/
+        p.setWaitForYesOrNo(true);
+        if (canPlayDuration && gainedCard.hasType(CardType.DURATION) && p == owner)
+            p.setCurrentState(new SailorAndDurationGainedState(p, gainedCard, this));
+    }
+
+    public void cannotPlayDurationAnyMore() {
+        canPlayDuration = false;
     }
 }
+/*
+    String choice = p.chooseStringFromButtons(
+            "%s: Do you want to play %s?".formatted(this, gainedCard),
+            Arrays.asList(new Button("Yes", "y"), new Button("No", "n")),
+            false);
+    if (choice.equals("y")) {
+        canPlayDuration = false;
+        p.playCard(gainedCard);
+    }
+}
+*/

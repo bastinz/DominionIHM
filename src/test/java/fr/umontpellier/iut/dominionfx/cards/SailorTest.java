@@ -3,13 +3,10 @@ package fr.umontpellier.iut.dominionfx.cards;
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.SeaWitchState;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,33 +15,58 @@ public class SailorTest extends BaseTestClass {
     @Override
     public void start(Stage stage) {
         game = new Game(new String[]{"PlayerTest1", "PlayerTest2"},
-                new String[]{"Lighthouse", "Sailor"});
+                new String[]{"Merchant Ship", "Sailor", "Haven"});
         super.start(stage);
     }
 
     @Override
     public void setPlayersHands() {
         addToFirstPlayersHand("Sailor");
+        addToFirstPlayersHand("Gold");
+        addToFirstPlayersHand("Gold");
+    }
+
+    @Test
+    public void gainsDuration() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Sailor");
+        pause(3);
+        clickOnTreasures();
+        clickOnSupplyPile("Merchant Ship");
+
+        pause(3);
+        System.out.println("SOOO 38 " +currentPlayer.getCurrentState());
+        System.out.println("SOOO " +currentPlayer.getName());
+        clickOnYes();
+        pause(3);
+/*        clickOnSkip();
+        clickOnSkip();
+        assertTrue(listContainsCard(currentPlayer.getCardsInHand(), "Curse"));
+        clickOnCardInHand("Curse");
+        assertFalse(listContainsCard(currentPlayer.getCardsInHand(), "Curse"));
+        assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());*/
+//        pause(2);
     }
 
     @Test
     public void trashesCurseOnNextTurn() {
-        clickOnCardInHand("Sailor");
         Player currentPlayer = game.currentPlayer();
-        addCardForNextTurn("Curse");
+        clickOnCardInHand("Sailor");
+        addCardForNextDraw("Curse");
         clickOnSkip();
         clickOnSkip();
         assertTrue(listContainsCard(currentPlayer.getCardsInHand(), "Curse"));
         clickOnCardInHand("Curse");
         assertFalse(listContainsCard(currentPlayer.getCardsInHand(), "Curse"));
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
+        assertEquals(2, currentPlayer.getMoney());
 //        pause(2);
     }
 
     @Test
     public void choosesNotToTrashOnNextTurn() {
-        clickOnCardInHand("Sailor");
         Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Sailor");
         clickOnSkip();
         clickOnSkip();
         int currentNumberOfCardsInHand = currentPlayer.getHand().size();

@@ -30,9 +30,9 @@
             <Button id="takeFromNativeVillageMat" fx:id="takefromMat" onMouseClicked="#takeFromMat" text="Take form mat"/>
         </HBox>
         <Region HBox.hgrow="ALWAYS"/>
-        <HBox id="answerYesNo" fx:id="answerYesNo" spacing="10" visible="false">
-            <Button id="answerYes" fx:id="answerYes" text="Yes" onMouseClicked="#answerYes"/>
-            <Button id="answerNo" fx:id="answerNo" text="No" onMouseClicked="#answerNo"/>
+        <HBox id="answerYesNoButtons" fx:id="answerYesNoButtons" spacing="10" visible="false">
+            <Button id="yesButton" fx:id="yesButton" text="Yes" onMouseClicked="#answerYes" visible="true"/>
+            <Button id="noButton" fx:id="noButton" text="No" onMouseClicked="#answerNo" visible="true"/>
         </HBox>
     </HBox>
 </fx:root>

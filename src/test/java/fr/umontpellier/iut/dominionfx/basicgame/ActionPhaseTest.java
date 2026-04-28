@@ -96,13 +96,12 @@ public class ActionPhaseTest extends BaseTestClass {
         getFromSupplyToHand(currentPlayer, "Blockade");
         getFromSupplyToHand(currentPlayer, "Warehouse");
         WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Tide Pools");
         clickOnCardInHand("Blockade");
         clickOnSupplyPile("Warehouse");
-        clickOnSkip();
-        clickOnSkip();
-        assertInstanceOf(TidePoolsState.class, currentPlayer.getCurrentState());
+        clickOnSkip(); // on passe au joueur suivant
+        clickOnSkip(); // on passe au joueur suivant
+        assertInstanceOf(TidePoolsState.class, game.currentPlayer().getCurrentState());
         clickOnFirstCardInHand();
         assertInstanceOf(TidePoolsState.class, currentPlayer.getCurrentState());
         clickOnFirstCardInHand();

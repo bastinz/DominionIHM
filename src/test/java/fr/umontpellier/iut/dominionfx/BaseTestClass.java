@@ -14,7 +14,6 @@ import org.testfx.util.WaitForAsyncUtils;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Predicate;
 
 public class BaseTestClass extends ApplicationTest {
@@ -37,10 +36,10 @@ public class BaseTestClass extends ApplicationTest {
         System.out.println("SOOO ============");
         System.out.println("SOO "+game.getPlayers().get(0).getName() + " draw :" + game.getPlayers().get(0).getDraw());
         System.out.println("SOO "+game.getPlayers().get(0).getName() + " discard :" + game.getPlayers().get(0).getDiscard());
-        System.out.println("SOO "+game.getPlayers().get(0).getName() + " dishand :" + game.getPlayers().get(0).getHand());
+        System.out.println("SOO "+game.getPlayers().get(0).getName() + " hand :" + game.getPlayers().get(0).getHand());
         System.out.println("SOO "+game.getPlayers().get(1).getName() + " draw :" + game.getPlayers().get(1).getDraw());
         System.out.println("SOO "+game.getPlayers().get(1).getName() + " discard :" + game.getPlayers().get(1).getDiscard());
-        System.out.println("SOO "+game.getPlayers().get(1).getName() + " dishand :" + game.getPlayers().get(1).getHand());
+        System.out.println("SOO "+game.getPlayers().get(1).getName() + " hand :" + game.getPlayers().get(1).getHand());
     }
 
     public void setPlayersHands() {
@@ -129,7 +128,18 @@ public class BaseTestClass extends ApplicationTest {
         clickOn(treasuresButton);
     }
 
-   public void clickOnFirstCardInHand() {
+    public void clickOnYes() {
+        Node treasuresButton = lookup("#yesButton").query();
+        clickOn(treasuresButton);
+    }
+
+    public void clickOnNo() {
+        Node treasuresButton = lookup("#noButton").query();
+        clickOn(treasuresButton);
+    }
+
+
+    public void clickOnFirstCardInHand() {
         Node nodeACliquer = handPane.getChildrenUnmodifiable().getFirst();
         clickOn(nodeACliquer);
     }
@@ -152,21 +162,13 @@ public class BaseTestClass extends ApplicationTest {
         }*/
     }
 
-    public void addCardForNextTurn(String cardName) { // à faire avant le passage au prochain joueur
+    public void addCardForNextDraw(String cardName) { // à faire avant le passage au prochain joueur
         Player currentPlayer = game.currentPlayer();
         Card c = currentPlayer.getCardFromSupply(cardName);;
         Platform.runLater(() -> {
-
             c.moveTo(currentPlayer.getDraw());
         });
-//        WaitForAsyncUtils.waitForFxEvents();
-        try {
-            WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () ->
-                    listContainsCard(currentPlayer.getDraw(), c.getName())
-            );
-        } catch (TimeoutException e) {
-            throw new RuntimeException(e);
-        }
+        WaitForAsyncUtils.waitForFxEvents();
     }
 
     protected void clickOnAddToNativeVillageMat() {
@@ -194,6 +196,8 @@ public class BaseTestClass extends ApplicationTest {
     }
 
     public boolean listContainsCard(List<Card> cards, String cardName) {
+        System.out.println("SOOO 199 " + cards) ;
+        System.out.println("SOOO 199 " + cards.stream().map(Card::getName).toList().contains(cardName));
         return cards.stream().map(Card::getName).toList().contains(cardName);
     }
 }

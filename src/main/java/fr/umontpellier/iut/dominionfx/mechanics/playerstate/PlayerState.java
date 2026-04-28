@@ -13,12 +13,26 @@ public abstract class PlayerState {
     }
 
     public void moveToNextPhase() {
+        if (currentPlayer.areActionsCompleted()) {
+            if (currentPlayer.areBuysCompleted())
+                endOfCurrentPlayersTurn();
+            else
+                currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
+        } else
+            currentPlayer.setCurrentState(new StartTurnState(currentPlayer));
     }
 
     public void skip() {
     }
 
     public void playTreasuresWasChosen() {
+        currentPlayer.endActionPhase();
+        currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
+//        currentPlayer.getCurrentState().playTreasuresWasChosen();
+        currentPlayer.playTreasures();
+    }
+
+    public void answer(String choice) {
     }
 
     public void cardInHandWasChosen(String cardName) {
@@ -38,7 +52,7 @@ public abstract class PlayerState {
 
 
     public void endOfCurrentPlayersTurn() {
-    // on vérifie si fin de partie ??
+        // on vérifie si fin de partie ??
         getGame().moveToNextPlayerState(); // fait le cleanUp et startTurn
     }
 

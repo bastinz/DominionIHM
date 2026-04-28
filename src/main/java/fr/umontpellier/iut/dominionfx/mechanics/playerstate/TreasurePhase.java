@@ -13,6 +13,7 @@ public class TreasurePhase extends PlayerState {
     @Override
     public void skip() {
         endOfCurrentPlayersTurn();
+//        moveToNextPhase();
     }
 
     @Override
@@ -23,10 +24,11 @@ public class TreasurePhase extends PlayerState {
         }
     }
 
-    @Override
+/*    @Override
     public void playTreasuresWasChosen() {
+        currentPlayer.endActionPhase();
         currentPlayer.playTreasures();
-    }
+    }*/
 
     @Override
     public void supplyCardWasChosen(String cardName) {
@@ -35,6 +37,7 @@ public class TreasurePhase extends PlayerState {
             currentPlayer.buy(cardName);
             if (currentPlayer.areBuysCompleted())
                 endOfCurrentPlayersTurn();
+//            moveToNextPhase();
         }
     }
 }
