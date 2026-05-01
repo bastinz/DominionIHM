@@ -60,6 +60,7 @@ public class PirateTest extends BaseTestClass {
         clickOnTreasures();
         clickOnSupplyPile("Gold"); // achat qui va declencher Reaction
         clickOnTemporaryCard("Pirate"); // reponse reaction
+        pause(3);
         assertTrue(pirateOwner.getInPlay().stream().map(Card::getName).toList().contains("Pirate"));
         assertEquals(treasureGainer, game.currentPlayer());
         assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState()); // il reste un buy

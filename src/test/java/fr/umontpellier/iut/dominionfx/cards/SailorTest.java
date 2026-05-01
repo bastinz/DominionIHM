@@ -4,9 +4,11 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
+import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,22 +31,14 @@ public class SailorTest extends BaseTestClass {
     @Test
     public void gainsDuration() {
         Player currentPlayer = game.currentPlayer();
+        Platform.runLater(() -> currentPlayer.incrementBuys(1));
+        WaitForAsyncUtils.waitForFxEvents();
+
         clickOnCardInHand("Sailor");
-        pause(3);
         clickOnTreasures();
         clickOnSupplyPile("Merchant Ship");
-
-        pause(3);
-        System.out.println("SOOO 38 " +currentPlayer.getCurrentState());
-        System.out.println("SOOO " +currentPlayer.getName());
         clickOnYes();
-        pause(3);
-/*        clickOnSkip();
-        clickOnSkip();
-        assertTrue(listContainsCard(currentPlayer.getCardsInHand(), "Curse"));
-        clickOnCardInHand("Curse");
-        assertFalse(listContainsCard(currentPlayer.getCardsInHand(), "Curse"));
-        assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());*/
+        assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState());
 //        pause(2);
     }
 

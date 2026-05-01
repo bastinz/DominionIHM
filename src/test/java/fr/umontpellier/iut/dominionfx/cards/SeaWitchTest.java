@@ -54,7 +54,7 @@ public class SeaWitchTest extends BaseTestClass {
     }
 
     @Test
-    public void cannotDiscardlessThan2() {
+    public void cannotDiscardLessThan2() {
         clickOnCardInHand("Sea Witch");
         clickOnSkip();
         clickOnSkip();
@@ -67,7 +67,7 @@ public class SeaWitchTest extends BaseTestClass {
     }
 
     @Test
-    public void otherPlayersgetCurse() {
+    public void otherPlayersGetCurse() {
         Player otherPlayer = game.getPlayers().get(1);
         assertEquals(0, otherPlayer.getDiscard().size());
         clickOnCardInHand("Sea Witch");

@@ -26,7 +26,7 @@ public class Pirate extends ActionCard {
     public void play(Player p) {
         // Rien à faire au moment où la carte est jouée
         setHasDurationEffect(true);
-        p.getCurrentState().moveToNextPhase();
+
     }
 
     @Override
@@ -37,6 +37,8 @@ public class Pirate extends ActionCard {
     @Override
     public void reactToPlayerGainCard(Player p, Card gainedCard, Player owner) {
         owner.playCard(this);
+
+        p.getCurrentState().moveToNextExecutingEffect(gainedCard);
     }
 
     @Override

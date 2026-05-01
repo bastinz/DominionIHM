@@ -357,6 +357,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * terminée. Lorsque la partie se termine, la méthode affiche le score
      * final et les cartes possédées par chacun des joueurs.
      */
+/*
     public void runOld() {
         currentTurnPlayer.setValue(players.getFirst());
         while (!isFinished()) {
@@ -382,6 +383,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         }
         prompt("Game over", List.of(""), new ArrayList<>(), 0);
     }
+*/
 
     /**
      * Envoie une chaîne de caractères à l'interface graphique

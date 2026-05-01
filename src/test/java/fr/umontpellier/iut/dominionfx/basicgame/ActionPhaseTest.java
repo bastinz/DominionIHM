@@ -18,12 +18,25 @@ public class ActionPhaseTest extends BaseTestClass {
     @Override
     public void start(Stage stage) {
         game = new Game(new String[]{"PlayerTest1", "PlayerTest2"},
-                        new String[]{"Bazaar", "Warehouse", "Fishing Village", "Sea Hag", "Blockade", "Tide Pools"});
+                        new String[]{"Bazaar", "Corsair", "Warehouse", "Fishing Village", "Sea Hag", "Blockade", "Tide Pools"});
         super.start(stage);
     }
 
     @Test
     public void moveToTreasureAfterAction() {
+        Player currentPlayer = game.currentPlayer();
+        getFromSupplyToHand(currentPlayer, "Corsair");
+        WaitForAsyncUtils.waitForFxEvents();
+
+        clickOnCardInHand("Corsair");
+        assertEquals(currentPlayer, game.currentPlayer());
+        assertEquals(0, game.currentPlayer().getNumberOfActions());
+        assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+//        pause(2);
+    }
+
+    @Test
+    public void moveToTreasureAfterAttack() {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Sea Hag");
         WaitForAsyncUtils.waitForFxEvents();

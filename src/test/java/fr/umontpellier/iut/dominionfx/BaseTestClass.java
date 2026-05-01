@@ -32,16 +32,6 @@ public class BaseTestClass extends ApplicationTest {
         initPanes();
     }
 
-    protected void afficheList() {
-        System.out.println("SOOO ============");
-        System.out.println("SOO "+game.getPlayers().get(0).getName() + " draw :" + game.getPlayers().get(0).getDraw());
-        System.out.println("SOO "+game.getPlayers().get(0).getName() + " discard :" + game.getPlayers().get(0).getDiscard());
-        System.out.println("SOO "+game.getPlayers().get(0).getName() + " hand :" + game.getPlayers().get(0).getHand());
-        System.out.println("SOO "+game.getPlayers().get(1).getName() + " draw :" + game.getPlayers().get(1).getDraw());
-        System.out.println("SOO "+game.getPlayers().get(1).getName() + " discard :" + game.getPlayers().get(1).getDiscard());
-        System.out.println("SOO "+game.getPlayers().get(1).getName() + " hand :" + game.getPlayers().get(1).getHand());
-    }
-
     public void setPlayersHands() {
     }
 
@@ -196,8 +186,6 @@ public class BaseTestClass extends ApplicationTest {
     }
 
     public boolean listContainsCard(List<Card> cards, String cardName) {
-        System.out.println("SOOO 199 " + cards) ;
-        System.out.println("SOOO 199 " + cards.stream().map(Card::getName).toList().contains(cardName));
         return cards.stream().map(Card::getName).toList().contains(cardName);
     }
 }

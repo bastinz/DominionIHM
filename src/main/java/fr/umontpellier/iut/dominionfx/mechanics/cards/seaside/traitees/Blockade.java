@@ -63,6 +63,7 @@ public class Blockade extends AttackCard {
                 p.gainToDiscard(curse);
             }
         }
+        p.getCurrentState().moveToNextExecutingEffect(gainedCard);
     }
 
     @Override

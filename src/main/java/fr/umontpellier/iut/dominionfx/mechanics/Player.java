@@ -3,10 +3,7 @@ package fr.umontpellier.iut.dominionfx.mechanics;
 import fr.umontpellier.iut.dominionfx.IPlayer;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.gui.Utils;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ActionPhase;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ReactionPhase;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -343,6 +340,8 @@ public class Player implements IPlayer {
      */
     public void incrementActions(int n) {
         numberOfActions.setValue(numberOfActions.getValue() + n);
+/*        if (numberOfActions.getValue() == 0)
+            canPlayActions = false;*/
     }
 
     /**
@@ -609,26 +608,83 @@ public class Player implements IPlayer {
         if (gainedCard == null) {
             return;
         }
+
         gainedCard.moveTo(location);
         cardsGainedThisTurn.add(gainedCard);
+
         // exécuter les effets déclenchés par le gain d'une carte
         // pour chaque joueur (en commençant par le joueur qui a gagné la carte)
         // on exécute tous les effets "on gain" des cartes en jeu du joueur
         // puis on demande au joueur s'il veut utiliser une carte réaction
 
-/*        Card sailor = getInPlay().getFirst();
-        System.out.println("SOOO 621 " + sailor);
-        sailor.onPlayerGainCard(this, gainedCard, this);*/
+        setCurrentState(new ExecutingEffectState(this));
+        playersExecutingEffect = new ArrayList<>(getPlayers());
+        Player playerExecutingEffect = getNextPlayerExecutingEffect();
+        if (playerExecutingEffect != null) {
+            resetAllCardsExecutingEffect(playerExecutingEffect);
+            Card cardExecutingEffect = getNextCardExecutingEffect();
+            if (cardExecutingEffect != null) {
+//                setCurrentState(new ExecutingEffectState(this));
+                cardExecutingEffect.onPlayerGainCard(this, gainedCard, playerExecutingEffect);
+//                setCurrentState(new ExecutingGainedCardEffects(this, playerExecutingEffect, gainedCard, cardExecutingEffect));
+            } else {
+                getGame().currentPlayer().getCurrentState().moveToNextExecutingEffect(gainedCard);
+            }
+        } else { // à revoir
+            getCurrentState().moveToNextPhase();
+        }
 
-        for (Player cardOwner : getPlayers()) {
+/*        for (Player cardOwner : getPlayers()) {
             // exécuter les effets onGain de toutes les cartes en jeu du joueur
-            for (Card cardInPlay : new ArrayList<>(cardOwner.getInPlay())) {
+            for (Card cardInPlay : new ArrayList<>(cardOwner.inPlay)) {
                 cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
             }
         }
+        // révéler et activer une carte réaction
         if (gainedCard.hasType(TREASURE))
-            setCurrentState(new ReactionPhase(this, gainedCard));
+            setCurrentState(new ReactionPhase(this, gainedCard));*/
     }
+
+    private List<Player> playersExecutingEffect;
+    private List<Card> allCardsExecutingEffect;
+
+    public Player getNextPlayerExecutingEffect() {
+        if (playersExecutingEffect != null && !playersExecutingEffect.isEmpty() ) {
+            return playersExecutingEffect.removeFirst();
+        }
+        return null;
+    }
+    public Card getNextCardExecutingEffect() {
+        if (allCardsExecutingEffect != null && !allCardsExecutingEffect.isEmpty() ) {
+            return allCardsExecutingEffect.removeFirst();
+        }
+        return null;
+    }
+
+    public void resetAllCardsExecutingEffect(Player playerExecutingEffect) {
+        this.allCardsExecutingEffect = new ArrayList<>(playerExecutingEffect.getInPlay());;
+    }
+
+
+
+   /*         for (Player cardOwner : getPlayers()) {
+        // exécuter les effets onGain de toutes les cartes en jeu du joueur
+        for (Card cardInPlay : new ArrayList<>(cardOwner.inPlay)) {
+            cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
+        }
+
+        while (cardOwner.hand.stream().anyMatch(c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner))) {
+            Card choice = cardOwner.chooseCardFromHand(
+                    "Reaction: you may reveal a Reaction card from your hand",
+                    c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner),
+                    true);
+            if (choice == null) {
+                break;
+            } else {
+                cardOwner.playCard(choice);
+            }
+        }
+    }*/
 
     public void gainToDiscard(Card c) {
         gainTo(c, discard);
@@ -905,8 +961,8 @@ public class Player implements IPlayer {
         nbSilverOrGoldPlayed = 0;
         cardsGainedThisTurn.clear();
         cardsBoughtThisTurn.clear();
-        canPlayActions = true;
-        canPlayTreasures = true;
+/*        canPlayActions = true;
+        canPlayTreasures = true;*/
         execDurationsSequentially();
     }
 
@@ -957,6 +1013,7 @@ public class Player implements IPlayer {
      * se termine également automatiquement lorsque le joueur n'a plus d'achat
      * disponible.
      */
+/*
     public void playTurn() {
         // 1. (Préparation)
         startTurn();
@@ -1017,6 +1074,7 @@ public class Player implements IPlayer {
                             .findFirst()
                             .orElseThrow();
                     if (cardToPlay.hasType(CardType.ACTION)) {
+//                        incrementActions(-1);
                         numberOfActions.setValue(numberOfActions.getValue() - 1);
                         playCard(cardToPlay);
                     } else if (cardToPlay.hasType(TREASURE)) {
@@ -1046,7 +1104,8 @@ public class Player implements IPlayer {
                         log("gains %s from Embargo tokens".formatted(Utils.toLog(gainedCurses)));
                     }
                     unindentLog();
-                    numberOfBuys.setValue(numberOfBuys.getValue() - 1);
+                    incrementBuys(-1);
+//                    numberOfBuys.setValue(numberOfBuys.getValue() - 1);
                     money.setValue(money.getValue() - c.getCost());
                     cardsBoughtThisTurn.add(c);
                 }
@@ -1055,6 +1114,7 @@ public class Player implements IPlayer {
             }
         }
     }
+*/
 
     /**
      * Fin du tour du joueur
@@ -1068,8 +1128,10 @@ public class Player implements IPlayer {
      */
     public void cleanup() {
         numberOfActions.setValue(0);
+//        canPlayActions = true;
         money.setValue(0);
         numberOfBuys.setValue(0);
+//        canPlayTreasures = true;
         // défausse la main
         moveToDiscard(hand);
         // cleanup
@@ -1087,8 +1149,8 @@ public class Player implements IPlayer {
     // ==========================
     //Ajouts Sophie
 
-    boolean canPlayActions = true;
-    boolean canPlayTreasures = true;
+//    boolean canPlayActions = true;
+//    boolean canPlayTreasures = true;
 
     public void playTreasures() {
         List<Card> treasures = hand.stream().filter(c -> c.hasType(TREASURE)).toList();
@@ -1188,11 +1250,12 @@ public class Player implements IPlayer {
                 .orElseThrow();
         if (cardToPlay.hasType(CardType.ACTION)) {
             setCurrentState(new ActionPhase(this));
-            numberOfActions.setValue(numberOfActions.getValue() - 1);
+            incrementActions(-1);
+//            numberOfActions.setValue(numberOfActions.getValue() - 1);
             playCard(cardToPlay);
         } else if (cardToPlay.hasType(TREASURE)) {
             setCurrentState(new TreasurePhase(this));
-            canPlayActions = false;
+            numberOfActions.setValue(0);
             playCard(cardToPlay);
         }
     }
@@ -1202,13 +1265,16 @@ public class Player implements IPlayer {
                 .filter(card -> card.getName().equals(cardName))
                 .findFirst()
                 .orElseThrow();
-        canPlayActions = false;
+        numberOfActions.setValue(0);
         playCard(cardToPlay);
     }
 
     public void buy(String cardName) {
-        canPlayActions = false;
-        canPlayTreasures = false;
+//        numberOfActions.setValue(0);
+//        incrementBuys(-1);
+//        canPlayActions = false;
+//        canPlayTreasures = false;
+
         Card c = getCardFromSupply(cardName);
         gainToDiscard(c);
         // gestion des token Embargo (uniquement lorsque le joueur achète une carte, pas
@@ -1219,7 +1285,10 @@ public class Player implements IPlayer {
                 gainToDiscard(curse);
             }
         }
-        numberOfBuys.setValue(numberOfBuys.getValue() - 1);
+        incrementBuys(-1);
+//        numberOfBuys.setValue(numberOfBuys.getValue() - 1);
+/*        if (numberOfBuys.getValue() == 0)
+            canPlayTreasures = false;*/
         money.setValue(money.getValue() - c.getCost());
         cardsBoughtThisTurn.add(c);
     }

@@ -35,8 +35,9 @@ public class TreasurePhase extends PlayerState {
         List<String> availableChoices = currentPlayer.getAvailableSupplyCards();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             currentPlayer.buy(cardName);
-            if (currentPlayer.areBuysCompleted())
-                endOfCurrentPlayersTurn();
+            /*if (currentPlayer.areBuysCompleted())
+                endOfCurrentPlayersTurn();*/
+            currentPlayer.getCurrentState().moveToNextPhase();
 //            moveToNextPhase();
         }
     }

@@ -20,11 +20,11 @@ public class ActionPhase extends PlayerState {
         currentPlayer.getCurrentState().playTreasuresWasChosen();
     }*/
 
-    public void moveToNextPhase() {
+/*    public void moveToNextPhase() {
         if (currentPlayer.areActionsCompleted())
             currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
         else {
             currentPlayer.setCurrentState(new StartTurnState(currentPlayer));
         }
-    }
+    }*/
 }

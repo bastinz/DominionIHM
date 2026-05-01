@@ -156,6 +156,7 @@ public abstract class Card {
      *                   méthode est appelée
      */
     public void onPlayerGainCard(Player p, Card gainedCard, Player owner) {
+        p.getCurrentState().moveToNextExecutingEffect(gainedCard);
     }
 
     public boolean canReactToPlayerGainCard(Player p, Card gainedCard, Player owner) {

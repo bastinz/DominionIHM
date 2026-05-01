@@ -39,7 +39,7 @@ public class WarehouseTest extends BaseTestClass {
     }
 
     @Test
-    public void cannotDiscardlessThan3() {
+    public void cannotDiscardLessThan3() {
         clickOnCardInHand("Warehouse");
         clickOnCardInHand("Copper");
         clickOnCardInHand("Copper");

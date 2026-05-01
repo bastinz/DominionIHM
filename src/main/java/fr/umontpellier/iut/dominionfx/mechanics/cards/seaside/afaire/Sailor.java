@@ -50,7 +50,8 @@ public class Sailor extends ActionCard {
     public void onPlayerGainCard(Player p, Card gainedCard, Player owner) {
         p.setWaitForYesOrNo(true);
         if (canPlayDuration && gainedCard.hasType(CardType.DURATION) && p == owner)
-            p.setCurrentState(new SailorAndDurationGainedState(p, gainedCard, this));
+            p.getCurrentState().moveToNextExecutingEffect(gainedCard);
+//            p.setCurrentState(new SailorAndDurationGainedState(p, owner, gainedCard, this));
     }
 
     public void cannotPlayDurationAnyMore() {
