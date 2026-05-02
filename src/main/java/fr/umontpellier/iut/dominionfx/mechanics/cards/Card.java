@@ -128,8 +128,8 @@ public abstract class Card {
     public void atStartOfTurn(Player p) {
     }
 
-    public void reaction(Player p) {
-    }
+/*    public void reaction(Player p) {
+    }*/
 
     public boolean isProtectionFromAttack() {
         return false;
@@ -177,14 +177,5 @@ public abstract class Card {
      */
     public int getVictoryValue() {
         return 0;
-    }
-
-    // pour les tests
-    public void moveToTop(List<Card> newLocation) {
-        if (location != null) {
-            location.remove(this);
-        }
-        location = newLocation;
-        newLocation.addLast(this);
     }
 }

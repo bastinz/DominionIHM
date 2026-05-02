@@ -1,12 +1,8 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
-import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+/*
 
-import java.util.concurrent.CompletableFuture;
-
-public class PirateReactionState extends TreasurePhase { // A voir quelle classe de base
+public class PirateReactionState extends ReactionPhase { // A voir quelle classe de base
 
     private final Card reactingCard;
     private Player reactingCardOwner;
@@ -37,6 +33,7 @@ public class PirateReactionState extends TreasurePhase { // A voir quelle classe
 
 
 
+*/
 /*        List<String> availableChoices = getGame().getTemporaryCardsNames();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             Card cardToPlay = currentPlayer.getCardFromHand(cardName);

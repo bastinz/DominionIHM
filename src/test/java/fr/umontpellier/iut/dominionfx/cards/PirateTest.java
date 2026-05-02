@@ -6,6 +6,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateState;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Disabled;
@@ -67,14 +68,14 @@ public class PirateTest extends BaseTestClass {
     }
 
     @Test
-    void reactsToOtherPlayersGainedTreasureAndMovesToNextPlayer() {
+    void reactsToOtherPlayersGainedTreasureAndMovesToNextPlayerStartTurn() {
         addToSecondPlayersHand("Gold");
         clickOnSkip();
         addToFirstPlayersHand("Pirate");
         clickOnTreasures();
         clickOnSupplyPile("Gold"); // achat qui va declencher Reaction
         clickOnTemporaryCard("Pirate"); // reponse reaction
-        assertInstanceOf(StartTurnState.class, game.currentPlayer().getCurrentState());
+        assertInstanceOf(PirateState.class, game.currentPlayer().getCurrentState());
 //        pause(2);
     }
 

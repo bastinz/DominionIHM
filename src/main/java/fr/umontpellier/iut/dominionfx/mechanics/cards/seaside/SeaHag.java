@@ -19,9 +19,9 @@ public class SeaHag extends AttackCard {
     }
 
     @Override
-    public void action(Player p, CompletableFuture<Void> f) {
+    public CompletableFuture<Void> action(Player p) {
         // rien à faire pour le joueur qui joue la carte
-        f.complete(null);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SeaHag extends AttackCard {
         }
         Card curse = target.getCardFromSupply("Curse");
         if (curse != null) {
-            target.gainToDraw(curse);
+            target.moveToDraw(curse); // change gain to move
         }
         return CompletableFuture.completedFuture(null);
     }

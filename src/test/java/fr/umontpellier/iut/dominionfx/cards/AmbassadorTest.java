@@ -3,14 +3,14 @@ package fr.umontpellier.iut.dominionfx.cards;
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.OnGoingActionState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import org.testfx.util.WaitForAsyncUtils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AmbassadorTest extends BaseTestClass {
 
@@ -85,10 +85,23 @@ public class AmbassadorTest extends BaseTestClass {
 
         clickOnCardInHand("Ambassador");
         clickOnCardInHand("Lighthouse");
+        int initialNbOfCardsInLighthousePile = game.getSupplyPiles().stream()
+                .filter(p -> p.getName().equals("Lighthouse"))
+                .mapToInt(SupplyPile::size) // ou getTaille(), selon ton modèle
+                .findFirst()
+                .orElse(0);
         clickOnCardInHand("Lighthouse");
+        int currentNbOfCardsInLighthousePile = game.getSupplyPiles().stream()
+                .filter(p -> p.getName().equals("Lighthouse"))
+                .mapToInt(SupplyPile::size) // ou getTaille(), selon ton modèle
+                .findFirst()
+                .orElse(0);
+        assertEquals(initialNbOfCardsInLighthousePile + 1, currentNbOfCardsInLighthousePile);
+        int initialNumberOfOwnedCards = game.getPlayers().get(1).getAllOwnedCards().size();
         clickOnSkip();
-        assertEquals(1, game.getPlayers().get(1).getDiscard().size());
         assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+        assertEquals(initialNumberOfOwnedCards + 1, game.getPlayers().get(1).getAllOwnedCards().size());
+        assertTrue(listContainsCard(game.getPlayers().get(1).getDiscard(), "Lighthouse"));
 //        pause(2);
     }
 }

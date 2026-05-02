@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.aterminer;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
@@ -37,15 +37,15 @@ public class Pirate extends ActionCard {
     @Override
     public void reactToPlayerGainCard(Player p, Card gainedCard, Player owner) {
         owner.playCard(this);
-
-//        p.getCurrentState().moveToNextExecutingEffect(gainedCard);
     }
 
+/*
     @Override
     public void reaction(Player p) {
         p.moveToInPlay(this);
         setHasDurationEffect(true);
     }
+*/
 
     @Override
     public void atStartOfTurn(Player p) {

@@ -10,6 +10,7 @@ public class ActionPhase extends PlayerState {
 
     @Override
     public void skip() {
+        complete();
         moveToNextPhase();
     }
 

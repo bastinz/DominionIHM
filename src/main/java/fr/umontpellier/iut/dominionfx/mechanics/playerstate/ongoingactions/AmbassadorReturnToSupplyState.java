@@ -1,28 +1,27 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-
-import java.util.concurrent.CompletableFuture;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.AttackCard;
 
 public class AmbassadorReturnToSupplyState extends OnGoingActionState {
 
     private int nbCardsToReveal;
     private final String revealedCardName; // pour le message d'instruction uniquement
-    private final CompletableFuture<Void> future;
+    private final AttackCard ambassadorCard;
 
-    public AmbassadorReturnToSupplyState(Player currentPlayer, String revealedCardName, CompletableFuture<Void> future) {
+    public AmbassadorReturnToSupplyState(Player currentPlayer, String revealedCardName, AttackCard ambassadorCard) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Return up to 2 copies of " + revealedCardName);
         this.nbCardsToReveal = 2;
         this.revealedCardName = revealedCardName;
-        this.future = future;
+        this.ambassadorCard = ambassadorCard;
     }
 
     @Override
     public void skip() {
         if (nbCardsToReveal < 2) {
-            moveToNextPhase();
-            future.complete(null);
+            ambassadorCard.complete();
+//            moveToNextPhase();
         }
     }
 

@@ -19,6 +19,7 @@ public class BlockadeState extends OnGoingActionState {
         List<String> availableChoices = currentPlayer.getGame().getCardsFromSupplyMatchingCondition(c -> c.getCost() <= 4);
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             blocadeCard.endAction(cardName);
+            complete();
         }
     }
 }

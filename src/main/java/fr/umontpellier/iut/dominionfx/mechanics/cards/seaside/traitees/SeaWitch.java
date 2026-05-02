@@ -22,10 +22,10 @@ public class SeaWitch extends AttackCard {
     }
 
     @Override
-    public void action(Player p, CompletableFuture<Void> f) {
+    public CompletableFuture<Void> action(Player p) {
         p.drawToHand(2);
         setHasDurationEffect(true);
-        f.complete(null);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SeaWitch extends AttackCard {
         Card curse = target.getCardFromSupply("Curse");
         if (curse != null) {
             target.log("%s gains %s".formatted(target.toLog(), curse.toLog()));
-            target.gainToDiscard(curse);
+            target.moveToDiscard(curse); // change gain to move
         }
         return CompletableFuture.completedFuture(null);
     }

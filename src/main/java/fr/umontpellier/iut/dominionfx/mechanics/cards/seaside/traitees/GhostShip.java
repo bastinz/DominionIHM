@@ -21,27 +21,26 @@ public class GhostShip extends AttackCard {
     }
 
     @Override
-    public void action(Player p, CompletableFuture<Void> f) {
+    public CompletableFuture<Void> action(Player p) {
         p.drawToHand(2);
-        f.complete(null);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
     public CompletableFuture<Void> attack(Player p, Player target) {
         this.target = target;
-        CompletableFuture<Void> future = new CompletableFuture<>();
         if (!target.isProtectedFromAttack()) {
             int nbCardsToDiscard = target.getHand().size() - 3;
             if (nbCardsToDiscard > 0) {
                 p.getGame().setTemporaryCards(target.getHand());
-                p.setCurrentState(new GhostShipState(p, this, nbCardsToDiscard, future));
+                p.setCurrentState(new GhostShipState(p, this, nbCardsToDiscard));
             } else {
-                future.complete(null);
+                complete();
             }
         } else {
-            future.complete(null);
+            complete();
         }
-        return future;
+        return attackCardFuture;
     }
 
     public void discardFromTargetHand(String cardName) {

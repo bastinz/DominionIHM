@@ -43,8 +43,8 @@ public class ActionPhaseTest extends BaseTestClass {
 
         clickOnCardInHand("Sea Hag");
         assertEquals(currentPlayer, game.currentPlayer());
-        assertEquals(0, game.currentPlayer().getNumberOfActions());
         assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+        assertEquals(0, game.currentPlayer().getNumberOfActions());
 //        pause(2);
     }
 

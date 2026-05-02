@@ -28,7 +28,7 @@ public class PirateShip extends AttackCard {
     }
 
     @Override
-    public void action(Player p, CompletableFuture<Void> f) {
+    public CompletableFuture<Void> action(Player p) {
         didTrashTreasure = false;
         String choice = p.chooseStringFromButtons(
                 "%s: Choose one".formatted(this),
@@ -42,7 +42,7 @@ public class PirateShip extends AttackCard {
             p.log("chooses to attack");
             isAttacking = true;
         }
-        f.complete(null);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

@@ -23,27 +23,24 @@ public class Blockade extends AttackCard {
     private Player player;
     private final List<Player> attackedPlayers = new ArrayList<>();
 
-    private CompletableFuture<Void> future;
-
     public Blockade() {
         super("Blockade", 4);
         addType(CardType.DURATION);
     }
 
     @Override
-    public void action(Player p, CompletableFuture<Void> f) {
-        this.future = f;
+    public CompletableFuture<Void> action(Player p) {
         player = p;
         attackedPlayers.clear();
         setHasDurationEffect(true);
         p.setCurrentState(new BlockadeState(p, this));
+        return p.getCurrentState().getCompletionFuture();
     }
 
     public void endAction(String cardName) {
         Card card = player.getCardFromSupply(cardName);
         player.gainToSetAside(card);
         this.cardSetAside = card;
-        future.complete(null);
     }
 
     @Override
@@ -59,8 +56,7 @@ public class Blockade extends AttackCard {
                 && p.getGame().currentPlayer() == p) {
             Card curse = p.getCardFromSupply("Curse");
             if (curse != null) {
-                p.moveToDiscard(curse);
-//                p.gainToDiscard(curse);
+                p.moveToDiscard(curse); // change gain to move
             }
         }
         return CompletableFuture.completedFuture(null);

@@ -25,18 +25,20 @@ public class Ambassador extends AttackCard {
     }
 
     @Override
-    public void action(Player p, CompletableFuture<Void> f) {
-        AmbassadorRevealState ambassadorRevealState = new AmbassadorRevealState(p, f);
+    public CompletableFuture<Void> action(Player p) {
+        AmbassadorRevealState ambassadorRevealState = new AmbassadorRevealState(p, this);
         revealedCardName.bind(ambassadorRevealState.revealedCardNameProperty());
         p.setCurrentState(ambassadorRevealState);
+        return getCompletionFuture();
     }
 
     @Override
     public CompletableFuture<Void> attack(Player p, Player target) {
         Card c = target.getCardFromSupply(revealedCardName.getValue());
         if (c != null) {
-            target.gainToDiscard(c);
+            target.moveToDiscard(c); // change gain en move
         }
-        return CompletableFuture.completedFuture(null);
+        complete();
+        return getCompletionFuture();
     }
 }

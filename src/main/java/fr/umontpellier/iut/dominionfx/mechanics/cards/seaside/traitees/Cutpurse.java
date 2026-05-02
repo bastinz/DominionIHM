@@ -20,9 +20,9 @@ public class Cutpurse extends AttackCard {
     }
 
     @Override
-    public void action(Player p, CompletableFuture<Void>f) {
+    public CompletableFuture<Void> action(Player p) {
         p.incrementMoney(2);
-        f.complete(null);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

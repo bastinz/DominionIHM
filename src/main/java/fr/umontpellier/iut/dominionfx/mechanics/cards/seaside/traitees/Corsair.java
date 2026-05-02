@@ -25,11 +25,11 @@ public class Corsair extends AttackCard {
     }
 
     @Override
-    public void action(Player p, CompletableFuture<Void> f) {
+    public CompletableFuture<Void> action(Player p) {
         p.incrementMoney(2);
         attackedPlayers.clear();
         setHasDurationEffect(true);
-        f.complete(null);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

@@ -4,20 +4,17 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.GhostShip;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class GhostShipState extends OnGoingActionState {
 
     private int nbCardsToDiscard;
     private GhostShip ghostShip;
-    private CompletableFuture<Void> future;
 
-    public GhostShipState(Player currentPlayer, GhostShip ghostShip, int nbCardsToDiscard, CompletableFuture<Void> future) {
+    public GhostShipState(Player currentPlayer, GhostShip ghostShip, int nbCardsToDiscard) {
         super(currentPlayer);
         this.nbCardsToDiscard = nbCardsToDiscard;
         this.ghostShip = ghostShip;
         getGame().instructionProperty().setValue("Discard down to 3 cards");
-        this.future = future;
     }
 
     @Override

@@ -3,13 +3,31 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 
+import java.util.concurrent.CompletableFuture;
+
 public abstract class PlayerState {
+    protected CompletableFuture<Void> future;
     protected final Player currentPlayer;
-//    protected PlayerState nextState;
 
     public PlayerState(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
-//        nextState = this;
+        start();
+    }
+
+    public CompletableFuture<Void> start() {
+        this.future = new CompletableFuture<>();
+        onEnter();
+        return future;
+    }
+
+    protected void onEnter(){}
+
+    public void complete() {
+        future.complete(null);
+    }
+
+    public CompletableFuture<Void> getCompletionFuture() {
+        return future;
     }
 
     public void moveToNextPhase() {

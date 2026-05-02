@@ -9,6 +9,8 @@ import java.util.concurrent.CompletableFuture;
  * Rmq : les cartes Attaque sont toutes des cartes Action
  */
 public abstract class AttackCard extends ActionCard {
+
+    protected CompletableFuture<Void> attackCardFuture = new CompletableFuture<>();
     /**
      * Constructeur
      */
@@ -16,20 +18,26 @@ public abstract class AttackCard extends ActionCard {
         super(name, cost);
     }
 
-    public abstract void action(Player p, CompletableFuture<Void> f);
+    public abstract CompletableFuture<Void> action(Player p);
 
     public abstract CompletableFuture<Void> attack(Player p, Player target);
+
+    public void complete() {
+        attackCardFuture.complete(null);
+    }
+
+    public CompletableFuture<Void> getCompletionFuture() {
+        return attackCardFuture;
+    }
 
     public void afterAttack(Player p) {
     }
 
     @Override
     public void play(Player p) {
-        CompletableFuture<Void> actionFuture = new CompletableFuture<>();
-        action(p, actionFuture);
-        actionFuture
-                .thenCompose(v -> attackAll(p))
+        action(p).thenCompose(v -> attackAll(p))
                 .thenRun(() -> afterAttack(p))
+                .thenRun(() -> p.getCurrentState().complete())
                 .thenRun(() -> p.getCurrentState().moveToNextPhase());
     }
 

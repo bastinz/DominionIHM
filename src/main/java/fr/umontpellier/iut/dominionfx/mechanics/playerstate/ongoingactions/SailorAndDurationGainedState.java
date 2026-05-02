@@ -5,14 +5,10 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire.Sailor;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 
-import java.util.concurrent.CompletableFuture;
-
 public class SailorAndDurationGainedState extends PlayerState {
 
     private Card gainedCard;
     private Sailor sailorCard;
-
-    private final CompletableFuture<Void> completionFuture = new CompletableFuture<>();
 
     public SailorAndDurationGainedState(Player currentPlayer, Player cardOwner, Card gainedCard, Sailor sailorCard) {
         super(currentPlayer);
@@ -28,7 +24,7 @@ public class SailorAndDurationGainedState extends PlayerState {
             currentPlayer.playCard(gainedCard);
 //            currentPlayer.setCurrentState(new ExecutingEffectState(currentPlayer));
         }
-        completionFuture.complete(null);
+        future.complete(null);
 //        else {
 /*            Card nextCardExecutingEffect = currentPlayer.getNextCardExecutingEffect();
             if (nextCardExecutingEffect != null) {
@@ -44,9 +40,6 @@ public class SailorAndDurationGainedState extends PlayerState {
 //        }
     }
 
-    public CompletableFuture<Void> getCompletionFuture() {
-        return completionFuture;
-    }
 }
 
 /*        if (canPlayDuration && gainedCard.hasType(CardType.DURATION) && p == owner) {

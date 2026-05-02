@@ -3,7 +3,6 @@ package fr.umontpellier.iut.dominionfx.mechanics;
 import fr.umontpellier.iut.dominionfx.IPlayer;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.gui.Utils;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ActionPhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ReactionPhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
@@ -655,12 +654,12 @@ public class Player implements IPlayer {
     }
 
     private CompletableFuture<Void> reactOnGainCard(Player owner, Card gainedCard) {
-        if (gainedCard.hasType(TREASURE)) {
+//        if (gainedCard.hasType(TREASURE)) {
             ReactionPhase phase = new ReactionPhase(this, owner, gainedCard);
             setCurrentState(phase);
             return phase.getCompletionFuture();
-        }
-        return CompletableFuture.completedFuture(null);
+//        }
+//        return CompletableFuture.completedFuture(null);
     }
 
     private CompletableFuture<Void> onGainedCardAllPlayers(Card gainedCard) {
@@ -727,7 +726,7 @@ public class Player implements IPlayer {
         }
     }*/
 
-    public void  gainToDiscard(Card c) {
+    public void gainToDiscard(Card c) {
         gainTo(c, discard);
     }
 
@@ -1291,7 +1290,7 @@ public class Player implements IPlayer {
                 .findFirst()
                 .orElseThrow();
         if (cardToPlay.hasType(CardType.ACTION)) {
-            setCurrentState(new ActionPhase(this));
+//            setCurrentState(new ActionPhase(this));
             incrementActions(-1);
 //            numberOfActions.setValue(numberOfActions.getValue() - 1);
             playCard(cardToPlay);
@@ -1317,17 +1316,16 @@ public class Player implements IPlayer {
 //        canPlayActions = false;
 //        canPlayTreasures = false;
         Card c = getCardFromSupply(cardName);
-
         incrementBuys(-1);
         money.setValue(money.getValue() - c.getCost());
-        cardsBoughtThisTurn.add(c);
         gainToDiscard(c);
+        cardsBoughtThisTurn.add(c);
         // gestion des token Embargo (uniquement lorsque le joueur achète une carte, pas
         // lorsqu'il en gagne une par un autre moyen)
         for (int i = 0; i < game.getNumberOfEmbargoTokens(cardName); i++) {
             Card curse = getCardFromSupply("Curse");
             if (curse != null) {
-                gainToDiscard(curse);
+                gainToDiscard(curse); // change gain to move
             }
         }
 //        numberOfBuys.setValue(numberOfBuys.getValue() - 1);
