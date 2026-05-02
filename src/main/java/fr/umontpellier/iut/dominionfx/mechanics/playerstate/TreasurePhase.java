@@ -13,7 +13,6 @@ public class TreasurePhase extends PlayerState {
     @Override
     public void skip() {
         endOfCurrentPlayersTurn();
-//        moveToNextPhase();
     }
 
     @Override
@@ -23,13 +22,6 @@ public class TreasurePhase extends PlayerState {
             currentPlayer.playTreasureCard(cardName);
         }
     }
-
-/*    @Override
-    public void playTreasuresWasChosen() {
-        currentPlayer.endActionPhase();
-        currentPlayer.playTreasures();
-    }*/
-
     @Override
     public void supplyCardWasChosen(String cardName) {
         List<String> availableChoices = currentPlayer.getAvailableSupplyCards();

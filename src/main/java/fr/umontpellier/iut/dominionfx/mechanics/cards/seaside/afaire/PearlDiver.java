@@ -32,7 +32,6 @@ public class PearlDiver extends ActionCard {
                     Arrays.asList(new Button("Yes", "y"), new Button("No", "n")),
                     false);
             if (choice.equals("y")) {
-                p.log("puts bottom card on top of deck");
                 p.moveToDraw(c); // retire la carte du bas de la pioche et la place sur le dessus
             }
         }

@@ -18,5 +18,4 @@ public class DurationState extends ActionPhase {
         durationCard.setHasDurationEffect(false);
         currentPlayer.setCurrentState(new StartTurnState(currentPlayer));
     }
-
 }

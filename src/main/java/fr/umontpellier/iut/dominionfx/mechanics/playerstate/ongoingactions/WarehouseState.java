@@ -30,7 +30,6 @@ public class WarehouseState extends OnGoingActionState {
                 moveToNextPhase();
             else
                 getGame().instructionProperty().setValue("Discard %d card%s".formatted(nbCardsToDiscard, nbCardsToDiscard > 1 ? "s" : ""));
-
         }
     }
 }

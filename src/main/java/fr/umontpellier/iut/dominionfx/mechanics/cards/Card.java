@@ -24,11 +24,11 @@ public abstract class Card {
      */
     private final int cost;
 
-    private Set<CardType> types;
+    private final Set<CardType> types;
 
     private List<Card> location;
 
-    private BooleanProperty hasDurationEffect = new SimpleBooleanProperty(false);
+    private final BooleanProperty hasDurationEffect = new SimpleBooleanProperty(false);
 
     /**
      * Constructeur simple
@@ -92,19 +92,6 @@ public abstract class Card {
 
     public BooleanProperty hasDurationEffectProperty() {
         return hasDurationEffect;
-    }
-
-    /**
-     * Renvoie une représentation de la carte sous forme de chaîne de caractères
-     * (ici la fonction renvoie le nom de la carte)
-     */
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    public String toLog() {
-        return "<span class=\"card-name\">" + name + "</span>";
     }
 
     /**
@@ -177,5 +164,22 @@ public abstract class Card {
      */
     public int getVictoryValue() {
         return 0;
+    }
+
+
+
+
+
+    /**
+     * Renvoie une représentation de la carte sous forme de chaîne de caractères
+     * (ici la fonction renvoie le nom de la carte)
+     */
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public String toLog() {
+        return "<span class=\"card-name\">" + name + "</span>";
     }
 }

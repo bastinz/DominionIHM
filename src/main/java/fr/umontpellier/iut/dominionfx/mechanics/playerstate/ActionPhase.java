@@ -13,19 +13,4 @@ public class ActionPhase extends PlayerState {
         complete();
         moveToNextPhase();
     }
-
-/*    @Override
-    public void playTreasuresWasChosen() {
-        currentPlayer.endActionPhase();
-        currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
-        currentPlayer.getCurrentState().playTreasuresWasChosen();
-    }*/
-
-/*    public void moveToNextPhase() {
-        if (currentPlayer.areActionsCompleted())
-            currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
-        else {
-            currentPlayer.setCurrentState(new StartTurnState(currentPlayer));
-        }
-    }*/
 }

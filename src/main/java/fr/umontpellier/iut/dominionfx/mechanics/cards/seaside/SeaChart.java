@@ -23,12 +23,10 @@ public class SeaChart extends ActionCard {
         p.incrementActions(1);
         Card topCard = p.getCardFromDeck();
         if (topCard != null) {
-            p.log("reveals %s".formatted(topCard.toLog()));
             if (p.getCardsInPlay().stream().anyMatch(c -> c.hasSameNameAs(topCard))) {
                 p.moveToHand(topCard);
             }
         }
         p.getCurrentState().moveToNextPhase();
     }
-
 }

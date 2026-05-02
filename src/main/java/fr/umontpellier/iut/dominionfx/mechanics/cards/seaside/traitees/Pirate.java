@@ -26,7 +26,6 @@ public class Pirate extends ActionCard {
     public void play(Player p) {
         // Rien à faire au moment où la carte est jouée
         setHasDurationEffect(true);
-
     }
 
     @Override
@@ -39,28 +38,8 @@ public class Pirate extends ActionCard {
         owner.playCard(this);
     }
 
-/*
-    @Override
-    public void reaction(Player p) {
-        p.moveToInPlay(this);
-        setHasDurationEffect(true);
-    }
-*/
-
     @Override
     public void atStartOfTurn(Player p) {
         p.setCurrentState(new PirateState(p,this));
     }
 }
-
-/*
-Card supplyCard = p.chooseCardFromSupply(
-        "%s: Gain a Treasure costing up to 6$".formatted(this),
-        c -> c.hasType(CardType.TREASURE) && c.getCost() <= 6,
-        false);
-        if (supplyCard != null) {
-Card gainedCard = p.getCardFromSupply(supplyCard.getName());
-            p.log("%s gains %s (%s)".formatted(p.toLog(), gainedCard.toLog(), this.toLog()));
-        p.gainToHand(gainedCard);
-        }
-setHasDurationEffect(false);*/

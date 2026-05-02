@@ -32,7 +32,6 @@ public class SeaWitch extends AttackCard {
     public CompletableFuture<Void> attack(Player p, Player target) {
         Card curse = target.getCardFromSupply("Curse");
         if (curse != null) {
-            target.log("%s gains %s".formatted(target.toLog(), curse.toLog()));
             target.moveToDiscard(curse); // change gain to move
         }
         return CompletableFuture.completedFuture(null);
@@ -41,16 +40,6 @@ public class SeaWitch extends AttackCard {
     @Override
     public void atStartOfTurn(Player p) {
         p.drawToHand(2);
-/*        int n = 2;
-        while (!p.getCardsInHand().isEmpty() && n > 0) {
-            Card cardToDiscard = p.chooseCardFromHand(
-                    "%s: Discard %d card(s)".formatted(this.toLog(), n),
-                    false);
-            p.log("%s discards %s (%s)".formatted(p.toLog(), cardToDiscard.toLog(), this.toLog()));
-            p.moveToDiscard(cardToDiscard);
-            n -= 1;
-        }
-        setHasDurationEffect(false);*/
         p.setCurrentState(new SeaWitchState(p, this));
     }
 }

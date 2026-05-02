@@ -50,7 +50,7 @@ public class Sailor extends ActionCard {
     public CompletableFuture<Void> onPlayerGainCard(Player p, Card gainedCard, Player owner) {
         if (canPlayDuration && gainedCard.hasType(CardType.DURATION) && p == owner) {
             p.setWaitForYesOrNo(true);
-            SailorAndDurationGainedState phase = new SailorAndDurationGainedState(p, owner, gainedCard, this);
+            SailorAndDurationGainedState phase = new SailorAndDurationGainedState(p, gainedCard, this);
             p.setCurrentState(phase);
             return phase.getCompletionFuture();
         }
@@ -61,14 +61,3 @@ public class Sailor extends ActionCard {
         canPlayDuration = false;
     }
 }
-/*
-    String choice = p.chooseStringFromButtons(
-            "%s: Do you want to play %s?".formatted(this, gainedCard),
-            Arrays.asList(new Button("Yes", "y"), new Button("No", "n")),
-            false);
-    if (choice.equals("y")) {
-        canPlayDuration = false;
-        p.playCard(gainedCard);
-    }
-}
-*/

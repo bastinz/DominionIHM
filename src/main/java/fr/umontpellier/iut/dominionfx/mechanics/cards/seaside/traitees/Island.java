@@ -19,18 +19,7 @@ public class Island extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {/*
-        Card c = p.chooseCardFromHand(
-                "%s: Choose a card to set aside".formatted(this),
-                false);
-        p.moveToIslandMat(this);
-        if (c != null) {
-            p.log("puts %s and %s on Island mat".formatted(c.toLog(), this.toLog()));
-            p.moveToIslandMat(c);
-        } else {
-            p.log("puts %s on Island mat".formatted(this.toLog()));
-        }
-        p.getCurrentState().moveToNextPhase();*/
+    public void play(Player p) {
         p.setCurrentState(new IslandState(p));
     }
 

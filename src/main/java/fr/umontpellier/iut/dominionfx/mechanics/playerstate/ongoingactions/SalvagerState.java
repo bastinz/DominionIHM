@@ -1,6 +1,7 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.List;
 
@@ -13,7 +14,12 @@ public class SalvagerState extends OnGoingActionState {    public SalvagerState(
     public void cardInHandWasChosen(String cardName) {
         List<String> availableChoices = currentPlayer.getNamesOfCardsInHand();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
-            currentPlayer.salvagerAction(cardName);
+            Card cardToTrash = currentPlayer.getCardsInHand().stream()
+                    .filter(card -> card.getName().equals(cardName))
+                    .findFirst()
+                    .orElseThrow();
+            currentPlayer.incrementMoney(cardToTrash.getCost());
+            currentPlayer.moveToTrash(cardToTrash);
             moveToNextPhase();
         }
     }

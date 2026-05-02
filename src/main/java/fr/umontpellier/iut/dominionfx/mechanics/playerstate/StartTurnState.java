@@ -13,19 +13,10 @@ public class StartTurnState extends PlayerState {
 
     @Override
     public void skip() {
-//        endOfCurrentPlayersTurn();
-
         currentPlayer.endActionPhase();
         currentPlayer.endTreasurePhase();
         moveToNextPhase();
     }
-
-/*    @Override
-    public void playTreasuresWasChosen() {
-        currentPlayer.endActionPhase();
-        currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
-        currentPlayer.getCurrentState().playTreasuresWasChosen();
-    }*/
 
     @Override
     public void cardInHandWasChosen(String cardName) {

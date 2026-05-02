@@ -21,7 +21,6 @@ public class AmbassadorReturnToSupplyState extends OnGoingActionState {
     public void skip() {
         if (nbCardsToReveal < 2) {
             ambassadorCard.complete();
-//            moveToNextPhase();
         }
     }
 
@@ -37,7 +36,6 @@ public class AmbassadorReturnToSupplyState extends OnGoingActionState {
         }
     }
 }
-
 
 
 

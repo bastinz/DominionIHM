@@ -19,7 +19,7 @@
             <CurrentPlayerView id="currentPlayerPane" fx:id="currentPlayerPane" HBox.hgrow="ALWAYS"/>
             <OtherPlayerView id="otherPlayerPane" fx:id="otherPlayerPane"/>
         </HBox>
-        <HBox id="temporaryCards" fx:id="temporaryCards" minHeight="50.0"></HBox>
+        <HBox id="temporaryCards" fx:id="temporaryCards" minHeight="50.0"/>
     </VBox>
     <spacing>10</spacing>
     <padding>

@@ -34,14 +34,14 @@ public class Game extends Task<Void> implements Runnable, IGame {
     /**
      * Le joueur dont c'est actuellement le tour
      */
-    private ObjectProperty<Player> currentTurnPlayer;
+    private final ObjectProperty<Player> currentTurnPlayer;
 
-    private ObjectProperty<Player> previousTurnPlayer;
+    private final ObjectProperty<Player> previousTurnPlayer;
 
     /**
      * Instruction à afficher au joueur actif
      */
-    private ObjectProperty<String> instruction;
+    private final ObjectProperty<String> instruction;
 
     private boolean samePlayerShouldPlayExtraTurn = false;
 
@@ -50,13 +50,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * le tour d'un nouveau joueur commence)
      */
     private int turnNumber = 1;
-
-    /**
-     * Messages envoyés dans le log du jeu (pour affichage dans l'interface
-     * graphique)
-     */
-    private ArrayList<String> logLines = new ArrayList<>();
-    private int logIndentLevel = 0;
 
     /**
      * Liste des piles dans la réserve du jeu.
@@ -73,13 +66,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
     private final List<Card> trashedCards;
 
     /**
-     * Scanner permettant de lire les entrées au clavier
-     */
-    private final Scanner scanner;
-
-    private final LinkedBlockingQueue<String> inputQueue;
-
-    /**
      * Constructeur
      *
      * @param playerNames  liste des noms des joueurs qui participent à la
@@ -88,8 +74,8 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * @param kingdomPiles nom des cartes "royaume" à utiliser pour la partie
      */
     public Game(String[] playerNames, String[] kingdomPiles) {
-        instruction = new SimpleObjectProperty<>("");
         this.inputQueue = new LinkedBlockingQueue<>();
+        instruction = new SimpleObjectProperty<>("");
         int nbPlayers = playerNames.length;
         trashedCards = new ArrayList<>();
         scanner = new Scanner(System.in);
@@ -241,32 +227,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     /**
-     * Méthode utilitaire pour l'interface graphique.
-     * À NE PAS MODIFIER.
-     */
-    public String toJSON() {
-        StringJoiner joiner = new StringJoiner(", ");
-        joiner.add("\"turn_player\": " + players.indexOf(currentTurnPlayer));
-        StringJoiner kingdomJoiner = new StringJoiner(", ");
-        for (SupplyPile pile : supplyPiles) {
-            kingdomJoiner.add(
-                    "{\"card\": \"%s\", \"number\": %d, \"cost\": %d}"
-                            .formatted(pile.getName(), pile.size(), pile.getCost()));
-        }
-        joiner.add("\"supply\": [" + kingdomJoiner + "]");
-
-        StringJoiner playersJoiner = new StringJoiner(", ");
-        for (Player p : players) {
-            playersJoiner.add(p.toJSON());
-        }
-        joiner.add("\"players\": [" + playersJoiner + "]");
-        joiner.add("\"log\": ["
-                + String.join(", ", logLines.stream().map(s -> "\"" + s.replace("\"", "\\\"") + "\"").toList())
-                + "]");
-        return "{" + joiner + "}";
-    }
-
-    /**
      * Renvoie une carte de la réserve dont le nom est passé en argument.
      *
      * @param cardName nom de la carte à trouver dans la réserve
@@ -340,134 +300,9 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * final et les cartes possédées par chacun des joueurs.
      */
     public void run() {
-/*        if (Platform.isFxApplicationThread()) {
-            System.out.println("Nous sommes sur le thread JavaFX !");
-        } else {
-            System.out.println("Nous ne sommes PAS sur le thread JavaFX !");
-        }*/
         currentTurnPlayer.setValue(players.getFirst());
         currentPlayer().setCurrentState(new StartTurnState(currentPlayer())) ;
         currentPlayer().startTurn();
-    }
-
-    /**
-     * Boucle d'exécution d'une partie.
-     * <p>
-     * Cette méthode exécute les tours des joueurs jusqu'à ce que la partie soit
-     * terminée. Lorsque la partie se termine, la méthode affiche le score
-     * final et les cartes possédées par chacun des joueurs.
-     */
-/*
-    public void runOld() {
-        currentTurnPlayer.setValue(players.getFirst());
-        while (!isFinished()) {
-            // joue le tour du joueur courant
-            if (currentTurnPlayer.getValue() != previousTurnPlayer.getValue()) {
-                log("<div class=\"turn-title\">%s (turn %d)</div>".formatted(currentTurnPlayer.getValue().toLog(), turnNumber));
-            } else {
-                log("<div class=\"turn-title\">%s (extra turn)</div>".formatted(currentTurnPlayer.getValue().toLog()));
-            }
-            currentTurnPlayer.getValue().playTurn();
-            moveToNextPlayer();
-        }
-        // Affiche le score et les cartes de chaque joueur
-        log("<div class=\"turn-title\">Game over</div>");
-        for (Player p : players) {
-            for (Card c : p.getAllOwnedCards()) {
-                p.moveToHand(c);
-            }
-            log("%s: %d Points".formatted(
-                    p.toLog(),
-                    p.getVictoryPoints()));
-            log(Utils.toLog(p.getAllOwnedCards()));
-        }
-        prompt("Game over", List.of(""), new ArrayList<>(), 0);
-    }
-*/
-
-    /**
-     * Envoie une chaîne de caractères à l'interface graphique
-     * <p>
-     * Cette méthode ne fait rien mais elle est utilisée par une sous-classe de
-     * Game ({@code GameGUI}) qui communique avec l'interface graphique. Vous
-     * ne devez pas l'utiliser ni la modifier.
-     *
-     * @param message chaîne de caractères à envoyer
-     */
-    public void sendToUI(String message) {
-    }
-
-    /**
-     * Lit une ligne de l'entrée standard
-     * <p>
-     * C'est cette méthode qui doit être appelée à chaque fois qu'on veut lire
-     * l'entrée clavier de l'utilisateur (par exemple dans Player.choose), ce
-     * qui permet de n'avoir qu'un seul Scanner pour tout le programme.
-     *
-     * @return une chaîne de caractères correspondant à la ligne suivante de
-     *         l'entrée standard (sans le retour à la ligne finale)
-     */
-    public String readLine() {
-//        return scanner.nextLine();
-        try {
-            return inputQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Envoie l'état de la partie pour affichage aux joueurs et à l'UI avant de
-     * faire un choix
-     *
-     * @param instruction l'instruction qui est donnée au joueur
-     * @param choices     la liste des choix possibles à afficher à l'utilisateur
-     * @param buttons     la liste des boutons à afficher à l'utilisateur
-     */
-    public void prompt(String instruction, List<String> choices, List<Button> buttons, int activePlayerIndex) {
-        // Prépare la version affichée à l'utilisateur
-        System.out.println("");
-        System.out.println(toString());
-        System.out.println(currentTurnPlayer.getValue().toString());
-        String ligneInstruction = ">>> " + instruction + "<<<";
-        this.instruction.set(instruction);
-        System.out.println(ligneInstruction);
-
-        // Prépare la représentation envoyée à l'UI
-        StringJoiner joiner = new StringJoiner(", ", "{", "}");
-        joiner.add("\"game\": " + toJSON());
-        joiner.add("\"active_player\": " + activePlayerIndex);
-        joiner.add("\"instruction\": \"" + instruction + "\"");
-        joiner.add("\"choices\": "
-                + choices.stream().map(c -> "\"" + c + "\"").collect(Collectors.joining(", ", "[", "]")));
-        joiner.add("\"buttons\": " + buttons.stream()
-                .map(b -> String.format("{\"label\": \"%s\", \"value\": \"%s\"}", b.label(), b.value()))
-                .toList());
-        // Envoie la version pour l'UI
-        sendToUI(joiner.toString());
-    }
-
-    /**
-     * Ajoute un message dans le log du jeu qui est affiché dans l'interface
-     * graphique. Le message peut contenir du HTML pour le formatage.
-     * 
-     * @param message
-     */
-    public void log(String message) {
-        if (logIndentLevel > 0) {
-            logLines.add("    ".repeat(logIndentLevel - 1) + "... " + message);
-        } else {
-            logLines.add(message);
-        }
-    }
-
-    public void indentLog() {
-        logIndentLevel += 1;
-    }
-
-    public void unindentLog() {
-        logIndentLevel -= 1;
     }
 
     @Override
@@ -499,10 +334,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
     @Override
     public ObjectProperty<? extends IPlayer> currentPlayerProperty() {
         return currentTurnPlayer;
-    }
-
-    public void addInput(String message) {
-        inputQueue.add(message);
     }
 
     @Override
@@ -547,8 +378,133 @@ public class Game extends Task<Void> implements Runnable, IGame {
         return temporaryCards.getValue().stream().map(Card::getName).collect(Collectors.toList());
     }
 
-    public void switchCurrentPlayer(Player cardOwner) {
-        currentTurnPlayer.setValue(cardOwner);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Boucle d'exécution d'une partie.
+     * <p>
+     * Cette méthode exécute les tours des joueurs jusqu'à ce que la partie soit
+     * terminée. Lorsque la partie se termine, la méthode affiche le score
+     * final et les cartes possédées par chacun des joueurs.
+     */
+/*
+    public void runOld() {
+        currentTurnPlayer.setValue(players.getFirst());
+        while (!isFinished()) {
+            // joue le tour du joueur courant
+            if (currentTurnPlayer.getValue() != previousTurnPlayer.getValue()) {
+                log("<div class=\"turn-title\">%s (turn %d)</div>".formatted(currentTurnPlayer.getValue().toLog(), turnNumber));
+            } else {
+                log("<div class=\"turn-title\">%s (extra turn)</div>".formatted(currentTurnPlayer.getValue().toLog()));
+            }
+            currentTurnPlayer.getValue().playTurn();
+            moveToNextPlayer();
+        }
+        // Affiche le score et les cartes de chaque joueur
+        log("<div class=\"turn-title\">Game over</div>");
+        for (Player p : players) {
+            for (Card c : p.getAllOwnedCards()) {
+                p.moveToHand(c);
+            }
+            log("%s: %d Points".formatted(
+                    p.toLog(),
+                    p.getVictoryPoints()));
+            log(Utils.toLog(p.getAllOwnedCards()));
+        }
+        prompt("Game over", List.of(""), new ArrayList<>(), 0);
     }
+*/
+
+    /**
+     * Lit une ligne de l'entrée standard
+     * <p>
+     * C'est cette méthode qui doit être appelée à chaque fois qu'on veut lire
+     * l'entrée clavier de l'utilisateur (par exemple dans Player.choose), ce
+     * qui permet de n'avoir qu'un seul Scanner pour tout le programme.
+     *
+     * @return une chaîne de caractères correspondant à la ligne suivante de
+     *         l'entrée standard (sans le retour à la ligne finale)
+     */
+    public String readLine() {
+//        return scanner.nextLine();
+        try {
+            return inputQueue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Envoie l'état de la partie pour affichage aux joueurs et à l'UI avant de
+     * faire un choix
+     *
+     * @param instruction l'instruction qui est donnée au joueur
+     * @param choices     la liste des choix possibles à afficher à l'utilisateur
+     * @param buttons     la liste des boutons à afficher à l'utilisateur
+     */
+    public void prompt(String instruction, List<String> choices, List<Button> buttons, int activePlayerIndex) {
+        // Prépare la version affichée à l'utilisateur
+        System.out.println("");
+        System.out.println(toString());
+        System.out.println(currentTurnPlayer.getValue().toString());
+        String ligneInstruction = ">>> " + instruction + "<<<";
+        this.instruction.set(instruction);
+        System.out.println(ligneInstruction);
+    }
+
+    /**
+     * Ajoute un message dans le log du jeu qui est affiché dans l'interface
+     * graphique. Le message peut contenir du HTML pour le formatage.
+     *
+     * @param message
+     */
+    public void log(String message) {
+        if (logIndentLevel > 0) {
+            logLines.add("    ".repeat(logIndentLevel - 1) + "... " + message);
+        } else {
+            logLines.add(message);
+        }
+    }
+
+    public void indentLog() {
+        logIndentLevel += 1;
+    }
+
+    public void unindentLog() {
+        logIndentLevel -= 1;
+    }
+
+    public void addInput(String message) {
+        inputQueue.add(message);
+    }
+
+    /**
+     * Messages envoyés dans le log du jeu (pour affichage dans l'interface
+     * graphique)
+     */
+    private ArrayList<String> logLines = new ArrayList<>();
+    private int logIndentLevel = 0;
+
+    /**
+     * Scanner permettant de lire les entrées au clavier
+     */
+    private final Scanner scanner;
+
+    private final LinkedBlockingQueue<String> inputQueue;
 
 }

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class ReactionPhase extends PlayerState {
 
     private List<Card> reactingCards;
-    private Player reactingCardOwner;
+    private final Player reactingCardOwner;
     private final Card gainedCard;
 
     public ReactionPhase(Player currentPlayer, Player reactingCardOwner, Card gainedCard) {
@@ -23,7 +23,6 @@ public class ReactionPhase extends PlayerState {
 
     @Override
     public void skip() {
-//        endOfCurrentPlayersTurn();
         moveToNextPhase();
     }
 
@@ -38,17 +37,6 @@ public class ReactionPhase extends PlayerState {
             complete();
         }
     }
-
-/*    private void moveToNextStep() {
-        if (noMoreReactingPlayersToProcess()) {
-*//*            if (currentPlayer.areBuysCompleted())
-                endOfCurrentPlayersTurn();
-            else {
-                currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
-            }*//*
-            moveToNextExecutingEffect(gainedCard);
-        }
-    }*/
 
     public void processReactingCard() {
         // révéler et activer une carte réaction

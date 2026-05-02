@@ -3,7 +3,6 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.gui.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,6 @@ public class TreasureMap extends ActionCard {
                 break;
             }
         }
-        p.log("trashes %s".formatted(Utils.toLog(trashedCards)));
         p.moveToTrash(trashedCards);
         if (trashedCards.size() == 2) {
             List<Card> gainedGold = new ArrayList<>();
@@ -42,7 +40,6 @@ public class TreasureMap extends ActionCard {
                 gold.moveTo(gainedGold);
             }
             if (!gainedGold.isEmpty()) {
-                p.log("gains %s on deck".formatted(Utils.toLog(gainedGold)));
                 for (Card c : new ArrayList<>(gainedGold)) {
                     p.gainToDraw(c);
                 }

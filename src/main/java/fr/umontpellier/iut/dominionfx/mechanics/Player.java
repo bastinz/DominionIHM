@@ -2,7 +2,6 @@ package fr.umontpellier.iut.dominionfx.mechanics;
 
 import fr.umontpellier.iut.dominionfx.IPlayer;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.gui.Utils;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ReactionPhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
@@ -342,8 +341,6 @@ public class Player implements IPlayer {
      */
     public void incrementActions(int n) {
         numberOfActions.setValue(numberOfActions.getValue() + n);
-/*        if (numberOfActions.getValue() == 0)
-            canPlayActions = false;*/
     }
 
     /**
@@ -527,56 +524,6 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Renvoie une représentation de l'état du joueur sous forme d'une chaîne
-     * de caractères.
-     * <p>
-     * Cette représentation comporte
-     * - le nom du joueur
-     * - le nombre d'actions, de pièces et d'achats du joueur
-     * - le nombre de cartes dans la pioche et dans la défausse du joueur
-     * - la liste des cartes en jeu du joueur
-     * - la liste des cartes dans la main du joueur
-     * <p>
-     * On pourrait par exemple avoir l'affichage suivant:
-     * <p>
-     * -- Toto --
-     * Actions: 2 Money: 4 Buys: 1 Draw: 7 Discard: 3
-     * In play: Caravan, Copper, Silver, Copper
-     * Hand: Estate, Province
-     */
-    @Override
-    public String toString() {
-        String r = String.format("     -- %s --\n", name);
- /*       r += String.format("Actions: %d     Money: %d     Buys: %d     Draw: %d     Discard: %d\n",
-                numberOfActions,
-                money, numberOfBuys, draw.size(), discard.size());*/
-        r += String.format("In play: %s\n", inPlay.toString());
-        r += String.format("Hand: %s\n", hand.toString());
-        return r;
-    }
-
-    public String toLog() {
-        return "<span class=\"player-name\">" + name + "</span>";
-    }
-
-    /**
-     * Méthode utilitaire pour l'interface graphique.
-     * À NE PAS MODIFIER.
-     */
-    public String toJSON() {
-        StringJoiner joiner = new StringJoiner(", ");
-        joiner.add(String.format("\"name\": \"%s\"", name));
-//        joiner.add(String.format("\"actions\": %d", numberOfActions));
-//        joiner.add(String.format("\"money\": %d", money));
-//        joiner.add(String.format("\"buys\": %d", numberOfBuys));
-        joiner.add(String.format("\"draw\": %s", Utils.toJSON(draw)));
-        joiner.add(String.format("\"discard\": %s", Utils.toJSON(discard)));
-        joiner.add(String.format("\"in_play\": %s", Utils.toJSON(inPlay)));
-        joiner.add(String.format("\"hand\": %s", Utils.toJSON(hand)));
-        return "{" + joiner + "}";
-    }
-
-    /**
      * Joue une carte de la main du joueur.
      * <p>
      * Cette méthode ne vérifie pas que le joueur a le droit de jouer la
@@ -612,54 +559,18 @@ public class Player implements IPlayer {
         }
         gainedCard.moveTo(location);
         cardsGainedThisTurn.add(gainedCard);
-
         // exécuter les effets déclenchés par le gain d'une carte
         // pour chaque joueur (en commençant par le joueur qui a gagné la carte)
         // on exécute tous les effets "on gain" des cartes en jeu du joueur
         // puis on demande au joueur s'il veut utiliser une carte réaction
-
-//        CompletableFuture<Void> onGainedCardFuture = new CompletableFuture<>();
-//        onGainedCardFuture
-//                .thenCompose(v -> onGainedCardAllPlayers(gainedCard))
-//                .thenRun(() -> getCurrentState().moveToNextPhase()); // REVOIR : nettoyer card action
-
         onGainedCardAllPlayers(gainedCard)
                 .thenRun(() -> getCurrentState().moveToNextPhase());
-
-/*        setCurrentState(new ExecutingEffectState(this));
-        playersExecutingEffect = new ArrayList<>(getPlayers());
-        playerExecutingEffect = getNextPlayerExecutingEffect();
-        if (playerExecutingEffect != null) {
-            resetAllCardsExecutingEffect(playerExecutingEffect);
-            Card cardExecutingEffect = getNextCardExecutingEffect();
-            if (cardExecutingEffect != null) {
-//                setCurrentState(new ExecutingEffectState(this));
-                cardExecutingEffect.onPlayerGainCard(this, gainedCard, playerExecutingEffect);
-            } else {
-                getGame().currentPlayer().getCurrentState().moveToNextExecutingEffect(gainedCard);
-            }
-        } *//*else { // à revoir
-            getCurrentState().moveToNextPhase();
-        }*/
-
-/*        for (Player cardOwner : getPlayers()) {
-            // exécuter les effets onGain de toutes les cartes en jeu du joueur
-            for (Card cardInPlay : new ArrayList<>(cardOwner.inPlay)) {
-                cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
-            }
-        }
-        // révéler et activer une carte réaction
-        if (gainedCard.hasType(TREASURE))
-            setCurrentState(new ReactionPhase(this, gainedCard));*/
     }
 
     private CompletableFuture<Void> reactOnGainCard(Player owner, Card gainedCard) {
-//        if (gainedCard.hasType(TREASURE)) {
-            ReactionPhase phase = new ReactionPhase(this, owner, gainedCard);
-            setCurrentState(phase);
-            return phase.getCompletionFuture();
-//        }
-//        return CompletableFuture.completedFuture(null);
+        ReactionPhase phase = new ReactionPhase(this, owner, gainedCard);
+        setCurrentState(phase);
+        return phase.getCompletionFuture();
     }
 
     private CompletableFuture<Void> onGainedCardAllPlayers(Card gainedCard) {
@@ -675,56 +586,6 @@ public class Player implements IPlayer {
         }
         return future;
     }
-
-    private List<Player> playersExecutingEffect;
-    private List<Card> allCardsExecutingEffect;
-    private Player playerExecutingEffect;
-
-    public Player getPlayerExecutingEffect() {
-        return playerExecutingEffect;
-    }
-
-    public void setPlayerExecutingEffect(Player playerExecutingEffect) {
-        this.playerExecutingEffect = playerExecutingEffect;
-    }
-
-    public Player getNextPlayerExecutingEffect() {
-        if (playersExecutingEffect != null && !playersExecutingEffect.isEmpty() ) {
-            return playersExecutingEffect.removeFirst();
-        }
-        return null;
-    }
-    public Card getNextCardExecutingEffect() {
-        if (allCardsExecutingEffect != null && !allCardsExecutingEffect.isEmpty() ) {
-            return allCardsExecutingEffect.removeFirst();
-        }
-        return null;
-    }
-
-    public void resetAllCardsExecutingEffect(Player playerExecutingEffect) {
-        this.allCardsExecutingEffect = new ArrayList<>(playerExecutingEffect.getInPlay());;
-    }
-
-
-
-   /*         for (Player cardOwner : getPlayers()) {
-        // exécuter les effets onGain de toutes les cartes en jeu du joueur
-        for (Card cardInPlay : new ArrayList<>(cardOwner.inPlay)) {
-            cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
-        }
-
-        while (cardOwner.hand.stream().anyMatch(c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner))) {
-            Card choice = cardOwner.chooseCardFromHand(
-                    "Reaction: you may reveal a Reaction card from your hand",
-                    c -> c.canReactToPlayerGainCard(this, gainedCard, cardOwner),
-                    true);
-            if (choice == null) {
-                break;
-            } else {
-                cardOwner.playCard(choice);
-            }
-        }
-    }*/
 
     public void gainToDiscard(Card c) {
         gainTo(c, discard);
@@ -747,6 +608,339 @@ public class Player implements IPlayer {
     }
 
     /**
+     * Démarre le tour du joueur
+     * <p>
+     * Les compteurs de nombre d'actions, de nombre d'achats et argent sont
+     * initialisés
+     */
+    public void startTurn() {
+        numberOfActions.setValue(1);
+        numberOfBuys.setValue(1);
+        money.setValue(0);
+        nbSilverOrGoldPlayed = 0;
+        cardsGainedThisTurn.clear();
+        cardsBoughtThisTurn.clear();
+        execDurationsSequentially();
+    }
+
+    private void execDurationsSequentially() {
+        Iterator<Card> it = getInPlay().iterator();
+        runNext(it, this);
+    }
+
+    private void runNext(Iterator<Card> it, Player player) {
+        if (!it.hasNext()) {
+            return;
+        }
+        Card card = it.next();
+        runCard(card, player).thenRun(() -> runNext(it, player));
+    }
+
+    private CompletableFuture<Void> runCard(Card card, Player player) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        ChangeListener<Boolean> listener = new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> obs, Boolean oldVal, Boolean newVal) {
+                if (newVal) {
+                    card.hasDurationEffectProperty().removeListener(this);
+                    future.complete(null);
+                }
+            }
+        };
+        card.hasDurationEffectProperty().addListener(listener);
+        card.atStartOfTurn(player);
+        return future;
+    }
+
+    /**
+     * Fin du tour du joueur
+     * <p>
+     * Cette méthode exécute la phase de "Clean-up" à la fin du tour d'un joueur:
+     * - Les compteurs d'actions, argent et achats du joueur sont remis à 0
+     * - Les cartes en main et en jeu sont défaussées (sauf les cartes Duration qui
+     * ont encore un effet)
+     * - Le joueur pioche les cartes de sa prochaine main (normalement 5 cartes,
+     * mais parfois moins selon les effets de certaines cartes)
+     */
+    public void cleanup() {
+        numberOfActions.setValue(0);
+        money.setValue(0);
+        numberOfBuys.setValue(0);
+        // défausse la main
+        moveToDiscard(hand);
+        // cleanup
+        for (Player p : getPlayers()) {
+            for (Card c : new ArrayList<>(p.inPlay)) {
+                c.onCleanup(p);
+            }
+        }
+        // pioche la nouvelle main (normalement 5 cartes, mais peut être 3 en cas
+        // d'Outpost)
+        drawToHand(nbCardsToDrawAtCleanup);
+        nbCardsToDrawAtCleanup = 5;
+    }
+
+    // ==========================
+    //Ajouts Sophie
+
+    public void playTreasures() {
+        List<Card> treasures = hand.stream().filter(c -> c.hasType(TREASURE)).toList();
+        for (Card c : treasures)
+            playCard(c);
+    }
+
+    public void answer(String answer) {
+        waitForYesOrNoProperty().setValue(false);
+        currentState.answer(answer);
+    }
+
+    public List<String> getNamesOfCardsInHand() {
+        return hand.stream().map(Card::getName).toList();
+    }
+
+    public List<String> getNamesOfTreasuresInHand() {
+        return hand.stream()
+                .filter(c -> c.hasType(TREASURE))
+                .map(Card::getName)
+                .toList();
+    }
+
+    public List<String> getAvailableSupplyCards() {
+        if (numberOfBuys.getValue() > 0) {
+            return game.getAvailableSupplyCards().stream()
+                    .filter(c -> c.getCost() <= money.getValue())
+                    .map(Card::getName)
+                    .toList();
+        }
+        return List.of();
+    }
+
+    @Override
+    public ObservableList<Card> getHand() {
+        return hand;
+    }
+
+    @Override
+    public ObservableList<Card> getDraw() {
+        return draw;
+    }
+
+    @Override
+    public ObservableList<Card> getDiscard() {
+        return discard;
+    }
+
+    @Override
+    public IntegerProperty numberOfActionsProperty() {
+        return numberOfActions;
+    }
+
+    @Override
+    public IntegerProperty numberOfBuysProperty() {
+        return numberOfBuys;
+    }
+
+    @Override
+    public ObservableList<Card> getInPlay() {
+        return inPlay;
+    }
+
+    @Override
+    public ObservableList<Card> getNativeVillageMat() {
+        return nativeVillageMat;
+    }
+
+    @Override
+    public ObservableList<Card> getIslandMat() {
+        return islandMat;
+    }
+
+    @Override
+    public void playTreasuresWasChosen() {
+        currentState.playTreasuresWasChosen();
+    }
+
+    @Override
+    public void cardInHandWasChosen(String cardName) {
+        currentState.cardInHandWasChosen(cardName);
+    }
+
+    @Override
+    public void addToMat() {
+        currentState.addToMat();
+    }
+
+    @Override
+    public void takeFromMat() {
+        currentState.takeFromMat();
+    }
+
+    public void switchToStateByCardType(String cardName) {
+        Card cardToPlay = hand.stream()
+                .filter(card -> card.getName().equals(cardName))
+                .findFirst()
+                .orElseThrow();
+        if (cardToPlay.hasType(CardType.ACTION)) {
+            incrementActions(-1);
+            playCard(cardToPlay);
+        } else if (cardToPlay.hasType(TREASURE)) {
+            setCurrentState(new TreasurePhase(this));
+            numberOfActions.setValue(0);
+            playCard(cardToPlay);
+        }
+    }
+
+    public void playTreasureCard(String cardName) {
+        Card cardToPlay = hand.stream()
+                .filter(card -> card.getName().equals(cardName))
+                .findFirst()
+                .orElseThrow();
+        numberOfActions.setValue(0);
+        playCard(cardToPlay);
+    }
+
+    public void buy(String cardName) {
+        Card c = getCardFromSupply(cardName);
+        incrementBuys(-1);
+        money.setValue(money.getValue() - c.getCost());
+        gainToDiscard(c);
+        cardsBoughtThisTurn.add(c);
+        // gestion des token Embargo (uniquement lorsque le joueur achète une carte, pas
+        // lorsqu'il en gagne une par un autre moyen)
+        for (int i = 0; i < game.getNumberOfEmbargoTokens(cardName); i++) {
+            Card curse = getCardFromSupply("Curse");
+            if (curse != null) {
+                gainToDiscard(curse); // change gain to move
+            }
+        }
+    }
+
+    public boolean areBuysCompleted() {
+        return numberOfBuys.getValue() == 0;
+    }
+
+    public boolean areActionsCompleted() {
+        return numberOfActions.getValue() == 0;
+    }
+
+    /**
+     * Gestion des états du joueur courant
+     */
+    private PlayerState currentState;
+
+    public void setCurrentState(PlayerState currentState) {
+        this.currentState = currentState;
+    }
+
+    public PlayerState getCurrentState() {
+        return currentState;
+    }
+
+    public List<String> getProvincesInHand() {
+        return hand.stream().filter(c -> c.hasName("Province")).map(Card::getName)
+                .collect(Collectors.toList());
+    }
+
+    public void gainTreasure(String cardName) {
+        Card gainedCard = getCardFromSupply(cardName);
+        if (gainedCard != null) {
+            gainToHand(gainedCard);
+        }
+    }
+
+    public void moveFromHandToSupply(String cardName) {
+        Card cardToReturnToSupply = hand.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
+        moveToSupply(cardToReturnToSupply);
+    }
+
+    public Card getCardFromHand(String cardName) {
+        return hand.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
+    }
+
+    public Card getCardFromInPlay(String cardName) {
+        return inPlay.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
+    }
+
+    public BooleanProperty nativeVillagePlayedProperty() {
+        return nativeVillagePlayed;
+    }
+
+    public void setNativeVillagePlayed(boolean nativeVillagePlayed) {
+        this.nativeVillagePlayed.set(nativeVillagePlayed);
+    }
+
+    public boolean isWaitForYesOrNo() {
+        return waitForYesOrNo.get();
+    }
+
+    public BooleanProperty waitForYesOrNoProperty() {
+        return waitForYesOrNo;
+    }
+
+    public void setWaitForYesOrNo(boolean waitForYesOrNo) {
+        this.waitForYesOrNo.set(waitForYesOrNo);
+    }
+
+    public void endActionPhase() {
+        numberOfActions.setValue(0);
+    }
+    public void endTreasurePhase() {
+        numberOfBuys.setValue(0);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Renvoie une représentation de l'état du joueur sous forme d'une chaîne
+     * de caractères.
+     * <p>
+     * Cette représentation comporte
+     * - le nom du joueur
+     * - le nombre d'actions, de pièces et d'achats du joueur
+     * - le nombre de cartes dans la pioche et dans la défausse du joueur
+     * - la liste des cartes en jeu du joueur
+     * - la liste des cartes dans la main du joueur
+     * <p>
+     * On pourrait par exemple avoir l'affichage suivant:
+     * <p>
+     * -- Toto --
+     * Actions: 2 Money: 4 Buys: 1 Draw: 7 Discard: 3
+     * In play: Caravan, Copper, Silver, Copper
+     * Hand: Estate, Province
+     */
+    @Override
+    public String toString() {
+        String r = String.format("     -- %s --\n", name);
+ /*       r += String.format("Actions: %d     Money: %d     Buys: %d     Draw: %d     Discard: %d\n",
+                numberOfActions,
+                money, numberOfBuys, draw.size(), discard.size());*/
+        r += String.format("In play: %s\n", inPlay.toString());
+        r += String.format("Hand: %s\n", hand.toString());
+        return r;
+    }
+
+    public String toLog() {
+        return "<span class=\"player-name\">" + name + "</span>";
+    }
+
+
+    /**
      * Attend une entrée de la part du joueur (au clavier) et renvoie le choix
      * du joueur.
      * <p>
@@ -762,7 +956,7 @@ public class Player implements IPlayer {
      * en main). Dans l'exemple la méthode renvoie une chaîne de caractères de la
      * forme {@code "HAND:<cardName>"} où {@code <cardName>} est le nom de la carte
      * choisie par le joueur parmi les cartes de sa main.
-     * 
+     *
      * <pre>
      * {@code
      * List<String> choices = new ArrayList<>();
@@ -772,7 +966,7 @@ public class Player implements IPlayer {
      * String choice = p.choose("Choose a card", choices, new ArrayList<>(), false);
      * }
      * </pre>
-     * 
+     *
      * @param instruction message à afficher à l'écran pour indiquer au joueur
      *                    la nature du choix qui est attendu
      * @param choices     une liste de {@code String} correspondant aux
@@ -832,14 +1026,14 @@ public class Player implements IPlayer {
      * main à un joueur (dans cet exemple le joueur n'a pas le droit de passer
      * s'il a au moins une carte Action en main, mais la méthode peut quand
      * même renvoyer {@code null} s'il n'a aucune carte Action en main) :
-     * 
+     *
      * <pre>
      * Card choice = p.chooseCardFromHand(
      *         "Choose an Action card",
      *         c -> c.hasType(CardType.ACTION),
      *         false);
      * </pre>
-     * 
+     *
      * @param instruction message à afficher à l'écran pour indiquer au joueur
      *                    la nature du choix qui est attendu
      * @param filter      prédicat permettant de filtrer les cartes de la main
@@ -883,14 +1077,14 @@ public class Player implements IPlayer {
      * Exemple d'utilisation pour faire choisir une carte sur le dessus d'une pile
      * de réserve qui coûte 4 pièces ou moins (dans cet exemple le joueur est
      * autorisé à passer s'il ne veut pas choisir de carte) :
-     * 
+     *
      * <pre>
      * Card choice = p.chooseCardFromSupply(
      *         "Choose a card costing up to 4",
      *         c -> c.getCost() <= 4,
      *         true);
      * </pre>
-     * 
+     *
      * @param instruction message à afficher à l'écran pour indiquer au joueur
      *                    la nature du choix qui est attendu
      * @param filter      prédicat permettant de filtrer les cartes disponibles dans
@@ -918,7 +1112,7 @@ public class Player implements IPlayer {
 
     /**
      * Demande au joueur de choisir une carte parmi une liste passée en argument.
-     * 
+     *
      * @param instruction message à afficher à l'écran pour indiquer au joueur la
      *                    nature du choix qui est attendu
      * @param cards       liste des cartes parmi lesquelles le joueur doit choisir.
@@ -950,7 +1144,7 @@ public class Player implements IPlayer {
     /**
      * Demande au joueur de choisir une option parmi une liste de boutons affichés à
      * l'écran.
-     * 
+     *
      * @param instruction message à afficher à l'écran pour indiquer au joueur la
      *                    nature du choix qui est attendu
      * @param buttons     liste des boutons à afficher à l'écran. Chaque bouton
@@ -972,7 +1166,7 @@ public class Player implements IPlayer {
     /**
      * Ajoute un message dans le log du jeu qui est affiché dans l'interface
      * graphique.
-     * 
+     *
      * @param message message à ajouter au log du jeu (peut contenir du HTML pour le
      *                formatage)
      */
@@ -988,52 +1182,6 @@ public class Player implements IPlayer {
         game.unindentLog();
     }
 
-    /**
-     * Démarre le tour du joueur
-     * <p>
-     * Les compteurs de nombre d'actions, de nombre d'achats et argent sont
-     * initialisés
-     */
-    public void startTurn() {
-        numberOfActions.setValue(1);
-        money.setValue(0);
-        numberOfBuys.setValue(1);
-        nbSilverOrGoldPlayed = 0;
-        cardsGainedThisTurn.clear();
-        cardsBoughtThisTurn.clear();
-/*        canPlayActions = true;
-        canPlayTreasures = true;*/
-        execDurationsSequentially();
-    }
-
-    private void execDurationsSequentially() {
-        Iterator<Card> it = getInPlay().iterator();
-        runNext(it, this);
-    }
-
-    private void runNext(Iterator<Card> it, Player player) {
-        if (!it.hasNext()) {
-            return;
-        }
-        Card card = it.next();
-        runCard(card, player).thenRun(() -> runNext(it, player));
-    }
-
-    private CompletableFuture<Void> runCard(Card card, Player player) {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        ChangeListener<Boolean> listener = new ChangeListener<>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> obs, Boolean oldVal, Boolean newVal) {
-                if (newVal) {
-                    card.hasDurationEffectProperty().removeListener(this);
-                    future.complete(null);
-                }
-            }
-        };
-        card.hasDurationEffectProperty().addListener(listener);
-        card.atStartOfTurn(player);
-        return future;
-    }
 
     /**
      * Exécute le tour d'un joueur
@@ -1155,297 +1303,4 @@ public class Player implements IPlayer {
         }
     }
 */
-
-    /**
-     * Fin du tour du joueur
-     * <p>
-     * Cette méthode exécute la phase de "Clean-up" à la fin du tour d'un joueur:
-     * - Les compteurs d'actions, argent et achats du joueur sont remis à 0
-     * - Les cartes en main et en jeu sont défaussées (sauf les cartes Duration qui
-     * ont encore un effet)
-     * - Le joueur pioche les cartes de sa prochaine main (normalement 5 cartes,
-     * mais parfois moins selon les effets de certaines cartes)
-     */
-    public void cleanup() {
-        numberOfActions.setValue(0);
-//        canPlayActions = true;
-        money.setValue(0);
-        numberOfBuys.setValue(0);
-//        canPlayTreasures = true;
-        // défausse la main
-        moveToDiscard(hand);
-        // cleanup
-        for (Player p : getPlayers()) {
-            for (Card c : new ArrayList<>(p.inPlay)) {
-                c.onCleanup(p);
-            }
-        }
-        // pioche la nouvelle main (normalement 5 cartes, mais peut être 3 en cas
-        // d'Outpost)
-        drawToHand(nbCardsToDrawAtCleanup);
-        nbCardsToDrawAtCleanup = 5;
-    }
-
-    // ==========================
-    //Ajouts Sophie
-
-//    boolean canPlayActions = true;
-//    boolean canPlayTreasures = true;
-
-    public void playTreasures() {
-        List<Card> treasures = hand.stream().filter(c -> c.hasType(TREASURE)).toList();
-        for (Card c : treasures)
-            playCard(c);
-    }
-
-    public void answer(String answer) {
-        waitForYesOrNoProperty().setValue(false);
-        currentState.answer(answer);
-    }
-
-    public List<String> getNamesOfCardsInHand() {
-        return hand.stream().map(Card::getName).toList();
-    }
-
-    public List<String> getNamesOfTreasuresInHand() {
-        return hand.stream()
-                .filter(c -> c.hasType(TREASURE))
-                .map(Card::getName)
-                .toList();
-    }
-
-    public List<String> getAvailableSupplyCards() {
-        if (numberOfBuys.getValue() > 0) {
-            return game.getAvailableSupplyCards().stream()
-                    .filter(c -> c.getCost() <= money.getValue())
-                    .map(Card::getName)
-                    .toList();
-        }
-        return List.of();
-    }
-
-    @Override
-    public ObservableList<Card> getHand() {
-        return hand;
-    }
-
-    @Override
-    public ObservableList<Card> getDraw() {
-        return draw;
-    }
-
-    @Override
-    public ObservableList<Card> getDiscard() {
-        return discard;
-    }
-
-    @Override
-    public IntegerProperty numberOfActionsProperty() {
-        return numberOfActions;
-    }
-
-    @Override
-    public IntegerProperty numberOfBuysProperty() {
-        return numberOfBuys;
-    }
-
-    @Override
-    public ObservableList<Card> getInPlay() {
-        return inPlay;
-    }
-
-    @Override
-    public ObservableList<Card> getNativeVillageMat() {
-        return nativeVillageMat;
-    }
-
-    @Override
-    public ObservableList<Card> getIslandMat() {
-        return islandMat;
-    }
-
-    @Override
-    public void playTreasuresWasChosen() {
-        currentState.playTreasuresWasChosen();
-    }
-
-    @Override
-    public void cardInHandWasChosen(String cardName) {
-        currentState.cardInHandWasChosen(cardName);
-    }
-
-    @Override
-    public void addToMat() {
-        currentState.addToMat();
-    }
-
-    @Override
-    public void takeFromMat() {
-        currentState.takeFromMat();
-    }
-
-    public void switchToStateByCardType(String cardName) {
-        Card cardToPlay = hand.stream()
-                .filter(card -> card.getName().equals(cardName))
-                .findFirst()
-                .orElseThrow();
-        if (cardToPlay.hasType(CardType.ACTION)) {
-//            setCurrentState(new ActionPhase(this));
-            incrementActions(-1);
-//            numberOfActions.setValue(numberOfActions.getValue() - 1);
-            playCard(cardToPlay);
-        } else if (cardToPlay.hasType(TREASURE)) {
-            setCurrentState(new TreasurePhase(this));
-            numberOfActions.setValue(0);
-            playCard(cardToPlay);
-        }
-    }
-
-    public void playTreasureCard(String cardName) {
-        Card cardToPlay = hand.stream()
-                .filter(card -> card.getName().equals(cardName))
-                .findFirst()
-                .orElseThrow();
-        numberOfActions.setValue(0);
-        playCard(cardToPlay);
-    }
-
-    public void buy(String cardName) {
-//        numberOfActions.setValue(0);
-//        incrementBuys(-1);
-//        canPlayActions = false;
-//        canPlayTreasures = false;
-        Card c = getCardFromSupply(cardName);
-        incrementBuys(-1);
-        money.setValue(money.getValue() - c.getCost());
-        gainToDiscard(c);
-        cardsBoughtThisTurn.add(c);
-        // gestion des token Embargo (uniquement lorsque le joueur achète une carte, pas
-        // lorsqu'il en gagne une par un autre moyen)
-        for (int i = 0; i < game.getNumberOfEmbargoTokens(cardName); i++) {
-            Card curse = getCardFromSupply("Curse");
-            if (curse != null) {
-                gainToDiscard(curse); // change gain to move
-            }
-        }
-//        numberOfBuys.setValue(numberOfBuys.getValue() - 1);
-/*        if (numberOfBuys.getValue() == 0)
-            canPlayTreasures = false;*/
-//        currentState.moveToNextExecutingEffect(c);
-    }
-
-    public boolean areBuysCompleted() {
-        return numberOfBuys.getValue() == 0;
-    }
-
-    public boolean areActionsCompleted() {
-        return numberOfActions.getValue() == 0;
-    }
-
-    /**
-     * Gestion des états du joueur courant
-     */
-    private PlayerState currentState;
-
-    public void setCurrentState(PlayerState currentState) {
-        this.currentState = currentState;
-    }
-
-    public PlayerState getCurrentState() {
-        return currentState;
-    }
-
-    public List<String> getProvincesInHand() {
-        return hand.stream().filter(c -> c.hasName("Province")).map(Card::getName)
-                .collect(Collectors.toList());
-    }
-
-    public void gainTreasure(String cardName) {
-        Card gainedCard = getCardFromSupply(cardName);
-        if (gainedCard != null) {
-            gainToHand(gainedCard);
-        }
-    }
-
-    public void salvagerAction(String cardName) {
-        Card cardToTrash = getCardsInHand().stream()
-                .filter(card -> card.getName().equals(cardName))
-                .findFirst()
-                .orElseThrow();
-        incrementMoney(cardToTrash.getCost());
-        moveToTrash(cardToTrash);
-    }
-
-    public void moveFromHandToSupply(String cardName) {
-        Card cardToReturnToSupply = hand.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
-        moveToSupply(cardToReturnToSupply);
-    }
-
-    public Card getCardFromHand(String cardName) {
-        return hand.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
-    }
-
-    public Card getCardFromInPlay(String cardName) {
-        return inPlay.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
-    }
-
-    public BooleanProperty nativeVillagePlayedProperty() {
-        return nativeVillagePlayed;
-    }
-
-    public void setNativeVillagePlayed(boolean nativeVillagePlayed) {
-        this.nativeVillagePlayed.set(nativeVillagePlayed);
-    }
-
-    public boolean isWaitForYesOrNo() {
-        return waitForYesOrNo.get();
-    }
-
-    public BooleanProperty waitForYesOrNoProperty() {
-        return waitForYesOrNo;
-    }
-
-    public void setWaitForYesOrNo(boolean waitForYesOrNo) {
-        this.waitForYesOrNo.set(waitForYesOrNo);
-    }
-
-    public void endActionPhase() {
-        numberOfActions.setValue(0);
-    }
-    public void endTreasurePhase() {
-        numberOfBuys.setValue(0);
-    }
 }
-
-
-/*
-public void processCardGains(Card gainedCard) {
-    // Crée une liste de futures pour chaque joueur
-    CompletableFuture<Void> allPlayersProcessed = CompletableFuture.completedFuture(null);
-
-    // Traite chaque joueur séquentiellement
-    for (Player cardOwner : getPlayers()) {
-        // Pour chaque joueur, on attend que son traitement précédent soit terminé
-        allPlayersProcessed = allPlayersProcessed.thenCompose(v -> processPlayerCards(cardOwner, gainedCard));
-    }
-
-    // Une fois tous les joueurs traités, on passe à la ReactionPhase si nécessaire
-    allPlayersProcessed.thenRun(() -> {
-        if (gainedCard.hasType(TREASURE)) {
-            setCurrentState(new ReactionPhase(this, gainedCard));
-        }
-    });
-}
-
-private CompletableFuture<Void> processPlayerCards(Player cardOwner, Card gainedCard) {
-    // Pour chaque joueur, on retourne un CompletableFuture pour traiter toutes ses cartes
-    List<CompletableFuture<Void>> cardFutures = cardOwner.getInPlay().stream()
-            .map(cardInPlay -> CompletableFuture.runAsync(() -> {
-                // Appelle onPlayerGainCard pour chaque carte en jeu (attente de l'entrée utilisateur gérée dans cette méthode)
-                cardInPlay.onPlayerGainCard(this, gainedCard, cardOwner);
-            }))
-            .collect(Collectors.toList());
-
-    // On attend que toutes les cartes du joueur aient terminé avant de passer à la suite
-    return CompletableFuture.allOf(cardFutures.toArray(new CompletableFuture[0]));
-}*/

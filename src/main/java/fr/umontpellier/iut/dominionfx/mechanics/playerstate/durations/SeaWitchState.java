@@ -10,7 +10,7 @@ import java.util.List;
 public class SeaWitchState extends OnGoingActionState {
 
     private int nbCardsToDiscard;
-    private SeaWitch seaWitch;
+    private final SeaWitch seaWitch;
 
     public SeaWitchState(Player currentPlayer, SeaWitch seaWitch) {
         super(currentPlayer);
@@ -36,7 +36,6 @@ public class SeaWitchState extends OnGoingActionState {
             }
             else
                 getGame().instructionProperty().setValue("Discard %d card%s".formatted(nbCardsToDiscard, nbCardsToDiscard > 1 ? "s" : ""));
-
         }
     }
 }

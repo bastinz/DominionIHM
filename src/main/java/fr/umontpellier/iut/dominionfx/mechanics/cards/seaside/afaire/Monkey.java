@@ -34,7 +34,6 @@ public class Monkey extends ActionCard {
         if (p == owner.getOtherPlayers().getLast() && isActive) {
             Card c = owner.drawToHand();
             if (c != null) {
-                owner.log("%s draws %s (%s)".formatted(owner.toLog(), c.toLog(), this.toLog()));
                 // si la carte piochée est une réaction (Pirate) elle peut réagir immédiatement
                 // au gain de la carte
                 c.reactToPlayerGainCard(p, gainedCard, owner);

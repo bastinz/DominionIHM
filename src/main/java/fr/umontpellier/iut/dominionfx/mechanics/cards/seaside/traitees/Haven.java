@@ -37,11 +37,6 @@ public class Haven extends ActionCard {
         p.getCurrentState().moveToNextPhase();
     }
 
-    /*            Card card = currentPlayer.getCardFromHand(cardName);
-            currentPlayer.moveToSetAside(card);
-            haven.setCardSetAside(card);
-            currentPlayer.getCurrentState().moveToNextPhase();*/
-
     @Override
     public void atStartOfTurn(Player p) {
         p.moveToHand(cardSetAside);

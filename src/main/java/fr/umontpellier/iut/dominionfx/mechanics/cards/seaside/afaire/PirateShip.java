@@ -35,11 +35,9 @@ public class PirateShip extends AttackCard {
                 Arrays.asList(new Button("+%d coins".formatted(p.getPirateShipCounter()), "coins"), new Button("Attack", "attack")),
                 false);
         if (choice.equals("coins")) {
-            p.log("for +%d coins".formatted(p.getPirateShipCounter()));
             p.incrementMoney(p.getPirateShipCounter());
             isAttacking = false;
         } else {
-            p.log("chooses to attack");
             isAttacking = true;
         }
         return CompletableFuture.completedFuture(null);
@@ -55,7 +53,6 @@ public class PirateShip extends AttackCard {
                         "%s: Choose a treasure to trash".formatted(this),
                         revealedCards.stream().filter(c -> c.hasType(CardType.TREASURE)).toList(),
                         false);
-                target.log("%s trashes %s".formatted(target.toLog(), selectedTreasure));
                 target.moveToTrash(selectedTreasure);
                 didTrashTreasure = true;
             }
@@ -68,7 +65,6 @@ public class PirateShip extends AttackCard {
     public void afterAttack(Player p) {
         if (didTrashTreasure) {
             p.incrementPirateShipCounter();
-            p.log("Pirate Ship mat has %d tokens".formatted(p.getPirateShipCounter()));
         }
     }
 }

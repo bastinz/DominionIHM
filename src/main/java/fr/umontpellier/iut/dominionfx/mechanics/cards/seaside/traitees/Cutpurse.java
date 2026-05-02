@@ -3,7 +3,6 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.AttackCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.gui.Utils;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -29,10 +28,7 @@ public class Cutpurse extends AttackCard {
     public CompletableFuture<Void> attack(Player p, Player target) {
         Card copper = target.getCardsInHand().stream().filter(c -> c.hasName("Copper")).findFirst().orElse(null);
         if (copper != null) {
-            target.log("%s discards %s".formatted(target.toLog(), copper.toLog()));
             target.moveToDiscard(copper);
-        } else {
-            target.log("%s reveals his hand: %s".formatted(target.toLog(), Utils.toLog(target.getCardsInHand())));
         }
         return CompletableFuture.completedFuture(null);
     }

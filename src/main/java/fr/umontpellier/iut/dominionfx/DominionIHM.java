@@ -42,7 +42,6 @@ public class DominionIHM extends Application {
 //        Scene scene = new Scene(gameView, Screen.getPrimary().getBounds().getWidth() * pourcentageEcran,  Screen.getPrimary().getBounds().getHeight() * pourcentageEcran); // la scene doit être créée avant de mettre en place les bindings
         Scene scene = new Scene(gameView, 1300,  600); // la scene doit être créée avant de mettre en place les bindings
         game.run();
-//        startGameService(); // le service doit être démarré après que les bindings ont été mis en place
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Dominion-Seaside");
@@ -95,9 +94,11 @@ public class DominionIHM extends Application {
 //          String[] kingdomCards = allKingdomCards.subList(0, 10).toArray(new String[10]);
         return kingdomCards;
     }
+
     public static String[] getRandomKingdomCards() {
         return getAllKingdomCards().subList(0, 10).toArray(new String[10]);
     }
+
     public static ArrayList<String> getAllKingdomCards() {
         ArrayList<String> allKingdomCards = new ArrayList<>(Arrays.asList(
                 "Ambassador",

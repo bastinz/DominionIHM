@@ -19,7 +19,6 @@ public class PirateState extends DurationState {
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             Card gainedCard = currentPlayer.getCardFromSupply(cardName);
             currentPlayer.gainToHand(gainedCard);
-//            moveToNextPhase();
         }
     }
 

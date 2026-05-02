@@ -1,9 +1,9 @@
 package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.Utils;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.gui.Utils;
 
 import java.util.List;
 
@@ -29,7 +29,6 @@ public class Lookout extends ActionCard {
                 topCards,
                 false);
         if (c != null) {
-            p.log("trashes %s".formatted(c.toLog()));
             p.moveToTrash(c);
         }
         // carte à défausser
@@ -38,11 +37,9 @@ public class Lookout extends ActionCard {
                 topCards,
                 false);
         if (c != null) {
-            p.log("discards %s".formatted(c.toLog()));
             p.moveToDiscard(c);
         }
         // carte à remettre sur le dessus de la pioche
-        p.log("places %s on top of deck".formatted(Utils.toLog(topCards)));
         p.moveToDraw(topCards);
         p.getCurrentState().moveToNextPhase();
     }

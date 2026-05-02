@@ -22,13 +22,3 @@ public class SailorStartOfTurnState extends DurationState {
         }
     }
 }
-
-/*
-Card cardToTrash = p.chooseCardFromHand(
-        "%s: You may trash a card from your hand".formatted(this),
-        true);
-        if (cardToTrash != null) {
-        p.log("%s trashes %s (%s)".formatted(p.toLog(), cardToTrash.toLog(), this.toLog()));
-        p.moveToTrash(cardToTrash);
-        }
-setHasDurationEffect(false);*/

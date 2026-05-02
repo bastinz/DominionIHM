@@ -2,9 +2,9 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Button;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.Utils;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.gui.Utils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,16 +31,13 @@ public class Navigator extends ActionCard {
             return;
         }
 
-        p.log("reveals %s".formatted(Utils.toLog(drawnCards)));
         String choice = p.chooseStringFromButtons(
                 "%s: Do you want to discard %s?".formatted(this, drawnCards),
                 Arrays.asList(new Button("Yes", "y"), new Button("No", "n")),
                 false);
         if (choice.equals("y")) {
-            p.log("discards %s".formatted(drawnCards));
             p.moveToDiscard(drawnCards);
         } else {
-            p.log("puts cards back on deck");
             while (!drawnCards.isEmpty()) {
                 Card c = p.chooseCardFromButtons(
                         "%s: Put cards back on deck (last on top)".formatted(this),

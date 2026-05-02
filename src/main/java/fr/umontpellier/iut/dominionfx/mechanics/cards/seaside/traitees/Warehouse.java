@@ -23,17 +23,4 @@ public class Warehouse extends ActionCard {
         p.incrementActions(1);
         p.setCurrentState(new WarehouseState(p));
     }
-/*
-    public void endPlay(Player p) {
-        int nbCardsToDiscard = 3;
-        while (!p.getCardsInHand().isEmpty() && nbCardsToDiscard > 0) {
-            Card cardToDiscard = p.chooseCardFromHand(
-                    "%s: Discard %d card(s)".formatted(this, nbCardsToDiscard),
-                    false);
-            p.log("discards %s".formatted(cardToDiscard.toLog()));
-            p.moveToDiscard(cardToDiscard);
-            nbCardsToDiscard -= 1;
-        }
-        p.getCurrentState().moveToNextPhase();
-    }*/
 }

@@ -38,7 +38,6 @@ public class Treasury extends ActionCard {
                     Arrays.asList(new Button("Yes", "y"), new Button("No", "n")),
                     false);
             if (choice.equals("y")) {
-                p.log("%s puts %s onto deck".formatted(p.toLog(), this.toLog()));
                 p.moveToDraw(this);
             } else {
                 super.onCleanup(p);
