@@ -3,6 +3,7 @@ package fr.umontpellier.iut.dominionfx;
 
 import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 
@@ -17,4 +18,5 @@ public interface IGame {
     ObjectProperty<? extends IPlayer> currentPlayerProperty();
     List<SupplyPile> getSupplyPiles();
     ObjectProperty<ObservableList<Card>> temporaryCardsProperty();
+    BooleanProperty gameOverProperty();
 }

@@ -74,13 +74,14 @@ public abstract class Card {
     }
 
     public void moveTo(List<Card> newLocation) {
-        if (location != null) {
-            location.remove(this);
-        }
+        // Ajout dans la nouvelle liste avant suppression de l'ancienne pour gérer le cas de la liste qui devient vide et fin de partie
+        List<Card> oldLocation = location;
         location = newLocation;
         newLocation.add(this);
+        if (oldLocation != null) {
+            oldLocation.remove(this);
+        }
     }
-
 
     public boolean getHasDurationEffect() {
         return hasDurationEffect.getValue();

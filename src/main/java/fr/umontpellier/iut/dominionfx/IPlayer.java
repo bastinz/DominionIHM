@@ -14,6 +14,7 @@ public interface IPlayer {
     void answer(String yes);
 
     String getName();
+    int getVictoryPoints();
 
     ObservableList<Card> getHand();
     ObservableList<Card> getInPlay();

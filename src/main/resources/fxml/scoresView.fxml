@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<fx:root stylesheets="@../css/style.css" type="javafx.scene.layout.VBox" alignment="CENTER" spacing="30" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+   <Label alignment="CENTER" text="Game Over !"/>
+   <VBox alignment="CENTER">
+      <Label alignment="CENTER" text="Scores"/>
+      <Label id="winner" fx:id="winner" alignment="CENTER"/>
+   </VBox>
+   <HBox alignment="CENTER" prefHeight="47.0" prefWidth="398.0" spacing="30.0">
+      <Button fx:id="playAgain" mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" text="On rejoue ?" onAction="#replay"/>
+      <Button fx:id="stop" mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" text="On arrête !" onAction="#stopGame"/>
+   </HBox>
+   <padding><Insets top="10" bottom="10"/></padding>
+</fx:root>

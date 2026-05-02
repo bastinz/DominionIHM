@@ -1,7 +1,9 @@
 package fr.umontpellier.iut.dominionfx;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
+import fr.umontpellier.iut.dominionfx.views.ChoosePlayersView;
 import fr.umontpellier.iut.dominionfx.views.GameView;
+import fr.umontpellier.iut.dominionfx.views.ScoresView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -12,9 +14,8 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class DominionIHM extends Application {
-
     public static final double pourcentageEcran = .55;/*.95*/
-    /*    private ChoosePlayersView choosePlayersView;*/
+    private ChoosePlayersView choosePlayersView;
     private Stage primaryStage;
     private static Game game;
 
@@ -23,7 +24,7 @@ public class DominionIHM extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        if (partieTest) // on joue pour les tests
+        if (gameTest) // on joue pour les tests
             startGame();
         else {
             if (withChoosePlayersView) {
@@ -43,34 +44,35 @@ public class DominionIHM extends Application {
         Scene scene = new Scene(gameView, 1300,  600); // la scene doit être créée avant de mettre en place les bindings
         game.run();
 
+        ScoresView scoresView = new ScoresView(this); // cette ligne doit être décommentée pour la fin de partie
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("Dominion-Seaside");
 //        primaryStage.centerOnScreen();
         primaryStage.setOnCloseRequest(event -> {
-            this.onStopGame();
+            stopGame();
             event.consume();
         });
         primaryStage.show();
     }
 
-    private static void setPlayersAndGame() {
+    public void setPlayersAndGame() {
         String[] playerNames;
-/*        if (withChoosePlayersView)
+        if (!gameTest && withChoosePlayersView)
             playerNames = choosePlayersView.getNomsJoueurs();
-        else {*/
-        playerNames = new String[2];
-        playerNames[0] = "Marco";
-        playerNames[1] = "Polo";
-//        }
+        else {
+            playerNames = new String[2];
+            playerNames[0] = "Marco";
+            playerNames[1] = "Polo";
+        }
         String[] kingdomCards = selectKingdomCards();
-
         game = new Game(playerNames, kingdomCards);
     }
 
-    private boolean partieTest = false;
+    private boolean gameTest = false;
 
-    public DominionIHM(boolean partieTest) { // ajouté pour les tests
-        this.partieTest = partieTest;
+    public DominionIHM(boolean gameTest) { // ajouté pour les tests
+        this.gameTest = gameTest;
     }
 
     public DominionIHM() {} // pour une partie sans tests
@@ -145,7 +147,7 @@ public class DominionIHM extends Application {
             demarrerPartie();
     };*/
 
-    public void onStopGame() {
+    public void stopGame() {
 /*        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setContentText("On arrête de jouer ?");
@@ -163,4 +165,9 @@ public class DominionIHM extends Application {
     public static Game getGame() {
         return game;
     }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
 }

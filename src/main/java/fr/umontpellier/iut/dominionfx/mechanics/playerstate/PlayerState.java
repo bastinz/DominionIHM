@@ -70,7 +70,11 @@ public abstract class PlayerState {
 
     public void endOfCurrentPlayersTurn() {
         // on vérifie si fin de partie ??
-        getGame().moveToNextPlayerState(); // fait le cleanUp et startTurn
+        if (!getGame().isFinished())
+            getGame().moveToNextPlayerState(); // fait le cleanUp et startTurn
+        else {
+            currentPlayer.setCurrentState(new GameOverState(currentPlayer));
+        }
     }
 
     protected Game getGame() {

@@ -1,7 +1,6 @@
 package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.Utils;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 

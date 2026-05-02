@@ -5,7 +5,12 @@ import fr.umontpellier.iut.dominionfx.IPlayer;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.FactorySupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
+import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -43,13 +48,12 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     private final ObjectProperty<String> instruction;
 
-    private boolean samePlayerShouldPlayExtraTurn = false;
-
     /**
-     * Numéro du tour courant (commence à 1 et est incrémenté à chaque fois que
-     * le tour d'un nouveau joueur commence)
+     * Permet de savoir si la partie est terminée
      */
-    private int turnNumber = 1;
+    private final BooleanProperty gameOver;
+
+    private boolean samePlayerShouldPlayExtraTurn = false;
 
     /**
      * Liste des piles dans la réserve du jeu.
@@ -58,7 +62,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * carte. Ces piles peuvent être vides en cours de partie si toutes les
      * cartes de la pile ont été achetées ou gagnées par les joueurs.
      */
-    private final List<SupplyPile> supplyPiles;
+    private List<SupplyPile> supplyPiles;
 
     /**
      * Liste des cartes qui ont été écartées (trash)
@@ -76,6 +80,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
     public Game(String[] playerNames, String[] kingdomPiles) {
         this.inputQueue = new LinkedBlockingQueue<>();
         instruction = new SimpleObjectProperty<>("");
+        gameOver = new SimpleBooleanProperty(false);
         int nbPlayers = playerNames.length;
         trashedCards = new ArrayList<>();
         scanner = new Scanner(System.in);
@@ -95,6 +100,13 @@ public class Game extends Task<Void> implements Runnable, IGame {
         supplyPiles.add(FactorySupplyPile.createSupplyPile("Province", nbPlayers));
         supplyPiles.add(FactorySupplyPile.createSupplyPile("Curse", nbPlayers));
 
+        BooleanBinding gameOverBinding = Bindings.createBooleanBinding(
+                this::isFinished,
+                supplyPiles.stream()
+                        .map(SupplyPile::sizeProperty)
+                        .toArray(Observable[]::new)
+        );
+        gameOver.bind(gameOverBinding);
         // Création des joueurs
         players = new ArrayList<>(nbPlayers);
         for (String playerName : playerNames)
@@ -341,6 +353,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
         return supplyPiles;
     }
 
+    @Override
+    public BooleanProperty gameOverProperty() {
+        return gameOver;
+    }
+
     public void moveToNextPlayerState() {
         moveToNextPlayer();
         currentPlayer().setCurrentState(new StartTurnState(currentPlayer())) ;
@@ -506,5 +523,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
     private final Scanner scanner;
 
     private final LinkedBlockingQueue<String> inputQueue;
+
+    /**
+     * Numéro du tour courant (commence à 1 et est incrémenté à chaque fois que
+     * le tour d'un nouveau joueur commence)
+     */
+    private int turnNumber = 1;
 
 }
