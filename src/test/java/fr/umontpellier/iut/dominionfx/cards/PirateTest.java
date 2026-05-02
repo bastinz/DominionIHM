@@ -36,8 +36,8 @@ public class PirateTest extends BaseTestClass {
         clickOnSkip();
         assertFalse(currentPlayer.getHand().stream().map(Card::getName).toList().contains("Gold"));
         clickOnSupplyPile("Gold");
-        assertTrue(currentPlayer.getHand().stream().map(Card::getName).toList().contains("Gold"));
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
+        assertTrue(currentPlayer.getHand().stream().map(Card::getName).toList().contains("Gold"));
 //        pause(2);
     }
 
@@ -60,11 +60,10 @@ public class PirateTest extends BaseTestClass {
         clickOnTreasures();
         clickOnSupplyPile("Gold"); // achat qui va declencher Reaction
         clickOnTemporaryCard("Pirate"); // reponse reaction
-        pause(3);
         assertTrue(pirateOwner.getInPlay().stream().map(Card::getName).toList().contains("Pirate"));
         assertEquals(treasureGainer, game.currentPlayer());
         assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState()); // il reste un buy
-        pause(2);
+//        pause(2);
     }
 
     @Test

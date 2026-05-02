@@ -34,10 +34,20 @@ public class TreasurePhase extends PlayerState {
     public void supplyCardWasChosen(String cardName) {
         List<String> availableChoices = currentPlayer.getAvailableSupplyCards();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
+/*            Card gainedCard = Card card = currentPlayer.getGame()
+                    .getSupplyPiles()
+                    .stream()
+                    .filter(p -> cardName.equals(p.getName()))
+                    .findFirst()
+                    .orElseThrow()
+                    .getCards()
+                    .stream()
+                    .findFirst()
+                    .orElseThrow();*/
             currentPlayer.buy(cardName);
             /*if (currentPlayer.areBuysCompleted())
                 endOfCurrentPlayersTurn();*/
-            currentPlayer.getCurrentState().moveToNextPhase();
+//            currentPlayer.getCurrentState().moveToNextPhase();
 //            moveToNextPhase();
         }
     }

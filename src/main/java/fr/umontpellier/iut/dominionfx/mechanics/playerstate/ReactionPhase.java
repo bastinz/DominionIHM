@@ -3,7 +3,9 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class ReactionPhase extends PlayerState {
@@ -11,6 +13,7 @@ public class ReactionPhase extends PlayerState {
     private List<Card> reactingCards;
     private Player reactingCardOwner;
     private final Card gainedCard;
+    private final CompletableFuture<Void> completionFuture = new CompletableFuture<>();
 
     public ReactionPhase(Player currentPlayer, Player reactingCardOwner, Card gainedCard) {
         super(currentPlayer);
@@ -34,8 +37,19 @@ public class ReactionPhase extends PlayerState {
             reactingCards.remove(cardToPlay);
             getGame().setTemporaryCards(null);
             cardToPlay.reactToPlayerGainCard(currentPlayer, gainedCard, reactingCardOwner);
+
+            complete();
 //            moveToNextExecutingEffect(gainedCard);
         }
+    }
+
+    public CompletableFuture<Void> getCompletionFuture() {
+        return completionFuture;
+    }
+
+    // À appeler quand la phase est terminée
+    public void complete() {
+        completionFuture.complete(null);
     }
 
 /*    private void moveToNextStep() {
@@ -55,7 +69,7 @@ public class ReactionPhase extends PlayerState {
                 .filter(c -> c.canReactToPlayerGainCard(currentPlayer, gainedCard, reactingCardOwner))
                 .collect(Collectors.toCollection(ArrayList::new));
         if (reactingCards.isEmpty())
-            moveToNextExecutingEffect(gainedCard);
+            complete();
         else
             getGame().setTemporaryCards(reactingCardOwner.getHand());
     }

@@ -2,9 +2,6 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-
-import static fr.umontpellier.iut.dominionfx.mechanics.CardType.TREASURE;
 
 public abstract class PlayerState {
     protected final Player currentPlayer;
@@ -17,8 +14,9 @@ public abstract class PlayerState {
 
     public void moveToNextPhase() {
         if (currentPlayer.areActionsCompleted()) {
-            if (currentPlayer.areBuysCompleted())
+            if (currentPlayer.areBuysCompleted()) {
                 endOfCurrentPlayersTurn();
+            }
             else
                 currentPlayer.setCurrentState(new TreasurePhase(currentPlayer));
         } else
@@ -53,9 +51,10 @@ public abstract class PlayerState {
     public void takeFromMat() {
     }
 
-  public void moveToNextExecutingEffect(Card gainedCard) { /*
+/*    public void moveToNextExecutingEffect(Card gainedCard) {
         Player playerExecutingEffect = currentPlayer.getNextPlayerExecutingEffect();
         if (playerExecutingEffect != null) {
+            System.out.println("SOOO player suivant " + playerExecutingEffect.getName());
             currentPlayer.resetAllCardsExecutingEffect(playerExecutingEffect);
             Card cardExecutingEffect = currentPlayer.getNextCardExecutingEffect();
             if (cardExecutingEffect != null) {
@@ -69,9 +68,51 @@ public abstract class PlayerState {
                 else
                     moveToNextExecutingEffect(gainedCard);
             }
-        } else
-            moveToNextPhase();*/
-    }
+        } else {
+            System.out.println("SOOO fin players");
+            System.out.println("SOOO " + currentPlayer.getCurrentState());
+            moveToNextPhase();
+        }
+    }*/
+
+/*    public void moveToNextExecutingEffect(Card gainedCard) {
+        Card cardExecutingEffect = currentPlayer.getNextCardExecutingEffect();
+        if (cardExecutingEffect == null) {
+            Player playerExecutingEffect = currentPlayer.getNextPlayerExecutingEffect();
+            if (playerExecutingEffect == null) {
+                moveToNextPhase();
+            } else {
+                currentPlayer.setPlayerExecutingEffect(playerExecutingEffect);
+                currentPlayer.resetAllCardsExecutingEffect(playerExecutingEffect);
+                moveToNextExecutingEffect(gainedCard);
+            }
+        } else {
+            cardExecutingEffect.onPlayerGainCard(currentPlayer, gainedCard, currentPlayer.getPlayerExecutingEffect());
+        }
+    }*/
+
+
+/*        if (playerExecutingEffect != null) {
+            System.out.println("SOOO player suivant " + playerExecutingEffect.getName());
+            currentPlayer.resetAllCardsExecutingEffect(playerExecutingEffect);
+            Card cardExecutingEffect = currentPlayer.getNextCardExecutingEffect();
+            if (cardExecutingEffect != null) {
+                cardExecutingEffect.onPlayerGainCard(currentPlayer, gainedCard, playerExecutingEffect);
+
+//                currentPlayer.setCurrentState(new ExecutingGainedCardEffects(currentPlayer, playerExecutingEffect, gainedCard, cardExecutingEffect));
+            } else {
+                // révéler et activer une carte réaction
+                if (gainedCard.hasType(TREASURE))
+                    currentPlayer.setCurrentState(new ReactionPhase(currentPlayer, playerExecutingEffect, gainedCard));
+                else
+                    moveToNextExecutingEffect(gainedCard);
+            }
+        } else {
+            System.out.println("SOOO fin players");
+            System.out.println("SOOO " + currentPlayer.getCurrentState());
+            moveToNextPhase();
+        }
+    }*/
 
     public void endOfCurrentPlayersTurn() {
         // on vérifie si fin de partie ??

@@ -3,6 +3,7 @@ package fr.umontpellier.iut.dominionfx.cards;
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.MerchantShip;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.application.Platform;
@@ -29,16 +30,34 @@ public class SailorTest extends BaseTestClass {
     }
 
     @Test
-    public void gainsDuration() {
+    public void choosesToPlayGainedDuration() {
         Player currentPlayer = game.currentPlayer();
         Platform.runLater(() -> currentPlayer.incrementBuys(1));
         WaitForAsyncUtils.waitForFxEvents();
 
         clickOnCardInHand("Sailor");
         clickOnTreasures();
+        int initialMoney = game.currentPlayer().getMoney();
         clickOnSupplyPile("Merchant Ship");
         clickOnYes();
         assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState());
+        assertEquals(initialMoney - new MerchantShip().getCost() + 2, game.currentPlayer().getMoney());
+        assertTrue(listContainsCard(game.currentPlayer().getInPlay(), "Merchant Ship"));
+//        pause(2);
+    }
+
+    @Test
+    public void choosesNotToPlayGainedDuration() {
+        Player currentPlayer = game.currentPlayer();
+        Platform.runLater(() -> currentPlayer.incrementBuys(1));
+        WaitForAsyncUtils.waitForFxEvents();
+        clickOnCardInHand("Sailor");
+        clickOnTreasures();
+        int initialMoney = game.currentPlayer().getMoney();
+        clickOnSupplyPile("Merchant Ship");
+        clickOnNo();
+        assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState());
+        assertEquals(initialMoney - new MerchantShip().getCost(), game.currentPlayer().getMoney());
 //        pause(2);
     }
 

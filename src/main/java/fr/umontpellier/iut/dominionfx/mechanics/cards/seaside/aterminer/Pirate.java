@@ -38,7 +38,7 @@ public class Pirate extends ActionCard {
     public void reactToPlayerGainCard(Player p, Card gainedCard, Player owner) {
         owner.playCard(this);
 
-        p.getCurrentState().moveToNextExecutingEffect(gainedCard);
+//        p.getCurrentState().moveToNextExecutingEffect(gainedCard);
     }
 
     @Override

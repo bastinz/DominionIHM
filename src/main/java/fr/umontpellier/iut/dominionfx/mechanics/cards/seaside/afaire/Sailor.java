@@ -7,7 +7,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.SailorStartOfTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.SailorAndDurationGainedState;
 
-import static java.lang.Thread.sleep;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Navigatrice (Sailor)
@@ -47,11 +47,14 @@ public class Sailor extends ActionCard {
     }
 
     @Override
-    public void onPlayerGainCard(Player p, Card gainedCard, Player owner) {
-        p.setWaitForYesOrNo(true);
-        if (canPlayDuration && gainedCard.hasType(CardType.DURATION) && p == owner)
-            p.getCurrentState().moveToNextExecutingEffect(gainedCard);
-//            p.setCurrentState(new SailorAndDurationGainedState(p, owner, gainedCard, this));
+    public CompletableFuture<Void> onPlayerGainCard(Player p, Card gainedCard, Player owner) {
+        if (canPlayDuration && gainedCard.hasType(CardType.DURATION) && p == owner) {
+            p.setWaitForYesOrNo(true);
+            SailorAndDurationGainedState phase = new SailorAndDurationGainedState(p, owner, gainedCard, this);
+            p.setCurrentState(phase);
+            return phase.getCompletionFuture();
+        }
+        return CompletableFuture.completedFuture(null);
     }
 
     public void cannotPlayDurationAnyMore() {

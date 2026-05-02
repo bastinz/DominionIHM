@@ -1,9 +1,11 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Singe (Monkey)
@@ -28,18 +30,17 @@ public class Monkey extends ActionCard {
     }
 
     @Override
-    public void onPlayerGainCard(Player p, Card gainedCard, Player owner) {
+    public CompletableFuture<Void> onPlayerGainCard(Player p, Card gainedCard, Player owner) {
         if (p == owner.getOtherPlayers().getLast() && isActive) {
             Card c = owner.drawToHand();
             if (c != null) {
                 owner.log("%s draws %s (%s)".formatted(owner.toLog(), c.toLog(), this.toLog()));
                 // si la carte piochée est une réaction (Pirate) elle peut réagir immédiatement
                 // au gain de la carte
-//                c.reactToPlayerGainCard(p, gainedCard, owner);
-
-                p.getCurrentState().moveToNextExecutingEffect(gainedCard);
+                c.reactToPlayerGainCard(p, gainedCard, owner);
             }
         }
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

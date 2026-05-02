@@ -1,29 +1,24 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
-import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire.Sailor;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ExecutingEffectState;
-//import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ExecutingGainedCardEffects;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ReactionPhase;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 
-import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
-import static fr.umontpellier.iut.dominionfx.mechanics.CardType.TREASURE;
-
-public class SailorAndDurationGainedState extends ExecutingEffectState {
+public class SailorAndDurationGainedState extends PlayerState {
 
     private Card gainedCard;
     private Sailor sailorCard;
-    private Player cardOwner;
+
+    private final CompletableFuture<Void> completionFuture = new CompletableFuture<>();
 
     public SailorAndDurationGainedState(Player currentPlayer, Player cardOwner, Card gainedCard, Sailor sailorCard) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Do you want to play " + gainedCard.getName());
         this.gainedCard = gainedCard;
         this.sailorCard = sailorCard;
-        this.cardOwner = cardOwner;
     }
 
     @Override
@@ -31,18 +26,26 @@ public class SailorAndDurationGainedState extends ExecutingEffectState {
         if (choice.equals("Yes")) {
             sailorCard.cannotPlayDurationAnyMore();
             currentPlayer.playCard(gainedCard);
-        } else {
-            Card nextCardExecutingEffect = currentPlayer.getNextCardExecutingEffect();
+//            currentPlayer.setCurrentState(new ExecutingEffectState(currentPlayer));
+        }
+        completionFuture.complete(null);
+//        else {
+/*            Card nextCardExecutingEffect = currentPlayer.getNextCardExecutingEffect();
             if (nextCardExecutingEffect != null) {
                 nextCardExecutingEffect.onPlayerGainCard(currentPlayer, gainedCard, cardOwner);
 //                currentPlayer.setCurrentState(new ExecutingGainedCardEffects(currentPlayer, cardOwner, gainedCard, nextCardExecutingEffect));
             } else {
                 if (currentPlayer.getInPlay().stream()
-                        .anyMatch(card -> card.hasType(CardType.TREASURE))) // si la carte DURATION gagnée a augmentée les actions en phase Buy
+                        .anyMatch(card -> card.hasType(CardType.TREASURE))) // si on est en phase Buy, au cas où la carte DURATION gagnée a augmenté les actions
                     currentPlayer.endActionPhase();
-                moveToNextExecutingEffect(gainedCard);
-            }
-        }
+                moveToNextExecutingEffect(gainedCard);*/
+//            currentPlayer.getCurrentState().moveToNextExecutingEffect(gainedCard);
+//            }
+//        }
+    }
+
+    public CompletableFuture<Void> getCompletionFuture() {
+        return completionFuture;
     }
 }
 

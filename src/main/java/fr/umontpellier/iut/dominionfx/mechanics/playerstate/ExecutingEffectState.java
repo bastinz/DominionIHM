@@ -1,20 +1,14 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 
-import fr.umontpellier.iut.dominionfx.mechanics.Game;
-import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-
-import javax.swing.*;
-
-import static fr.umontpellier.iut.dominionfx.mechanics.CardType.TREASURE;
-
+/*
 public class ExecutingEffectState extends PlayerState {
 
     public ExecutingEffectState(Player currentPlayer) {
         super(currentPlayer);
     }
 
-    @Override
+*/
+/*    @Override
     public void moveToNextExecutingEffect(Card gainedCard) {
         Player playerExecutingEffect = currentPlayer.getNextPlayerExecutingEffect();
         if (playerExecutingEffect != null) {
@@ -33,6 +27,7 @@ public class ExecutingEffectState extends PlayerState {
             }
         } else
             moveToNextPhase();
-    }
+    }*//*
 
-}
+
+}*/

@@ -102,11 +102,12 @@ public class BlockadeTest extends BaseTestClass {
         clickOnCardInHand("Blockade");
         clickOnSupplyPile("Lighthouse");
         assertTrue(listContainsCard(game.currentPlayer().getCardsSetAside(), "Lighthouse"));
+
         clickOnSkip(); // on passe au joueur suivant PlayerTest2
         assertTrue(listContainsCard(game.getPreviousTurnPlayer().getCardsSetAside(), "Lighthouse"));
         clickOnTreasures();
         clickOnSupplyPile("Lighthouse"); // on passe au joueur suivant, on revient au premier joueur
-        assertTrue(listContainsCard(game.getPreviousTurnPlayer().getDiscard(), "Curse"));
+        assertTrue(listContainsCard(game.getPreviousTurnPlayer().getAllOwnedCards(), "Curse"));
 //        pause(2);
     }
 

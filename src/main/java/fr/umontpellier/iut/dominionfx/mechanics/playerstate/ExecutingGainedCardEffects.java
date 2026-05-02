@@ -1,8 +1,5 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 
-import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-
 /*public class ExecutingGainedCardEffects extends ExecutingEffectState {
 
     private Card cardExecutingEffect;

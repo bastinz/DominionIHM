@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Représentation des cartes du jeu Dominion
@@ -155,8 +156,8 @@ public abstract class Card {
      * @param owner      le joueur qui possède la carte en jeu sur laquelle la
      *                   méthode est appelée
      */
-    public void onPlayerGainCard(Player p, Card gainedCard, Player owner) {
-        p.getCurrentState().moveToNextExecutingEffect(gainedCard);
+    public CompletableFuture<Void> onPlayerGainCard(Player p, Card gainedCard, Player owner) {
+        return CompletableFuture.completedFuture(null);
     }
 
     public boolean canReactToPlayerGainCard(Player p, Card gainedCard, Player owner) {

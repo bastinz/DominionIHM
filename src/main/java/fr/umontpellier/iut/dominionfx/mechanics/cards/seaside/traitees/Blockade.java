@@ -53,17 +53,17 @@ public class Blockade extends AttackCard {
     }
 
     @Override
-    public void onPlayerGainCard(Player p, Card gainedCard, Player owner) {
+    public CompletableFuture<Void> onPlayerGainCard(Player p, Card gainedCard, Player owner) {
         if (attackedPlayers.contains(p)
                 && cardSetAside.hasSameNameAs(gainedCard)
                 && p.getGame().currentPlayer() == p) {
             Card curse = p.getCardFromSupply("Curse");
             if (curse != null) {
-                p.log("gains %s (%s)".formatted(curse.toLog(), this.toLog()));
-                p.gainToDiscard(curse);
+                p.moveToDiscard(curse);
+//                p.gainToDiscard(curse);
             }
         }
-        p.getCurrentState().moveToNextExecutingEffect(gainedCard);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
