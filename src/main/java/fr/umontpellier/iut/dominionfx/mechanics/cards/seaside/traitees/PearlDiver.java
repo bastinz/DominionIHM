@@ -1,11 +1,10 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
-import fr.umontpellier.iut.dominionfx.mechanics.Button;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PearlDiverState;
 
-import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -26,15 +25,12 @@ public class PearlDiver extends ActionCard {
         p.drawToHand(1);
         p.incrementActions(1);
         Card c = p.getBottomCardOfDeck();
-
+        p.getGame().setTemporaryCards(p.getDraw());
         if (c != null) {
-            String choice = p.chooseStringFromButtons(
-                    "%s: Do you want to put %s on top of your deck?".formatted(this, c),
-                    Arrays.asList(new Button("Yes", "y"), new Button("No", "n")),
-                    false);
-            if (choice.equals("y")) {
-                p.moveToDraw(c); // retire la carte du bas de la pioche et la place sur le dessus
-            }
+            p.setWaitForYesOrNo(true);
+            PearlDiverState phase = new PearlDiverState(p, c);
+            p.setCurrentState(phase);
+            return p.getCurrentState().getCompletionFuture();
         }
         return CompletableFuture.completedFuture(null);
     }
