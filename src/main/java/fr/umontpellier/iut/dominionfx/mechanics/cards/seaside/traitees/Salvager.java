@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.SalvagerState;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Sauveteur (Salvager)
  * <p>
@@ -16,8 +18,10 @@ public class Salvager extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.incrementBuys(1);
-        p.setCurrentState(new SalvagerState(p));
+        SalvagerState state = new SalvagerState(p);
+        p.setCurrentState(state);
+        return state.getCompletionFuture();
     }
 }

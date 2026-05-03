@@ -39,14 +39,15 @@ public class HavenTest extends BaseTestClass {
 
     @Test
     public void getsSetAsideCardOnNextTurn() {
-        Player currentPlayer = game.currentPlayer();
-        Card silver = currentPlayer.getHand().stream().filter(c -> c.getName().equals("Silver")).findFirst().orElseThrow();
+        Player firstPlayer = game.currentPlayer();
+        Card silver = firstPlayer.getHand().stream().filter(c -> c.getName().equals("Silver")).findFirst().orElseThrow();
         clickOnCardInHand("Haven");
         clickOnCardInHand("Silver");
+        assertTrue(firstPlayer.getCardsSetAside().contains(silver));
         clickOnSkip();
         clickOnSkip();
-        assertTrue(currentPlayer.getHand().contains(silver));
-        assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
+        assertTrue(firstPlayer.getHand().contains(silver));
+        assertInstanceOf(StartTurnState.class, firstPlayer.getCurrentState());
 //        pause(2);
     }
 }

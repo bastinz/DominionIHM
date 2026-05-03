@@ -22,8 +22,10 @@ public class TidePoolsState extends DurationState {
             Card cardToDiscard = currentPlayer.getCardsInHand().stream().findFirst().orElseThrow();
             currentPlayer.moveToDiscard(cardToDiscard);
             nbCardsToDiscard -= 1;
-            if (nbCardsToDiscard == 0)
-                skip();
+            if (nbCardsToDiscard == 0) {
+                durationCard.setHasDurationEffect(false);
+                complete();
+            }
             else
                 getGame().instructionProperty().setValue("Discard 1 card");
         }

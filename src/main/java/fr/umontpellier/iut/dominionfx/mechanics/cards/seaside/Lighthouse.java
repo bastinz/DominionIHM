@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Phare (Lighthouse)
  * <p>
@@ -21,19 +23,20 @@ public class Lighthouse extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.incrementActions(1);
         p.incrementMoney(1);
         isProtection = true;
         setHasDurationEffect(true);
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
-    public void atStartOfTurn(Player p) {
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
         p.incrementMoney(1);
         isProtection = false;
         setHasDurationEffect(false);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

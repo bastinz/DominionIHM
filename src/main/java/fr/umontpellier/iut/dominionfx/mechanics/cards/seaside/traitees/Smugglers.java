@@ -6,6 +6,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.SmugglersState;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Contrebandiers (Smugglers)
@@ -19,15 +20,17 @@ public class Smugglers extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture play(Player p) {
         List<String> possibleCardNames = p.getOtherPlayers().getLast().getCardsGainedThisTurn().stream()
                 .filter(c -> c.getCost() <= 6)
                 .map(Card::getName)
                 .distinct()
                 .toList();
         if (!possibleCardNames.isEmpty()) {
-            p.setCurrentState(new SmugglersState(p, possibleCardNames));
+            SmugglersState state = new SmugglersState(p, possibleCardNames);
+            p.setCurrentState(state);
+            return state.getCompletionFuture();
         } else
-            p.getCurrentState().moveToNextPhase();
+            return CompletableFuture.completedFuture(null);
     }
 }

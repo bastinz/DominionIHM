@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.WarehouseState;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Entrepôt (Warehouse)
  * <p>
@@ -18,9 +20,11 @@ public class Warehouse extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.drawToHand(3);
         p.incrementActions(1);
-        p.setCurrentState(new WarehouseState(p));
+        WarehouseState state = new WarehouseState(p);
+        p.setCurrentState(state);
+        return state.getCompletionFuture();
     }
 }

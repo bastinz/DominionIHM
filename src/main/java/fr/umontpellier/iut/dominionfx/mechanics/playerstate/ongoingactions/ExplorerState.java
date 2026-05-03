@@ -15,7 +15,7 @@ public class ExplorerState extends OnGoingActionState {
         List<String> availableChoices = currentPlayer.getProvincesInHand();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             currentPlayer.gainTreasure("Gold");
-            moveToNextPhase();
+            complete();
         }
     }
 

@@ -16,7 +16,7 @@ public class NativeVillageState extends OnGoingActionState {
             Card c = currentPlayer.getCardFromDeck();
             currentPlayer.moveToNativeVillageMat(c);
             currentPlayer.setNativeVillagePlayed(false);
-            currentPlayer.getCurrentState().moveToNextPhase();
+            complete();
         }
     }
 
@@ -24,7 +24,7 @@ public class NativeVillageState extends OnGoingActionState {
     public void takeFromMat() {
         currentPlayer.moveToHand(currentPlayer.getCardsOnNativeVillageMat());
         currentPlayer.setNativeVillagePlayed(false);
-        currentPlayer.getCurrentState().moveToNextPhase();
+        complete();
     }
 
     @Override

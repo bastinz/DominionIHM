@@ -20,7 +20,7 @@ public class SalvagerState extends OnGoingActionState {    public SalvagerState(
                     .orElseThrow();
             currentPlayer.incrementMoney(cardToTrash.getCost());
             currentPlayer.moveToTrash(cardToTrash);
-            moveToNextPhase();
+            complete();
         }
     }
 }

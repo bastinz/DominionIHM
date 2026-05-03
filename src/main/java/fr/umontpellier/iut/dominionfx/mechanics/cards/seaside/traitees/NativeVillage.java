@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.NativeVillageState;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Village indigène (Native Village)
  * <p>
@@ -18,9 +20,11 @@ public class NativeVillage extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.incrementActions(2);
         p.setNativeVillagePlayed(true);
-        p.setCurrentState(new NativeVillageState(p));
+        NativeVillageState state = new NativeVillageState(p);
+        p.setCurrentState(state);
+        return state.getCompletionFuture();
     }
 }

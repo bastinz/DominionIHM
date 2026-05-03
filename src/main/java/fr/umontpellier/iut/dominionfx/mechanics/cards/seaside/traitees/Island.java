@@ -5,6 +5,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.IslandState;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Île (Island)
  * <p>
@@ -19,8 +21,10 @@ public class Island extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
-        p.setCurrentState(new IslandState(p));
+    public CompletableFuture<Void> play(Player p) {
+        IslandState state = new IslandState(p);
+        p.setCurrentState(state);
+        return state.getCompletionFuture();
     }
 
     @Override

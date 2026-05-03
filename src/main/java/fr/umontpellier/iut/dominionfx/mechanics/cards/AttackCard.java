@@ -34,11 +34,11 @@ public abstract class AttackCard extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
-        action(p).thenCompose(v -> attackAll(p))
+    public CompletableFuture<Void> play(Player p) {
+        return action(p)
+                .thenCompose(v -> attackAll(p))
                 .thenRun(() -> afterAttack(p))
-                .thenRun(() -> p.getCurrentState().complete())
-                .thenRun(() -> p.getCurrentState().moveToNextPhase());
+                .thenRun(() -> p.getCurrentState().complete());
     }
 
     private CompletableFuture<Void> attackAll(Player p) {

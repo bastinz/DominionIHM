@@ -3,7 +3,6 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ActionPhase;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 
 public class DurationState extends ActionPhase {
 
@@ -16,6 +15,7 @@ public class DurationState extends ActionPhase {
     @Override
     public void skip() {
         durationCard.setHasDurationEffect(false);
-        currentPlayer.setCurrentState(new StartTurnState(currentPlayer));
+        complete();
+        moveToNextPhase();
     }
 }

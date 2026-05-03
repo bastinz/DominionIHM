@@ -6,6 +6,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.HavenState;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Havre (Haven)
  * <p>
@@ -23,10 +25,12 @@ public class Haven extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.drawToHand();
         p.incrementActions(1);
-        p.setCurrentState(new HavenState(p, this));
+        HavenState state = new HavenState(p, this);
+        p.setCurrentState(state);
+        return state.getCompletionFuture();
     }
 
     public void endPlay(Player p, String cardName) {
@@ -34,14 +38,15 @@ public class Haven extends ActionCard {
         p.moveToSetAside(card);
         this.cardSetAside = card;
         setHasDurationEffect(true);
-        p.getCurrentState().moveToNextPhase();
+        p.getCurrentState().complete();
     }
 
     @Override
-    public void atStartOfTurn(Player p) {
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
         p.moveToHand(cardSetAside);
         cardSetAside = null;
         setHasDurationEffect(false);
+        return CompletableFuture.completedFuture(null);
     }
 }
 

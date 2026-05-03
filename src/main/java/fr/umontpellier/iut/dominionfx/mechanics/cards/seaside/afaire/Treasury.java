@@ -6,6 +6,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 
 import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Trésorerie (Treasury)
@@ -23,11 +24,11 @@ public class Treasury extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.drawToHand(1);
         p.incrementActions(1);
         p.incrementMoney(1);
-        p.getCurrentState().moveToNextPhase();
+        return  CompletableFuture.completedFuture(null);
     }
 
     @Override

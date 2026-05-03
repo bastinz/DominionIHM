@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte marine (Sea Chart)
  * <p>
@@ -18,7 +20,7 @@ public class SeaChart extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture play(Player p) {
         p.drawToHand();
         p.incrementActions(1);
         Card topCard = p.getCardFromDeck();
@@ -27,6 +29,6 @@ public class SeaChart extends ActionCard {
                 p.moveToHand(topCard);
             }
         }
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
     }
 }

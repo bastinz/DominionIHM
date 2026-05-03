@@ -6,7 +6,6 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateState;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Disabled;
@@ -61,7 +60,7 @@ public class PirateTest extends BaseTestClass {
         clickOnTreasures();
         clickOnSupplyPile("Gold"); // achat qui va declencher Reaction
         clickOnTemporaryCard("Pirate"); // reponse reaction
-        assertTrue(pirateOwner.getInPlay().stream().map(Card::getName).toList().contains("Pirate"));
+        assertTrue(listContainsCard(pirateOwner.getInPlay(),"Pirate"));
         assertEquals(treasureGainer, game.currentPlayer());
         assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState()); // il reste un buy
 //        pause(2);
@@ -74,8 +73,8 @@ public class PirateTest extends BaseTestClass {
         addToFirstPlayersHand("Pirate");
         clickOnTreasures();
         clickOnSupplyPile("Gold"); // achat qui va declencher Reaction
-        clickOnTemporaryCard("Pirate"); // reponse reaction
-        assertInstanceOf(PirateState.class, game.currentPlayer().getCurrentState());
+        clickOnTemporaryCard("Pirate"); // reponse reaction puis fin du tour du joueur courant parce que TreasurePhase
+        assertInstanceOf(StartTurnState.class, game.currentPlayer().getCurrentState());
 //        pause(2);
     }
 

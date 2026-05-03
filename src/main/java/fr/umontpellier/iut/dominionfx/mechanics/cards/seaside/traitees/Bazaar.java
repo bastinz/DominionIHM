@@ -3,6 +3,8 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Bazar (Bazaar)
  * <p>
@@ -16,10 +18,10 @@ public class Bazaar extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.drawToHand();
         p.incrementActions(2);
         p.incrementMoney(1);
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
     }
 }

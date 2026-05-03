@@ -3,6 +3,8 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards;
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Les cartes Victoire
  */
@@ -17,6 +19,7 @@ public abstract class VictoryCard extends Card {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
+        return CompletableFuture.completedFuture(null);
     }
 }

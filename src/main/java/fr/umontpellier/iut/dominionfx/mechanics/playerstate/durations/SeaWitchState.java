@@ -32,7 +32,7 @@ public class SeaWitchState extends OnGoingActionState {
             nbCardsToDiscard--;
             if (nbCardsToDiscard == 0) {
                 seaWitch.setHasDurationEffect(false);
-                moveToNextPhase();
+                complete();
             }
             else
                 getGame().instructionProperty().setValue("Discard %d card%s".formatted(nbCardsToDiscard, nbCardsToDiscard > 1 ? "s" : ""));

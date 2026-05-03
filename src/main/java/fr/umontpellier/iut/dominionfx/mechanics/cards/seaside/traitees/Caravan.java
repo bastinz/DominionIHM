@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Caravane (Caravan)
  * <p>
@@ -18,16 +20,17 @@ public class Caravan extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.drawToHand();
         p.incrementActions(1);
         setHasDurationEffect(true);
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
-    public void atStartOfTurn(Player p) {
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
         p.drawToHand();
         setHasDurationEffect(false);
+        return CompletableFuture.completedFuture(null);
     }
 }

@@ -29,8 +29,7 @@ public class GhostShipState extends OnGoingActionState {
             ghostShip.discardFromTargetHand(cardName);
             nbCardsToDiscard--;
             if (nbCardsToDiscard == 0) {
-                moveToNextPhase();
-                future.complete(null);
+                complete();
             }
         }
     }

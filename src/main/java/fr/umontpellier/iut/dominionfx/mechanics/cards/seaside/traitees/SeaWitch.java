@@ -38,8 +38,10 @@ public class SeaWitch extends AttackCard {
     }
 
     @Override
-    public void atStartOfTurn(Player p) {
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
         p.drawToHand(2);
-        p.setCurrentState(new SeaWitchState(p, this));
+        SeaWitchState phase = new SeaWitchState(p, this);
+        p.setCurrentState(phase);
+        return phase.getCompletionFuture();
     }
 }

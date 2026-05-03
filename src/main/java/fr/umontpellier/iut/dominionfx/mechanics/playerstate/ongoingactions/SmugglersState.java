@@ -20,7 +20,7 @@ public class SmugglersState extends OnGoingActionState {
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             Card gainedCard = currentPlayer.getCardFromSupply(cardName);
             currentPlayer.gainToDiscard(gainedCard);
-            moveToNextPhase();
+            complete();
         }
     }
 

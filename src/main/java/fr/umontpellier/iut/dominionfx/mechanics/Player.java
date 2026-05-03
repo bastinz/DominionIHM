@@ -4,19 +4,17 @@ import fr.umontpellier.iut.dominionfx.IPlayer;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ReactionPhase;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
@@ -537,15 +535,16 @@ public class Player implements IPlayer {
      * 
      * @param c carte à jouer
      */
-    public void playCard(Card c) {
+    public CompletableFuture<Void> playCard(Card c) {
         moveToInPlay(c);
-        c.play(this);
-        // exécuter les effets onPlayerPlayCard de toutes les cartes en jeu des joueurs
-        for (Player p : getPlayers()) {
-            for (Card cardInPlay : p.inPlay) {
-                cardInPlay.onPlayerPlayCard(this, c, p);
-            }
-        }
+        return c.play(this)
+                .thenRun(() -> {
+                    for (Player p : getPlayers()) {
+                        for (Card cardInPlay : p.inPlay) {
+                            cardInPlay.onPlayerPlayCard(this, c, p);
+                        }
+                    }
+                });
     }
 
     /**
@@ -556,9 +555,9 @@ public class Player implements IPlayer {
      *
      * @param gainedCard carte à gagner (éventuellement {@code null})
      */
-    public void gainTo(Card gainedCard, List<Card> location) {
+    public CompletableFuture<Void> gainTo(Card gainedCard, List<Card> location) {
         if (gainedCard == null) {
-            return;
+            return CompletableFuture.completedFuture(null);
         }
         gainedCard.moveTo(location);
         cardsGainedThisTurn.add(gainedCard);
@@ -566,8 +565,7 @@ public class Player implements IPlayer {
         // pour chaque joueur (en commençant par le joueur qui a gagné la carte)
         // on exécute tous les effets "on gain" des cartes en jeu du joueur
         // puis on demande au joueur s'il veut utiliser une carte réaction
-        onGainedCardAllPlayers(gainedCard)
-                .thenRun(() -> getCurrentState().moveToNextPhase());
+        return onGainedCardAllPlayers(gainedCard);
     }
 
     private CompletableFuture<Void> reactOnGainCard(Player owner, Card gainedCard) {
@@ -590,8 +588,8 @@ public class Player implements IPlayer {
         return future;
     }
 
-    public void gainToDiscard(Card c) {
-        gainTo(c, discard);
+    public CompletableFuture<Void> gainToDiscard(Card c) {
+        return gainTo(c, discard);
     }
 
     public void gainToHand(Card c) {
@@ -623,35 +621,15 @@ public class Player implements IPlayer {
         nbSilverOrGoldPlayed = 0;
         cardsGainedThisTurn.clear();
         cardsBoughtThisTurn.clear();
-        execDurationsSequentially();
+        execDurationsSequentially().thenRun(() -> setCurrentState(new StartTurnState(this)));
     }
 
-    private void execDurationsSequentially() {
-        Iterator<Card> it = getInPlay().iterator();
-        runNext(it, this);
-    }
-
-    private void runNext(Iterator<Card> it, Player player) {
-        if (!it.hasNext()) {
-            return;
+    private CompletableFuture<Void> execDurationsSequentially() {
+        List<Card> cards = new ArrayList<>(getInPlay());
+        CompletableFuture<Void> future = CompletableFuture.completedFuture(null);
+        for (Card card : cards) {
+            future = future.thenCompose(v -> card.atStartOfTurn(this));
         }
-        Card card = it.next();
-        runCard(card, player).thenRun(() -> runNext(it, player));
-    }
-
-    private CompletableFuture<Void> runCard(Card card, Player player) {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        ChangeListener<Boolean> listener = new ChangeListener<>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> obs, Boolean oldVal, Boolean newVal) {
-                if (newVal) {
-                    card.hasDurationEffectProperty().removeListener(this);
-                    future.complete(null);
-                }
-            }
-        };
-        card.hasDurationEffectProperty().addListener(listener);
-        card.atStartOfTurn(player);
         return future;
     }
 
@@ -785,13 +763,22 @@ public class Player implements IPlayer {
                 .orElseThrow();
         if (cardToPlay.hasType(CardType.ACTION)) {
             incrementActions(-1);
-            playCard(cardToPlay);
+//            playCard(cardToPlay);
         } else if (cardToPlay.hasType(TREASURE)) {
             setCurrentState(new TreasurePhase(this));
             numberOfActions.setValue(0);
-            playCard(cardToPlay);
+//            playCard(cardToPlay);
         }
+        playCard(cardToPlay).thenRun(currentState::moveToNextPhase);
     }
+
+/*    public CompletableFuture<Void> playActionCard(String cardName) {
+        Card cardToPlay = hand.stream()
+                .filter(card -> card.getName().equals(cardName))
+                .findFirst()
+                .orElseThrow();
+        return playCard(cardToPlay)
+    }*/
 
     public void playTreasureCard(String cardName) {
         Card cardToPlay = hand.stream()
@@ -799,23 +786,24 @@ public class Player implements IPlayer {
                 .findFirst()
                 .orElseThrow();
         numberOfActions.setValue(0);
-        playCard(cardToPlay);
+        playCard(cardToPlay).thenRun(currentState::moveToNextPhase);
     }
 
-    public void buy(String cardName) {
+    public CompletableFuture<Void> buy(String cardName) {
         Card c = getCardFromSupply(cardName);
         incrementBuys(-1);
         money.setValue(money.getValue() - c.getCost());
-        gainToDiscard(c);
-        cardsBoughtThisTurn.add(c);
-        // gestion des token Embargo (uniquement lorsque le joueur achète une carte, pas
-        // lorsqu'il en gagne une par un autre moyen)
-        for (int i = 0; i < game.getNumberOfEmbargoTokens(cardName); i++) {
-            Card curse = getCardFromSupply("Curse");
-            if (curse != null) {
-                gainToDiscard(curse); // change gain to move
+        return gainToDiscard(c).thenRun(() -> {
+            cardsBoughtThisTurn.add(c);
+            // gestion des token Embargo (uniquement lorsque le joueur achète une carte, pas
+            // lorsqu'il en gagne une par un autre moyen)
+            for (int i = 0; i < game.getNumberOfEmbargoTokens(cardName); i++) {
+                Card curse = getCardFromSupply("Curse");
+                if (curse != null) {
+                    gainToDiscard(curse); // change gain to move
+                }
             }
-        }
+        });
     }
 
     public boolean areBuysCompleted() {

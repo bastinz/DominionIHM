@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Village de pêcheurs (Fishing Village)
  * <p>
@@ -18,17 +20,18 @@ public class FishingVillage extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.incrementActions(2);
         p.incrementMoney(1);
         setHasDurationEffect(true);
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
-    public void atStartOfTurn(Player p) {
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
         p.incrementActions(1);
         p.incrementMoney(1);
         setHasDurationEffect(false);
+        return CompletableFuture.completedFuture(null);
     }
 }

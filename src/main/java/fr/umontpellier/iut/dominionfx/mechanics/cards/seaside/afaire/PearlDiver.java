@@ -6,6 +6,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Plongeur de perles (Pearl Diver)
@@ -21,7 +22,7 @@ public class PearlDiver extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.drawToHand(1);
         p.incrementActions(1);
         Card c = p.getBottomCardOfDeck();
@@ -35,6 +36,6 @@ public class PearlDiver extends ActionCard {
                 p.moveToDraw(c); // retire la carte du bas de la pioche et la place sur le dessus
             }
         }
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
     }
 }

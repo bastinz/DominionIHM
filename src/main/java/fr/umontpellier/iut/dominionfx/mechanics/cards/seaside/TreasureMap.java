@@ -6,6 +6,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte aux trésors (Treasure Map)
@@ -20,7 +21,7 @@ public class TreasureMap extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         List<Card> trashedCards = new ArrayList<>();
         trashedCards.add(this);
         for (Card c: p.getCardsInHand()) {
@@ -45,6 +46,7 @@ public class TreasureMap extends ActionCard {
                 }
             }
         }
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
+
     }
 }

@@ -7,6 +7,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Navigateur (Navigator)
@@ -23,11 +24,11 @@ public class Navigator extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.incrementMoney(2);
         List<Card> drawnCards = p.drawCards(5);
         if (drawnCards.isEmpty()) {
-            return;
+            return CompletableFuture.completedFuture(null);
         }
 
         String choice = p.chooseStringFromButtons(
@@ -45,7 +46,7 @@ public class Navigator extends ActionCard {
                 p.moveToDraw(c);
             }
         }
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
     }
 
 }

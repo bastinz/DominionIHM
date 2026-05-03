@@ -16,7 +16,7 @@ public class EmbargoState extends OnGoingActionState {
         List<String> availableChoices = currentPlayer.getGame().getAllSupplyPileNames();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             currentPlayer.getGame().addEmbargoToken(cardName);
-            moveToNextPhase();
+            complete();
         }
     }
 

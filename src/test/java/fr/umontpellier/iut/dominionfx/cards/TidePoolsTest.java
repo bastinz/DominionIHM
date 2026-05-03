@@ -70,7 +70,7 @@ public class TidePoolsTest extends BaseTestClass {
         clickOnFirstCardInHand();
         assertEquals(4, currentPlayer.getCardsInHand().size());
         clickOnFirstCardInHand(); // -1 discard +1 carte Warehouse
-        assertEquals(3, currentPlayer.getCardsInHand().size());
+        assertEquals(4, currentPlayer.getCardsInHand().size()); // Discard down To 3 + 1 setAside par Blockade
 //        pause(2);
     }
 

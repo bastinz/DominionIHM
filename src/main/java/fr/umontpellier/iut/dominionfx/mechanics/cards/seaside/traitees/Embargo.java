@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.EmbargoState;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Embargo
  * <p>
@@ -19,9 +21,11 @@ public class Embargo extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.incrementMoney(2);
         p.moveToTrash(this);
-        p.setCurrentState(new EmbargoState(p));
+        EmbargoState state = new EmbargoState(p);
+        p.setCurrentState(state);
+        return state.getCompletionFuture();
     }
 }

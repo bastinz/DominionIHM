@@ -4,8 +4,6 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
@@ -41,11 +39,10 @@ public class SkipEtBuysTest extends BaseTestClass {
                 .findFirst()
                 .orElseThrow();
         int initialSize = lightHousePile.size();
-        ObservableList<Card> hand =  game.currentPlayer().getHand();
-        int initialHandSize = hand.size();
+        int initialHandSize = game.currentPlayer().getHand().size();
         clickOnCardInHand("Copper");
         clickOnCardInHand("Copper");
-        assertEquals(initialHandSize - 2, hand.size());
+        assertEquals(initialHandSize - 2, game.currentPlayer().getHand().size());
         clickOnSupplyPile("Lighthouse");
         assertEquals(initialSize - 1, lightHousePile.size());
         assertNotEquals(initialPlayer, game.currentPlayer());

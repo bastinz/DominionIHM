@@ -27,7 +27,7 @@ public class WarehouseState extends OnGoingActionState {
             currentPlayer.moveToDiscard(cardToDiscard);
             nbCardsToDiscard--;
             if (nbCardsToDiscard == 0)
-                moveToNextPhase();
+                complete();
             else
                 getGame().instructionProperty().setValue("Discard %d card%s".formatted(nbCardsToDiscard, nbCardsToDiscard > 1 ? "s" : ""));
         }

@@ -26,6 +26,6 @@ public class IslandState extends OnGoingActionState {
     public void skip() {
         Card c = currentPlayer.getCardFromInPlay("Island");
         currentPlayer.moveToIslandMat(c);
-        moveToNextPhase();
+        complete();
     }
 }

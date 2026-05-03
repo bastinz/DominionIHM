@@ -74,7 +74,8 @@ public abstract class Card {
     }
 
     public void moveTo(List<Card> newLocation) {
-        // Ajout dans la nouvelle liste avant suppression de l'ancienne pour gérer le cas de la liste qui devient vide et fin de partie
+        // Ajout dans la nouvelle liste avant suppression de l'ancienne
+        // pour gérer le cas de la liste qui devient vide et fin de partie
         List<Card> oldLocation = location;
         location = newLocation;
         newLocation.add(this);
@@ -102,7 +103,7 @@ public abstract class Card {
      *
      *          L'action de cette méthode dépend de la classe de la carte.
      */
-    public abstract void play(Player p);
+    public abstract CompletableFuture<Void> play(Player p);
 
     public void onCleanup(Player p) {
         // Remarque: le fait d'appeler getHasDurationEffect() au lieu de lire
@@ -113,7 +114,8 @@ public abstract class Card {
         }
     }
 
-    public void atStartOfTurn(Player p) {
+    public CompletableFuture<Void>  atStartOfTurn(Player p) {
+        return CompletableFuture.completedFuture(null);
     }
 
 /*    public void reaction(Player p) {

@@ -5,6 +5,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Avant-poste (Outpost)
  * <p>
@@ -19,14 +21,15 @@ public class Outpost extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.setNbCardsToDrawAtCleanup(3);
         setHasDurationEffect(true);
         Game game = p.getGame();
         if (game.getPreviousTurnPlayer() != p) {
             game.setSamePlayerShouldPlayExtraTurn(true);
         }
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
+
     }
 
     @Override
@@ -38,7 +41,8 @@ public class Outpost extends ActionCard {
     }
 
     @Override
-    public void atStartOfTurn(Player p) {
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
         setHasDurationEffect(false);
+        return CompletableFuture.completedFuture(null);
     }
 }

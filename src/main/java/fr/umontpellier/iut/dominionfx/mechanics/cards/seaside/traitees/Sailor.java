@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
@@ -27,11 +27,11 @@ public class Sailor extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void>  play(Player p) {
         canPlayDuration = true;
         p.incrementActions(1);
         setHasDurationEffect(true);
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -41,9 +41,11 @@ public class Sailor extends ActionCard {
     }
 
     @Override
-    public void atStartOfTurn(Player p) {
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
         p.incrementMoney(2);
-        p.setCurrentState(new SailorStartOfTurnState(p, this));
+        SailorStartOfTurnState phase = new SailorStartOfTurnState(p, this);
+        p.setCurrentState(phase);
+        return phase.getCompletionFuture();
     }
 
     @Override

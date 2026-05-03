@@ -5,6 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Carte Vigie (Lookout)
@@ -19,7 +20,7 @@ public class Lookout extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.incrementActions(1);
         List<Card> topCards = p.drawCards(3);
         // carte à écarter
@@ -40,7 +41,7 @@ public class Lookout extends ActionCard {
         }
         // carte à remettre sur le dessus de la pioche
         p.moveToDraw(topCards);
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
     }
 
 }

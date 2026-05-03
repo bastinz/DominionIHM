@@ -4,6 +4,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.ExplorerState;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Explorateur (Explorer)
  * <p>
@@ -17,7 +19,9 @@ public class Explorer extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
-        p.setCurrentState(new ExplorerState(p));
+    public CompletableFuture<Void> play(Player p) {
+        ExplorerState state = new ExplorerState(p);
+        p.setCurrentState(state);
+        return state.getCompletionFuture();
     }
 }

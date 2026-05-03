@@ -6,6 +6,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateState;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Pirate
  * <p>
@@ -23,9 +25,10 @@ public class Pirate extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         // Rien à faire au moment où la carte est jouée
         setHasDurationEffect(true);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -35,11 +38,14 @@ public class Pirate extends ActionCard {
 
     @Override
     public void reactToPlayerGainCard(Player p, Card gainedCard, Player owner) {
-        owner.playCard(this);
+//        owner.playCard(this);
+        owner.moveToInPlay(this);
     }
 
     @Override
-    public void atStartOfTurn(Player p) {
-        p.setCurrentState(new PirateState(p,this));
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
+        PirateState phase = new PirateState(p,this);
+        p.setCurrentState(phase);
+        return phase.getCompletionFuture();
     }
 }

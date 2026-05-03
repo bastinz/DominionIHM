@@ -48,8 +48,9 @@ public class Corsair extends AttackCard {
     }
 
     @Override
-    public void atStartOfTurn(Player p) {
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
         p.drawToHand();
         setHasDurationEffect(false);
+        return CompletableFuture.completedFuture(null);
     }
 }

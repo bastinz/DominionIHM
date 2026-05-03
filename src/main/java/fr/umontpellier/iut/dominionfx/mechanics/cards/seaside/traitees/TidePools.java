@@ -5,6 +5,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.TidePoolsState;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Carte Marée (Tide Pools)
  * <p>
@@ -20,15 +22,17 @@ public class TidePools extends ActionCard {
     }
 
     @Override
-    public void play(Player p) {
+    public CompletableFuture<Void> play(Player p) {
         p.drawToHand(3);
         p.incrementActions(1);
         setHasDurationEffect(true);
-        p.getCurrentState().moveToNextPhase();
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
-    public void atStartOfTurn(Player p) {
-        p.setCurrentState(new TidePoolsState(p, this));
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
+        TidePoolsState phase = new TidePoolsState(p, this);
+        p.setCurrentState(phase);
+        return phase.getCompletionFuture();
     }
 }
