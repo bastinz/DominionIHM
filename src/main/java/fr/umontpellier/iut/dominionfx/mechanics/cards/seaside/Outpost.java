@@ -33,11 +33,12 @@ public class Outpost extends ActionCard {
     }
 
     @Override
-    public void onCleanup(Player p) {
+    public CompletableFuture<Void> onCleanup(Player p) {
         // si le joueur ne peut pas rejouer un tour, alors Outpost devrait être
         // défaussé à la fin du tour suivant
-        super.onCleanup(p);
+        CompletableFuture future = super.onCleanup(p);
         setHasDurationEffect(false);
+        return future;
     }
 
     @Override

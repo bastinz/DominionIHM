@@ -1,11 +1,10 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
-import fr.umontpellier.iut.dominionfx.mechanics.Button;
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.TreasuryState;
 
-import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -28,23 +27,22 @@ public class Treasury extends ActionCard {
         p.drawToHand(1);
         p.incrementActions(1);
         p.incrementMoney(1);
-        return  CompletableFuture.completedFuture(null);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
-    public void onCleanup(Player p) {
+    public CompletableFuture<Void> onCleanup(Player p) {
         if (p.getCardsBoughtThisTurn().stream().noneMatch(c -> c.hasType(CardType.VICTORY))) {
-            String choice = p.chooseStringFromButtons(
-                    "%s: Do you want to put Treasury onto your deck?".formatted(this),
-                    Arrays.asList(new Button("Yes", "y"), new Button("No", "n")),
-                    false);
-            if (choice.equals("y")) {
-                p.moveToDraw(this);
-            } else {
-                super.onCleanup(p);
-            }
+            p.setWaitForYesOrNo(true);
+            TreasuryState phase = new TreasuryState(p, this);
+            p.setCurrentState(phase);
+            return phase.getCompletionFuture();
         } else {
-            super.onCleanup(p);
+            return superCleanup(p);
         }
+    }
+
+    public CompletableFuture<Void> superCleanup(Player p) {
+        return super.onCleanup(p);
     }
 }

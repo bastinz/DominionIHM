@@ -35,9 +35,9 @@ public class Sailor extends ActionCard {
     }
 
     @Override
-    public void onCleanup(Player p) {
+    public CompletableFuture<Void> onCleanup(Player p) {
         canPlayDuration = false;
-        super.onCleanup(p);
+        return super.onCleanup(p);
     }
 
     @Override

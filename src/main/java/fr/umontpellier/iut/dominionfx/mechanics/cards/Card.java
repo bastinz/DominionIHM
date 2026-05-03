@@ -105,16 +105,17 @@ public abstract class Card {
      */
     public abstract CompletableFuture<Void> play(Player p);
 
-    public void onCleanup(Player p) {
+    public CompletableFuture<Void> onCleanup(Player p) {
         // Remarque: le fait d'appeler getHasDurationEffect() au lieu de lire
         // directement hasDurationEffect permet de redéfinir la méthode dans
         // les sous-classes si nécessaire (cf. Blockade)
         if (!getHasDurationEffect()) {
             p.moveToDiscard(this);
         }
+        return CompletableFuture.completedFuture(null);
     }
 
-    public CompletableFuture<Void>  atStartOfTurn(Player p) {
+    public CompletableFuture<Void> atStartOfTurn(Player p) {
         return CompletableFuture.completedFuture(null);
     }
 

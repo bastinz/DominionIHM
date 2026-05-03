@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.StringJoiner;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -293,15 +294,17 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * qu'il référence le joueur dont c'est le tour après l'appel de la
      * méthode.
      */
-    public void moveToNextPlayer() {
-        currentPlayer().cleanup();
-        previousTurnPlayer.setValue(currentPlayer());
-        if (!samePlayerShouldPlayExtraTurn) {
-            // passe au joueur suivant
-            currentTurnPlayer.setValue(getOtherPlayer());
-            turnNumber += 1;
-        }
-        samePlayerShouldPlayExtraTurn = false;
+    public CompletableFuture<Void> moveToNextPlayer() {
+        return currentPlayer().cleanup()
+                .thenRun(() -> {
+            previousTurnPlayer.setValue(currentPlayer());
+            if (!samePlayerShouldPlayExtraTurn) {
+                // passe au joueur suivant
+                currentTurnPlayer.setValue(getOtherPlayer());
+                turnNumber += 1;
+            }
+            samePlayerShouldPlayExtraTurn = false;
+        });
     }
 
     /**
@@ -359,9 +362,10 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     public void moveToNextPlayerState() {
-        moveToNextPlayer();
-        currentPlayer().setCurrentState(new StartTurnState(currentPlayer())) ;
-        currentPlayer().startTurn();
+        moveToNextPlayer().thenRun(() -> {
+            currentPlayer().setCurrentState(new StartTurnState(currentPlayer())) ;
+            currentPlayer().startTurn();
+        });
     }
 
     public Player getOtherPlayer() {

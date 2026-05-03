@@ -643,22 +643,42 @@ public class Player implements IPlayer {
      * - Le joueur pioche les cartes de sa prochaine main (normalement 5 cartes,
      * mais parfois moins selon les effets de certaines cartes)
      */
-    public void cleanup() {
+    public CompletableFuture<Void> cleanup() {
         numberOfActions.setValue(0);
         money.setValue(0);
         numberOfBuys.setValue(0);
         // défausse la main
         moveToDiscard(hand);
         // cleanup
-        for (Player p : getPlayers()) {
+/*        for (Player p : getPlayers()) {
             for (Card c : new ArrayList<>(p.inPlay)) {
                 c.onCleanup(p);
             }
+        }*/
+
+        return cleanupAllPlayers().thenRun(() -> {
+            // pioche la nouvelle main (normalement 5 cartes, mais peut être 3 en cas
+            // d'Outpost)
+            drawToHand(nbCardsToDrawAtCleanup);
+            nbCardsToDrawAtCleanup = 5;
+        });
+    }
+
+    private CompletableFuture<Void> cleanupAllPlayers() {
+        CompletableFuture<Void> future = CompletableFuture.completedFuture(null);
+        for (Player p : getPlayers()) {
+            // Et pour chaque carte du joueur
+            future = future.thenCompose(v -> cleanupPlayerCards(p));
         }
-        // pioche la nouvelle main (normalement 5 cartes, mais peut être 3 en cas
-        // d'Outpost)
-        drawToHand(nbCardsToDrawAtCleanup);
-        nbCardsToDrawAtCleanup = 5;
+        return future;
+    }
+
+    private CompletableFuture<Void> cleanupPlayerCards(Player p) {
+        CompletableFuture<Void> future = CompletableFuture.completedFuture(null);
+        for (Card c : new ArrayList<>(p.inPlay)) {
+            future = future.thenCompose(v -> c.onCleanup(p));
+        }
+        return future;
     }
 
     // ==========================
