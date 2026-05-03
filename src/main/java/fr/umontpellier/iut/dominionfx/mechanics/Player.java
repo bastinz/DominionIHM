@@ -489,7 +489,7 @@ public class Player implements IPlayer {
     public Card getBottomCardOfDeck() {
         shuffleDiscardIntoDrawIfEmpty();
         if (!draw.isEmpty()) {
-            return draw.getFirst();
+            return draw.getFirst(); // à revoir plutôt .removeFirst() pour la mise à jour de la taille de la draw
         }
         return null;
     }

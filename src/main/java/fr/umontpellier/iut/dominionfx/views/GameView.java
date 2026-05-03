@@ -4,9 +4,7 @@ import fr.umontpellier.iut.dominionfx.IGame;
 import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -54,15 +52,8 @@ public class GameView extends HBox {
         setSupplyPane();
         instructionLabel.textProperty().bind(game.instructionProperty());
 //        game.temporaryCardsProperty().getValue().addListener(temporaryCardsListener);
+//        game.temporaryCardsProperty().addListener(temporaryListListener);
         game.temporaryCardsProperty().addListener(temporaryListListener);
-    }
-
-    private void refreshTemporaryCards(ObservableList<Card> list) {
-        temporaryCards.getChildren().setAll(
-                game.temporaryCardsProperty().getValue().stream()
-                        .map(this::createTemporaryCardNode)
-                        .toList()
-        );
     }
 
     private Node createSupplyPile(SupplyPile pile) {
@@ -93,7 +84,7 @@ public class GameView extends HBox {
         createBindings();
     }
 
-    public final ListChangeListener<? super Card> temporaryCardsListener = change -> {
+    private final ListChangeListener<? super Card> temporaryListListener = change -> {
         while (change.next()) {
             if (change.wasAdded()) {
                 for (Card card : change.getAddedSubList()) {
@@ -105,17 +96,6 @@ public class GameView extends HBox {
                     temporaryCards.getChildren().removeIf(node -> node.getUserData() == card);
                 }
             }
-        }
-    };
-
-    private final ChangeListener<ObservableList<Card>> temporaryListListener = (obs, oldList, newList) -> {
-        if (oldList != null) {
-            oldList.removeListener(temporaryCardsListener);
-            temporaryCards.getChildren().clear();
-        }
-        if (newList != null) {
-            newList.addListener(temporaryCardsListener);
-            refreshTemporaryCards(newList);
         }
     };
 

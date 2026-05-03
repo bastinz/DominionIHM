@@ -2,6 +2,7 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class ReactionPhase extends PlayerState {
             Card cardToPlay = reactingCardOwner.getCardFromHand(cardName);
             reactingCards.remove(cardToPlay);
             cardToPlay.reactToPlayerGainCard(currentPlayer, gainedCard, reactingCardOwner);
-            getGame().setTemporaryCards(null);
+            getGame().setTemporaryCards(null, null);
             complete();
         }
     }
@@ -45,8 +46,9 @@ public class ReactionPhase extends PlayerState {
                 .collect(Collectors.toCollection(ArrayList::new));
         if (reactingCards.isEmpty())
             complete();
-        else
-            getGame().setTemporaryCards(reactingCardOwner.getHand());
+        else {
+            getGame().setTemporaryCards(FXCollections.observableArrayList(reactingCards), reactingCardOwner.getHand());
+        }
     }
 
 }

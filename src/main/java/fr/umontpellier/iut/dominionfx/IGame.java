@@ -17,6 +17,6 @@ public interface IGame {
     ObjectProperty<String> instructionProperty();
     ObjectProperty<? extends IPlayer> currentPlayerProperty();
     List<SupplyPile> getSupplyPiles();
-    ObjectProperty<ObservableList<Card>> temporaryCardsProperty();
+    ObservableList<Card> temporaryCardsProperty();
     BooleanProperty gameOverProperty();
 }

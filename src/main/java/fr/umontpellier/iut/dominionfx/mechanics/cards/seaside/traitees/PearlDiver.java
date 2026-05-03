@@ -4,6 +4,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PearlDiverState;
+import javafx.collections.FXCollections;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -25,7 +26,7 @@ public class PearlDiver extends ActionCard {
         p.drawToHand(1);
         p.incrementActions(1);
         Card c = p.getBottomCardOfDeck();
-        p.getGame().setTemporaryCards(p.getDraw());
+        p.getGame().setTemporaryCards(FXCollections.observableArrayList(c), p.getDraw());
         if (c != null) {
             p.setWaitForYesOrNo(true);
             PearlDiverState phase = new PearlDiverState(p, c);

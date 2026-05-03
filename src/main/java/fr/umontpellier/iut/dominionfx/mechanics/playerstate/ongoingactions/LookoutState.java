@@ -18,7 +18,7 @@ public class LookoutState extends PlayerState {
         getGame().instructionProperty().setValue("Choose a card to trash");
         for (int i = 0; i < 3 ; i++)
             topCards.add(currentPlayer.getDraw().get(i)); // currentPlayer.drawCards(3);// à revoir
-        currentPlayer.getGame().setTemporaryCards(currentPlayer.getDraw());
+        currentPlayer.getGame().setTemporaryCards(topCards, currentPlayer.getDraw());
         trashChoice = true;
     }
 
@@ -33,7 +33,7 @@ public class LookoutState extends PlayerState {
                 topCards.remove(cardToPlay);
                 getGame().instructionProperty().setValue("Choose a card to discard");
             } else {
-                currentPlayer.getGame().setTemporaryCards(null); // à revoir
+                currentPlayer.getGame().setTemporaryCards(null, null); // à revoir
                 currentPlayer.moveToDiscard(cardToPlay);
                 complete();
             }

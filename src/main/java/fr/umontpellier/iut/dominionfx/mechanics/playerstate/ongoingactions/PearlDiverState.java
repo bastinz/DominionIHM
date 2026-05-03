@@ -19,7 +19,7 @@ public class PearlDiverState extends PlayerState {
         currentPlayer.setWaitForYesOrNo(false);
         if (choice.equals("Yes"))
             currentPlayer.moveToDraw(bottomCard);
-        currentPlayer.getGame().setTemporaryCards(null);
+        currentPlayer.getGame().setTemporaryCards(null,null);
         complete();
     }
  }

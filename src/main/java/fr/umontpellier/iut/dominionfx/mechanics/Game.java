@@ -12,6 +12,8 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
@@ -384,19 +386,38 @@ public class Game extends Task<Void> implements Runnable, IGame {
         return trashedCards.size();
     }
 
-    private final ObjectProperty<ObservableList<Card>> temporaryCards = new SimpleObjectProperty<>();
+    private final ObservableList<Card> temporaryCards = FXCollections.observableArrayList();
+    private ObservableList<Card> temporaryCardsEffectiveList;
 
     @Override
-    public ObjectProperty<ObservableList<Card>> temporaryCardsProperty() {
+    public ObservableList<Card> temporaryCardsProperty() {
         return temporaryCards;
     }
 
-    public void setTemporaryCards(ObservableList<Card> temporaryCardsList) {
-        temporaryCards.setValue(temporaryCardsList);
+    public void setTemporaryCards(ObservableList<Card> temporaryCardsList, ObservableList<Card> temporaryCardsEffectiveList) {
+        if (temporaryCardsList == null) {
+            this.temporaryCards.clear();
+            this.temporaryCardsEffectiveList.removeListener(changeListener);
+            return;
+        }
+        this.temporaryCardsEffectiveList = temporaryCardsEffectiveList;
+        this.temporaryCards.addAll(temporaryCardsList);
+        this.temporaryCardsEffectiveList.addListener(changeListener);
     }
 
+    ListChangeListener<Card> changeListener = (ListChangeListener<Card>) change -> {
+        while (change.next()) {
+/*          if (change.wasAdded()) {
+                    temporaryCardsv2.addAll(change.getAddedSubList());
+                }*/
+            if (change.wasRemoved()) {
+                temporaryCards.removeAll(change.getRemoved());
+            }
+        }
+    };
+
     public List<String> getTemporaryCardsNames() {
-        return temporaryCards.getValue().stream().map(Card::getName).collect(Collectors.toList());
+        return temporaryCards.stream().map(Card::getName).collect(Collectors.toList());
     }
 
 

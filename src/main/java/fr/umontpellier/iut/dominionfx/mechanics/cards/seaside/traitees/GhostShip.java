@@ -32,7 +32,7 @@ public class GhostShip extends AttackCard {
         if (!target.isProtectedFromAttack()) {
             int nbCardsToDiscard = target.getHand().size() - 3;
             if (nbCardsToDiscard > 0) {
-                p.getGame().setTemporaryCards(target.getHand());
+                p.getGame().setTemporaryCards(target.getHand(), target.getHand());
                 GhostShipState phase = new GhostShipState(p, this, nbCardsToDiscard);
                 p.setCurrentState(phase);
                 return p.getCurrentState().getCompletionFuture();
