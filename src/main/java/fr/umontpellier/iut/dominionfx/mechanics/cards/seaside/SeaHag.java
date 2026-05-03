@@ -32,7 +32,7 @@ public class SeaHag extends AttackCard {
         }
         Card curse = target.getCardFromSupply("Curse");
         if (curse != null) {
-            target.moveToDraw(curse); // change gain to move
+            target.gainToDraw(curse);
         }
         return CompletableFuture.completedFuture(null);
     }

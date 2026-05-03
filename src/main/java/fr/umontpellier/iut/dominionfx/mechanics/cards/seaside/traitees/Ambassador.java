@@ -36,7 +36,7 @@ public class Ambassador extends AttackCard {
     public CompletableFuture<Void> attack(Player p, Player target) {
         Card c = target.getCardFromSupply(revealedCardName.getValue());
         if (c != null) {
-            target.moveToDiscard(c); // change gain en move
+            target.gainToDiscard(c);
         }
         complete();
         return getCompletionFuture();

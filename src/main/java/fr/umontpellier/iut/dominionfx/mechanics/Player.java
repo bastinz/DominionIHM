@@ -820,7 +820,7 @@ public class Player implements IPlayer {
             for (int i = 0; i < game.getNumberOfEmbargoTokens(cardName); i++) {
                 Card curse = getCardFromSupply("Curse");
                 if (curse != null) {
-                    gainToDiscard(curse); // change gain to move
+                    gainToDiscard(curse);
                 }
             }
         });

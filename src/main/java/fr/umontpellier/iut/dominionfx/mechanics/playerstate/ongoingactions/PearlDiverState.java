@@ -23,18 +23,3 @@ public class PearlDiverState extends PlayerState {
         complete();
     }
  }
-
-/*
-         if (c != null) {
-String choice = p.chooseStringFromButtons(
-        "%s: Do you want to put %s on top of your deck?".formatted(this, c),
-        Arrays.asList(new Button("Yes", "y"), new Button("No", "n")),
-        false);
-
-
-            if (choice.equals("y")) {
-        p.moveToDraw(c); // retire la carte du bas de la pioche et la place sur le dessus
-
-
-            }
-                    }*/

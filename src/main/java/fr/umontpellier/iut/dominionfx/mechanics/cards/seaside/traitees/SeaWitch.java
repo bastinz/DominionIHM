@@ -32,7 +32,7 @@ public class SeaWitch extends AttackCard {
     public CompletableFuture<Void> attack(Player p, Player target) {
         Card curse = target.getCardFromSupply("Curse");
         if (curse != null) {
-            target.moveToDiscard(curse); // change gain to move
+            target.gainToDiscard(curse);
         }
         return CompletableFuture.completedFuture(null);
     }

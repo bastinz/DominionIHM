@@ -3,7 +3,9 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards;
 import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.common.*;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.*;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire.*;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire.Lookout;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire.Navigator;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire.PirateShip;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.*;
 
 import java.util.Map;

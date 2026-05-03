@@ -57,7 +57,7 @@ public class Blockade extends AttackCard {
                 && p.getGame().currentPlayer() == p) {
             Card curse = p.getCardFromSupply("Curse");
             if (curse != null) {
-                p.moveToDiscard(curse); // change gain to move
+                p.gainToDiscard(curse);
             }
         }
         return CompletableFuture.completedFuture(null);
