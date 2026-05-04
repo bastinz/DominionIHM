@@ -394,24 +394,25 @@ public class Game extends Task<Void> implements Runnable, IGame {
         return temporaryCards;
     }
 
-    public void setTemporaryCards(ObservableList<Card> temporaryCardsList, ObservableList<Card> temporaryCardsEffectiveList) {
-        if (temporaryCardsList == null) {
+    public void setTemporaryCards(ObservableList<Card> initialList, ObservableList<Card> temporaryCardsEffectiveList) {
+        if (initialList == null) {
             this.temporaryCards.clear();
+//            if (temporaryCardsEffectiveList != null)
             this.temporaryCardsEffectiveList.removeListener(changeListener);
             return;
         }
+        this.temporaryCards.addAll(initialList);
         this.temporaryCardsEffectiveList = temporaryCardsEffectiveList;
-        this.temporaryCards.addAll(temporaryCardsList);
         this.temporaryCardsEffectiveList.addListener(changeListener);
     }
 
-    ListChangeListener<Card> changeListener = (ListChangeListener<Card>) change -> {
+    ListChangeListener<Card> changeListener =change -> {
         while (change.next()) {
-/*          if (change.wasAdded()) {
-                    temporaryCardsv2.addAll(change.getAddedSubList());
-                }*/
+          if (change.wasAdded()) {
+                    temporaryCards.removeAll(change.getAddedSubList());
+                }
             if (change.wasRemoved()) {
-                temporaryCards.removeAll(change.getRemoved());
+                temporaryCards.addAll(change.getRemoved());
             }
         }
     };
