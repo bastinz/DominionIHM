@@ -1,12 +1,12 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.afaire;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
-import fr.umontpellier.iut.dominionfx.mechanics.Button;
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.AttackCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateShipAttackState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateShipChoiceState;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -30,33 +30,28 @@ public class PirateShip extends AttackCard {
     @Override
     public CompletableFuture<Void> action(Player p) {
         didTrashTreasure = false;
-        String choice = p.chooseStringFromButtons(
-                "%s: Choose one".formatted(this),
-                Arrays.asList(new Button("+%d coins".formatted(p.getPirateShipCounter()), "coins"), new Button("Attack", "attack")),
-                false);
-        if (choice.equals("coins")) {
-            p.incrementMoney(p.getPirateShipCounter());
-            isAttacking = false;
-        } else {
-            isAttacking = true;
-        }
-        return CompletableFuture.completedFuture(null);
+        PirateShipChoiceState phase = new PirateShipChoiceState(p, this);
+        p.setCurrentState(phase);
+        return phase.getCompletionFuture();
     }
 
     @Override
     public  CompletableFuture<Void> attack(Player p, Player target) {
         if (isAttacking) {
+            CompletableFuture<Void> future = new CompletableFuture<>();
             List<Card> revealedCards = target.drawCards(2);
+/*            List<Card> revealedCards = new ArrayList<>();
+            revealedCards.add(target.getDraw().getLast());
+            revealedCards.add(target.getDraw().get(target.getDraw().size() - 2));*/
             if (revealedCards.stream().anyMatch(c -> c.hasType(CardType.TREASURE))) {
                 // si au moins un trésor, choisir un trésor à écarter
-                Card selectedTreasure = p.chooseCardFromButtons(
-                        "%s: Choose a treasure to trash".formatted(this),
-                        revealedCards.stream().filter(c -> c.hasType(CardType.TREASURE)).toList(),
-                        false);
-                target.moveToTrash(selectedTreasure);
-                didTrashTreasure = true;
+                PirateShipAttackState phase = new PirateShipAttackState(p, target, revealedCards, this);
+                p.setCurrentState(phase);
+                future = phase.getCompletionFuture();
             }
-            target.moveToDiscard(revealedCards);
+            future = future.thenRun(() -> target.moveToDiscard(revealedCards))
+                    .thenRun(() -> complete());
+            return future;
         }
         return CompletableFuture.completedFuture(null);
     }
@@ -66,5 +61,13 @@ public class PirateShip extends AttackCard {
         if (didTrashTreasure) {
             p.incrementPirateShipCounter();
         }
+    }
+
+    public void setAttacking(boolean attacking) {
+        isAttacking = attacking;
+    }
+
+    public void setDidTrashTreasure(boolean didTrashTreasure) {
+        this.didTrashTreasure = didTrashTreasure;
     }
 }

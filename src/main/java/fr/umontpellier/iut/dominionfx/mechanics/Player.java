@@ -97,7 +97,7 @@ public class Player implements IPlayer {
     /**
      * Nombre de jetons
      */
-    private int pirateShipCounter;
+    private IntegerProperty pirateShipCounter;
 
     /**
      * Constructeur
@@ -132,6 +132,7 @@ public class Player implements IPlayer {
         nativeVillageMat = FXCollections.observableArrayList();
         nativeVillagePlayed = new SimpleBooleanProperty(false);
         waitForYesOrNo = new SimpleBooleanProperty(false);
+        pirateShipCounter = new SimpleIntegerProperty(0);
         cardsGainedThisTurn = FXCollections.observableArrayList();
         cardsBoughtThisTurn = FXCollections.observableArrayList();
 
@@ -180,6 +181,10 @@ public class Player implements IPlayer {
     }
 
     public int getPirateShipCounter() {
+        return pirateShipCounter.getValue();
+    }
+
+    public IntegerProperty pirateShipCounterProperty() {
         return pirateShipCounter;
     }
 
@@ -365,7 +370,7 @@ public class Player implements IPlayer {
     }
 
     public void incrementPirateShipCounter() {
-        pirateShipCounter += 1;
+        pirateShipCounter.setValue(pirateShipCounter.getValue() + 1);
     }
 
     public void setNbCardsToDrawAtCleanup(int n) {

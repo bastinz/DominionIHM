@@ -103,6 +103,7 @@ public class GameView extends HBox {
         Button cardButton = new Button(card.getName());
         cardButton.setUserData(card);
         cardButton.setId(card.getName());
+        cardButton.setFocusTraversable(false);
         cardButton.setOnMouseClicked(event -> {
             game.temporaryCardWasChosen(card.getName());}
         );
