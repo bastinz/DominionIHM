@@ -162,7 +162,7 @@ public class DominionIHM extends Application {
         launch(args);
     }
 
-    public static Game getGame() {
+    public static IGame getGame() {
         return game;
     }
 

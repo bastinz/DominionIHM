@@ -68,7 +68,7 @@ public class SeaWitchTest extends BaseTestClass {
 
     @Test
     public void otherPlayersGetCurse() {
-        Player otherPlayer = game.getPlayers().get(1);
+        Player otherPlayer = game.getLastPlayer();
         assertEquals(0, otherPlayer.getDiscard().size());
         clickOnCardInHand("Sea Witch");
         assertTrue(otherPlayer.getDiscard().stream().map(Card::getName).toList().contains("Curse"));

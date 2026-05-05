@@ -7,6 +7,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IGame {
@@ -16,7 +17,10 @@ public interface IGame {
 
     ObjectProperty<String> instructionProperty();
     ObjectProperty<? extends IPlayer> currentPlayerProperty();
-    List<SupplyPile> getSupplyPiles();
     ObservableList<Card> temporaryCardsProperty();
     BooleanProperty gameOverProperty();
+
+    List<SupplyPile> getSupplyPiles();
+    ArrayList<IPlayer> getPlayers();
+    IPlayer getNextPlayer();
 }

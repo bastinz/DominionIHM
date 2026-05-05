@@ -49,7 +49,7 @@ public class OtherPlayerView extends VBox {
 
     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) -> {
          if (newPlayer != null) {
-             IPlayer otherPlayer = DominionIHM.getGame().getOtherPlayer();
+             IPlayer otherPlayer = DominionIHM.getGame().getNextPlayer();
              nameLabel.setText(otherPlayer.getName());
              handLabel.textProperty().bind(Bindings.concat("Hand : ", Bindings.size(otherPlayer.getHand()).asString()));
              drawLabel.textProperty().bind(Bindings.concat("Draw : ", Bindings.size(otherPlayer.getDraw()).asString()));

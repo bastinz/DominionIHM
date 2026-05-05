@@ -788,22 +788,12 @@ public class Player implements IPlayer {
                 .orElseThrow();
         if (cardToPlay.hasType(CardType.ACTION)) {
             incrementActions(-1);
-//            playCard(cardToPlay);
         } else if (cardToPlay.hasType(TREASURE)) {
             setCurrentState(new TreasurePhase(this));
             numberOfActions.setValue(0);
-//            playCard(cardToPlay);
         }
         playCard(cardToPlay).thenRun(currentState::moveToNextPhase);
     }
-
-/*    public CompletableFuture<Void> playActionCard(String cardName) {
-        Card cardToPlay = hand.stream()
-                .filter(card -> card.getName().equals(cardName))
-                .findFirst()
-                .orElseThrow();
-        return playCard(cardToPlay)
-    }*/
 
     public void playTreasureCard(String cardName) {
         Card cardToPlay = hand.stream()

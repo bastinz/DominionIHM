@@ -51,8 +51,6 @@ public class GameView extends HBox {
     public void createBindings() {
         setSupplyPane();
         instructionLabel.textProperty().bind(game.instructionProperty());
-//        game.temporaryCardsProperty().getValue().addListener(temporaryCardsListener);
-//        game.temporaryCardsProperty().addListener(temporaryListListener);
         game.temporaryCardsProperty().addListener(temporaryListListener);
     }
 

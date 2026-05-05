@@ -50,8 +50,8 @@ public class PirateTest extends BaseTestClass {
 
     @Test
     void reactsToOtherPlayersGainedTreasureAndRemainsOnSamePlayer() {
-        Player pirateOwner = game.getPlayers().get(0);
-        Player treasureGainer = game.getPlayers().get(1);
+        Player pirateOwner = game.getFirstPlayer();
+        Player treasureGainer = game.getLastPlayer();
         addToPlayerSHand(treasureGainer, "Gold"); // pour pouvoir acheter un Treasure
         clickOnSkip(); // on est sur treasureGainer
         addToPlayerSHand(pirateOwner,  "Pirate");

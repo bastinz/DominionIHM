@@ -1,7 +1,7 @@
 package fr.umontpellier.iut.dominionfx.views;
 
 import fr.umontpellier.iut.dominionfx.DominionIHM;
-import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.IPlayer;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,7 +44,7 @@ public class ScoresView extends VBox {
 
     ChangeListener<Boolean> displayWinnerDetails = (observableValue, aBoolean, t1) -> {
         StringBuilder sb = new StringBuilder();
-        for (Player p : ihm.getGame().getPlayers()) {
+        for (IPlayer p : ihm.getGame().getPlayers()) {
             sb.append(p.getName()).append(" : ").append(p.getVictoryPoints()).append("\n");
         }
         winner.setText(sb.toString());

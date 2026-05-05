@@ -35,8 +35,8 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     private final ArrayList<Player> players;
 
-    public ArrayList<Player> getPlayers() {
-        return players;
+    public ArrayList<IPlayer> getPlayers() {
+        return new ArrayList<>(players);
     }
 
     /**
@@ -302,7 +302,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
             previousTurnPlayer.setValue(currentPlayer());
             if (!samePlayerShouldPlayExtraTurn) {
                 // passe au joueur suivant
-                currentTurnPlayer.setValue(getOtherPlayer());
+                currentTurnPlayer.setValue(getNextPlayer());
                 turnNumber += 1;
             }
             samePlayerShouldPlayExtraTurn = false;
@@ -370,7 +370,7 @@ public class Game extends Task<Void> implements Runnable, IGame {
         });
     }
 
-    public Player getOtherPlayer() {
+    public Player getNextPlayer() {
         int nextPlayerIndex = (players.indexOf(currentTurnPlayer.getValue()) + 1) % players.size();
         return players.get(nextPlayerIndex);
     }
@@ -556,4 +556,11 @@ public class Game extends Task<Void> implements Runnable, IGame {
      */
     private int turnNumber = 1;
 
+    public Player getFirstPlayer() {
+        return players.getFirst();
+    }
+
+    public Player getLastPlayer() {
+        return players.getLast();
+    }
 }

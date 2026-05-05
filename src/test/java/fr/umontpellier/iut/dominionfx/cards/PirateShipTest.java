@@ -36,7 +36,7 @@ public class PirateShipTest extends BaseTestClass {
     @Test
     public void answerNoToCoins() {
         Player firstPlayer = game.currentPlayer();
-        Player secondPlayer = game.getPlayers().get(1);
+        Player secondPlayer = game.getLastPlayer();
         int initialTotalNumberOfCards =  secondPlayer.getAllOwnedCards().size();
         int initialNumberOfCardsInDiscard =  secondPlayer.getDiscard().size();
         int initialMoney = firstPlayer.getMoney();

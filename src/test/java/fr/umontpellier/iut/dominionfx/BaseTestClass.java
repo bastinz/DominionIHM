@@ -36,12 +36,12 @@ public class BaseTestClass extends ApplicationTest {
     }
 
     public void addToFirstPlayersHand(String cardName) {
-        Player firstPlayer = game.getPlayers().getFirst();
+        Player firstPlayer = game.getFirstPlayer();
         getFromSupplyToHand(firstPlayer, cardName);
     }
 
     public void addToSecondPlayersHand(String cardName) {
-        Player secondPlayer = game.getPlayers().getLast();
+        Player secondPlayer = game.getLastPlayer();
         getFromSupplyToHand(secondPlayer, cardName);
     }
 
@@ -189,88 +189,3 @@ public class BaseTestClass extends ApplicationTest {
         return cards.stream().map(Card::getName).toList().contains(cardName);
     }
 }
-
-/*     public void ajouterDeLaMainAuBanc(String nomCarte) {
-        Node bancChoisi = inPlayPane.getChildrenUnmodifiable().getFirst();
-        clickOnCardInHand(nomCarte);
-        clickOn(bancChoisi);
-    }
-
-    public void ajouterDeLaMainAuBancAvecPosition(String nomCarte, int indice) {
-        Node bancChoisi = inPlayPane.getChildrenUnmodifiable().get(indice);
-        clickOnCardInHand(nomCarte);
-        clickOn(bancChoisi);
-    }
-
-    public void ajouterDeLaMainAuPokemonActif(String nomCarte) {
-        clickOnCardInHand(nomCarte);
-        clickOnTreasures();
-    }
-
-    public void cliquerSurBancAdversaire(int indice) {
-        Parent panneauBancAdversaire = trouverNodeAPartirDeLaRacine("panneauBancAdversaire");
-        Node bancChoisi = panneauBancAdversaire.getChildrenUnmodifiable().stream()
-                .skip(indice).findFirst()
-                .get();
-        clickOn(bancChoisi);
-    }
-
-    public void cliquerSurPokemonDeBancAdversaire(String nomPokemon) {
-        Parent panneauBancAdversaire = lookup("#panneauBancAdversaire").query();
-        Node bancChoisi = findNodeMatchingCondition(panneauBancAdversaire, n -> n.getId().startsWith(nomPokemon));
-        clickOn(bancChoisi);
-    }
-
-    public void cliquerPremierPokemonDeBanc() {
-        Node bancChoisi = inPlayPane.getChildrenUnmodifiable().getFirst();
-        clickOn(bancChoisi);
-    }
-
-    public void cliquerPokemonDeBanc(String nomCarte) {
-        Node nodeACliquer = findNodeMatchingCondition(inPlayPane, node -> node.getId().startsWith(nomCarte));
-        clickOn(nodeACliquer);
-    }
-
-    public void cliquerEmplacementBanc(int indice) {
-        Node bancChoisi = inPlayPane.getChildrenUnmodifiable().get(indice);
-        clickOn(bancChoisi);
-    }
-
-    public void cliquerAttaque(String nomAttaque) {
-        Parent panneauAttaques = lookup("#panneauAttaques").query();
-        Node nodeACliquer = findNodeMatchingCondition(panneauAttaques, node -> node.getId().startsWith(nomAttaque));
-        clickOn(nodeACliquer);
-    }
-
-    public void cliquerEnergieDuPokemonActif(String carteEnergie) {
-        Parent cartesEnergiePokemonActif = lookup("#panneauCartesEnergie").query();
-        Node nodeACliquer = findNodeMatchingCondition(cartesEnergiePokemonActif, n -> n.getId().startsWith(carteEnergie));
-        clickOn(nodeACliquer);
-    }
-
-    public void cliquerEnergieDeLAdversaire() {
-        Parent panneauCartesEnergieAdversaire = lookup("#panneauCartesEnergieAdversaire").query();
-        Node carteEnergie = panneauCartesEnergieAdversaire.getChildrenUnmodifiable().getFirst();
-        clickOn(carteEnergie);
-    }
-
-    public void cliquerCarteComplementaire(String nomCarte) {
-        Parent panneauChoixComplementaires = trouverNodeAPartirDeLaRacine("panneauChoixComplementaires");
-        Node nodeChoisi = panneauChoixComplementaires.getChildrenUnmodifiable().getFirst();
-        clickOn(nodeChoisi);
-        WaitForAsyncUtils.waitForFxEvents();
-    }
-
-    public void cliquerPremiereCarteComplementaire() {
-        Parent panneauChoixComplementaires = trouverNodeAPartirDeLaRacine("panneauChoixComplementaires");
-        Node nodeACliquer = panneauChoixComplementaires.getChildrenUnmodifiable().getFirst();
-        clickOn(nodeACliquer);
-        WaitForAsyncUtils.waitForFxEvents();
-    }*/
-
-
-/*    private Parent trouverNodeAPartirDeLaRacine(String idNode) {
-        Node root = lookup("#vueDuGame").query();
-        Parent panneauDuPlayerActif = (Parent) findNodeMatchingCondition(root, node -> node.getId().startsWith(idNode));
-        return panneauDuPlayerActif;
-    }*/

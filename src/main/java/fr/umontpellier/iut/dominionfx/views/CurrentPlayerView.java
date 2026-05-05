@@ -137,6 +137,7 @@ public class CurrentPlayerView extends VBox {
                     inPlayPane.getChildren().add(createCardNodeInPlay(card));
                 }
             }
+
             if (change.wasRemoved()) {
                 for (Card card : change.getRemoved()) {
                     inPlayPane.getChildren().removeIf(node -> node.getUserData() == card);

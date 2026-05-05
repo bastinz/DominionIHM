@@ -35,7 +35,7 @@ public class CutpurseTest extends BaseTestClass {
 
     @Test
     public void otherPlayersDiscardCooper() {
-        Player otherPlayer = game.getPlayers().get(1);
+        Player otherPlayer = game.getLastPlayer();
         long initialNbOfCoopersInOtherPlayerHand = otherPlayer.getHand().stream().filter(c -> c.getName().equals("Copper")).count();
         long initialNbOfCardsInOtherPlayerDiscard = otherPlayer.getDiscard().size();
         clickOnCardInHand("Cutpurse");

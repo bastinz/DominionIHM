@@ -97,10 +97,10 @@ public class AmbassadorTest extends BaseTestClass {
                 .findFirst()
                 .orElse(0);
         assertEquals(initialNbOfCardsInLighthousePile + 1, currentNbOfCardsInLighthousePile);
-        int initialNumberOfOwnedCards = game.getPlayers().get(1).getAllOwnedCards().size();
+        int initialNumberOfOwnedCards = game.getLastPlayer().getAllOwnedCards().size();
         clickOnSkip();
         assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
-        assertEquals(initialNumberOfOwnedCards + 1, game.getPlayers().get(1).getAllOwnedCards().size());
+        assertEquals(initialNumberOfOwnedCards + 1, game.getLastPlayer().getAllOwnedCards().size());
         assertTrue(listContainsCard(game.getPlayers().get(1).getDiscard(), "Lighthouse"));
 //        pause(2);
     }
