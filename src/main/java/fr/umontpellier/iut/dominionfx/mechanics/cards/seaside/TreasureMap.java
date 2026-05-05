@@ -47,6 +47,5 @@ public class TreasureMap extends ActionCard {
             }
         }
         return CompletableFuture.completedFuture(null);
-
     }
 }

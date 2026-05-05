@@ -1,9 +1,10 @@
-package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
+package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 
-public class ActionPhase extends PlayerState {
-    public ActionPhase(Player currentPlayer) {
+public class OnGoingActionPhase extends PlayerState {
+    public OnGoingActionPhase(Player currentPlayer) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Action phase or skip");
     }

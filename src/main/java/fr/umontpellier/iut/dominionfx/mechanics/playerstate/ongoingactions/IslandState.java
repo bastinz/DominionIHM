@@ -5,7 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.List;
 
-public class IslandState extends OnGoingActionState {
+public class IslandState extends OnGoingActionPhase {
 
     public IslandState(Player currentPlayer) {
         super(currentPlayer);
@@ -18,14 +18,13 @@ public class IslandState extends OnGoingActionState {
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             Card c = currentPlayer.getCardFromHand(cardName);
             currentPlayer.moveToIslandMat(c);
-            skip();
+            Card islandCard = currentPlayer.getCardFromInPlay("Island");
+            currentPlayer.moveToIslandMat(islandCard);
+            complete();
         }
     }
 
     @Override
     public void skip() {
-        Card c = currentPlayer.getCardFromInPlay("Island");
-        currentPlayer.moveToIslandMat(c);
-        complete();
     }
 }

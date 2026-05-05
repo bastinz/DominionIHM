@@ -30,10 +30,6 @@ public abstract class PlayerState {
         return future;
     }
 
-    public void setFuture(CompletableFuture<Void> future) {
-        this.future = future;
-    }
-
     public void moveToNextPhase() {
         if (currentPlayer.areActionsCompleted()) {
             if (currentPlayer.areBuysCompleted()) {

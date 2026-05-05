@@ -5,7 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.Blockade;
 
 import java.util.List;
 
-public class BlockadeState extends OnGoingActionState {
+public class BlockadeState extends OnGoingActionPhase {
     final private Blockade blocadeCard;
 
     public BlockadeState(Player currentPlayer, Blockade blocadeCard) {
@@ -21,5 +21,9 @@ public class BlockadeState extends OnGoingActionState {
             blocadeCard.endAction(cardName);
             complete(); // fait dans endAction ?
         }
+    }
+
+    @Override
+    public void skip() {
     }
 }

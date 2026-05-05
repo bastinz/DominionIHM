@@ -4,9 +4,9 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.EmbargoState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -23,6 +23,16 @@ public class EmbargoTest extends BaseTestClass {
     @Override
     public void setPlayersHands() {
         addToFirstPlayersHand("Embargo");
+    }
+
+    @Test
+    public void skipNotAllowed() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Embargo");
+        clickOnSkip();
+        assertInstanceOf(EmbargoState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+//        pause(2);
     }
 
     @Test
@@ -47,8 +57,6 @@ public class EmbargoTest extends BaseTestClass {
 
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Embargo");
-        WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Embargo");
         clickOnSupplyPile("Lighthouse");
         int numberOfEmbargoTokens = game.getSupplyPiles().stream()
@@ -69,8 +77,6 @@ public class EmbargoTest extends BaseTestClass {
 
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Embargo");
-        WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Embargo");
         clickOnSupplyPile("Sailor");
         int numberOfEmbargoTokensLighthouse = game.getSupplyPiles().stream()

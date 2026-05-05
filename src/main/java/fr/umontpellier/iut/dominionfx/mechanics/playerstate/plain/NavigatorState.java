@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
+package fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
@@ -49,5 +49,9 @@ public class NavigatorState extends PlayerState {
                 complete();
             }
         }
+    }
+
+    @Override
+    public void skip() {
     }
  }

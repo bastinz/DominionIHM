@@ -4,6 +4,7 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.NavigatorState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,33 @@ public class NavigatorTest extends BaseTestClass {
         game = new Game(new String[]{"PlayerTest1", "PlayerTest2"},
                 new String[]{"Navigator", "Province"});
         super.start(stage);
+    }
+
+    @Test
+    public void skipNotAllowedWhenChoosing() {
+        Player currentPlayer = game.currentPlayer();
+        addToFirstPlayersHand("Navigator");
+        clickOnCardInHand("Navigator");
+        clickOnSkip();
+        assertInstanceOf(NavigatorState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
+    public void skipNotAllowedAfterFirstCardBack() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnSkip();
+        clickOnSkip();
+        clickOnSkip();
+        addToFirstPlayersHand("Navigator");
+        clickOnSkip();
+        clickOnCardInHand("Navigator");
+        List<String> cardsNames = game.getTemporaryCardsNames();
+        clickOnNo();
+        clickOnTemporaryCard(cardsNames.get(0));
+        clickOnSkip();
+        assertInstanceOf(NavigatorState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
     }
 
     @Test
@@ -53,11 +81,8 @@ public class NavigatorTest extends BaseTestClass {
         List<String> cardsNames = game.getTemporaryCardsNames();
         clickOnNo();
         clickOnTemporaryCard(cardsNames.get(0));
-        pause(2);
         clickOnTemporaryCard(cardsNames.get(2));
-        pause(2);
         clickOnTemporaryCard(cardsNames.get(3));
-        pause(2);
         clickOnTemporaryCard(cardsNames.get(1));
         clickOnTemporaryCard(cardsNames.get(4));
         assertEquals(initialDrawSize + 5, firstPlayer.getDraw().size());

@@ -8,23 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ReactionPhase extends PlayerState {
+public class PirateReactionPhase extends PlayerState {
 
     private List<Card> reactingCards;
     private final Player reactingCardOwner;
     private final Card gainedCard;
 
-    public ReactionPhase(Player currentPlayer, Player reactingCardOwner, Card gainedCard) {
+    public PirateReactionPhase(Player currentPlayer, Player reactingCardOwner, Card gainedCard) {
         super(currentPlayer);
-        getGame().instructionProperty().setValue("Reacting to " + gainedCard.getName());
+        getGame().instructionProperty().setValue("Hey %s, do you want to react to %s playing your Pirate?".formatted(reactingCardOwner.getName(),gainedCard.getName()));
         this.gainedCard = gainedCard;
         this.reactingCardOwner = reactingCardOwner;
         processReactingCard();
-    }
-
-    @Override
-    public void skip() {
-        moveToNextPhase();
     }
 
     @Override
@@ -40,7 +35,6 @@ public class ReactionPhase extends PlayerState {
     }
 
     public void processReactingCard() {
-        // révéler et activer une carte réaction
         reactingCards = reactingCardOwner.getHand().stream()
                 .filter(c -> c.canReactToPlayerGainCard(currentPlayer, gainedCard, reactingCardOwner))
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -50,5 +44,4 @@ public class ReactionPhase extends PlayerState {
             getGame().setTemporaryCards(FXCollections.observableArrayList(reactingCards), reactingCardOwner.getHand());
         }
     }
-
 }

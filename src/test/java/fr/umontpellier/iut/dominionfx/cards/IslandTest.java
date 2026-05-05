@@ -25,6 +25,15 @@ public class IslandTest extends BaseTestClass {
     }
 
     @Test
+    public void skipNotAllowed() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Island");
+        clickOnSkip();
+        assertInstanceOf(IslandState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
     public void addsTwoCardsToIslandMat() {
         clickOnCardInHand("Island");
         Player currentPlayer = game.currentPlayer();
@@ -32,17 +41,6 @@ public class IslandTest extends BaseTestClass {
         clickOnCardInHand("Copper");
         assertTrue(currentPlayer.getIslandMat().stream().map(Card::getName).toList().contains("Island"));
         assertTrue(currentPlayer.getIslandMat().stream().map(Card::getName).toList().contains("Copper"));
-//        pause(2);
-    }
-
-    @Test
-    public void addsOneCardToIslandMat() {
-        clickOnCardInHand("Island");
-        Player currentPlayer = game.currentPlayer();
-        assertInstanceOf(IslandState.class, currentPlayer.getCurrentState());
-        clickOnSkip();
-        assertEquals(1, currentPlayer.getIslandMat().size());
-        assertTrue(currentPlayer.getIslandMat().stream().map(Card::getName).toList().contains("Island"));
 //        pause(2);
     }
 }

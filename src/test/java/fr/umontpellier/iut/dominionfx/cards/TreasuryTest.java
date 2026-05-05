@@ -4,6 +4,7 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.TreasuryState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +23,17 @@ public class TreasuryTest extends BaseTestClass {
     public void setPlayersHands() {
         addToFirstPlayersHand("Treasury");
         addToFirstPlayersHand("Gold");
+    }
+
+    @Test
+    public void skipNotAllowedWhenDiscarding() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Treasury");
+        clickOnTreasures();
+        clickOnSupplyPile("Copper");
+        clickOnSkip();
+        assertInstanceOf(TreasuryState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
     }
 
     @Test

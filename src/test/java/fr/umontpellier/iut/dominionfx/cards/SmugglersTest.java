@@ -4,11 +4,12 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.SmugglersState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class SmugglersTest extends BaseTestClass {
 
@@ -25,6 +26,23 @@ public class SmugglersTest extends BaseTestClass {
     }
 
     @Test
+    public void skipNotAllowedWhenChoosingPile() {
+        SupplyPile sailorPile = game.getSupplyPiles().stream()
+                .filter(pile -> "Sailor".equals(pile.getName()))
+                .findFirst()
+                .orElseThrow();
+        clickOnTreasures();
+        clickOnSupplyPile("Lighthouse");
+        Player currentPlayer = game.currentPlayer();
+        getFromSupplyToHand(currentPlayer, "Smugglers");
+        clickOnCardInHand("Smugglers");
+        pause(2);
+        clickOnSkip();
+        assertInstanceOf(SmugglersState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
     public void getsACardWhenPreviousGained() {
         SupplyPile lightHousePile = game.getSupplyPiles().stream()
                 .filter(pile -> "Lighthouse".equals(pile.getName()))
@@ -34,12 +52,29 @@ public class SmugglersTest extends BaseTestClass {
         clickOnSupplyPile("Lighthouse");
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Smugglers");
-        WaitForAsyncUtils.waitForFxEvents();
         assertEquals(0, currentPlayer.getDiscard().size());
         clickOnCardInHand("Smugglers");
         clickOnSupplyPile("Lighthouse");
         assertEquals(1, currentPlayer.getDiscard().size());
         assertEquals(8, lightHousePile.size());
+//        pause(2);
+    }
+
+    @Test
+    public void doesNotGetWrongCardWhenPreviousGained() {
+        SupplyPile sailorPile = game.getSupplyPiles().stream()
+                .filter(pile -> "Sailor".equals(pile.getName()))
+                .findFirst()
+                .orElseThrow();
+        clickOnTreasures();
+        clickOnSupplyPile("Lighthouse");
+        Player currentPlayer = game.currentPlayer();
+        getFromSupplyToHand(currentPlayer, "Smugglers");
+        assertEquals(0, currentPlayer.getDiscard().size());
+        clickOnCardInHand("Smugglers");
+        clickOnSupplyPile("Sailor");
+        assertEquals(0, currentPlayer.getDiscard().size());
+        assertEquals(10, sailorPile.size());
 //        pause(2);
     }
 
@@ -51,7 +86,6 @@ public class SmugglersTest extends BaseTestClass {
                 .orElseThrow();
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Smugglers");
-        WaitForAsyncUtils.waitForFxEvents();
         assertEquals(0, currentPlayer.getDiscard().size());
         clickOnCardInHand("Smugglers");
         assertEquals(0, currentPlayer.getDiscard().size());
@@ -70,12 +104,10 @@ public class SmugglersTest extends BaseTestClass {
                 .orElseThrow();
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Gold");
-        WaitForAsyncUtils.waitForFxEvents();
         clickOnTreasures();
         clickOnSupplyPile("Province");
         currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Smugglers");
-        WaitForAsyncUtils.waitForFxEvents();
         clickOnCardInHand("Smugglers");
         clickOnSupplyPile("Province");
         assertEquals(0, currentPlayer.getDiscard().size());

@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
+package fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.PirateShip;
@@ -26,19 +26,4 @@ public class PirateShipChoiceState extends PlayerState {
             pirateShip.setAttacking(true);
         complete();
     }
-
-    @Override
-    public void temporaryCardWasChosen(String cardName) {
-/*        if (discardChoice)
-            return;
-        List<String> availableCards = topCards.stream().map(Card::getName).toList();
-        if (!availableCards.isEmpty() && availableCards.contains(cardName)) {
-            Card cardToPlay = topCards.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
-            currentPlayer.moveToDraw(cardToPlay);
-            topCards.remove(cardToPlay);
-            if (topCards.isEmpty()) {
-                getGame().setTemporaryCards(null, null);
-                complete();
-            }*/
-        }
 }

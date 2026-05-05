@@ -2,8 +2,8 @@ package fr.umontpellier.iut.dominionfx.mechanics;
 
 import fr.umontpellier.iut.dominionfx.IPlayer;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PirateReactionPhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ReactionPhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import javafx.beans.property.BooleanProperty;
@@ -574,7 +574,7 @@ public class Player implements IPlayer {
     }
 
     private CompletableFuture<Void> reactOnGainCard(Player owner, Card gainedCard) {
-        ReactionPhase phase = new ReactionPhase(this, owner, gainedCard);
+        PirateReactionPhase phase = new PirateReactionPhase(this, owner, gainedCard);
         setCurrentState(phase);
         return phase.getCompletionFuture();
     }

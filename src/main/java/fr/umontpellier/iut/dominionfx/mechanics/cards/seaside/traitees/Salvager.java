@@ -2,7 +2,7 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.SalvagerState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.SalvagerState;
 
 import java.util.concurrent.CompletableFuture;
 

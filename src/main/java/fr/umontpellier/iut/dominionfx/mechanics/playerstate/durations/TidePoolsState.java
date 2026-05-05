@@ -24,11 +24,15 @@ public class TidePoolsState extends DurationState {
             nbCardsToDiscard -= 1;
             if (nbCardsToDiscard == 0) {
                 durationCard.setHasDurationEffect(false);
-                complete();
+                super.skip();
             }
             else
                 getGame().instructionProperty().setValue("Discard 1 card");
         }
+    }
+
+    @Override
+    public void skip() {
     }
 }
 

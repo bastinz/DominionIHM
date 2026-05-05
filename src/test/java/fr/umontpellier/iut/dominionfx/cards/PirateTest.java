@@ -4,8 +4,10 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PirateReactionPhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.PirateState;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Disabled;
@@ -26,6 +28,30 @@ public class PirateTest extends BaseTestClass {
     @Override
     public void setPlayersHands() {
         addToFirstPlayersHand("Pirate");
+    }
+
+    @Test
+    public void skipNotAllowedAtNextTurnStart() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Pirate");
+        clickOnSkip();
+        clickOnSkip();
+        clickOnSkip();
+        assertInstanceOf(PirateState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
+    public void skipNotAllowedWhenChoosingAfterTreasureGained() {
+        Player pirateOwner = game.currentPlayer();
+        Player treasureGainer = game.getLastPlayer();
+        clickOnSkip(); // on est sur treasureGainer
+        addToPlayerSHand(pirateOwner,  "Pirate");
+        clickOnTreasures();
+        clickOnSupplyPile("Copper"); // achat qui va declencher Reaction
+        clickOnSkip();
+        assertInstanceOf(PirateReactionPhase.class, treasureGainer.getCurrentState());
+        assertEquals(treasureGainer, game.currentPlayer());
     }
 
     @Test
@@ -52,13 +78,12 @@ public class PirateTest extends BaseTestClass {
     void reactsToOtherPlayersGainedTreasureAndRemainsOnSamePlayer() {
         Player pirateOwner = game.getFirstPlayer();
         Player treasureGainer = game.getLastPlayer();
-        addToPlayerSHand(treasureGainer, "Gold"); // pour pouvoir acheter un Treasure
         clickOnSkip(); // on est sur treasureGainer
         addToPlayerSHand(pirateOwner,  "Pirate");
         Platform.runLater(() -> treasureGainer.incrementBuys(1));// pour rester sur ce joueur
         WaitForAsyncUtils.waitForFxEvents();
         clickOnTreasures();
-        clickOnSupplyPile("Gold"); // achat qui va declencher Reaction
+        clickOnSupplyPile("Copper"); // achat qui va declencher Reaction
         clickOnTemporaryCard("Pirate"); // reponse reaction
         assertTrue(listContainsCard(pirateOwner.getInPlay(),"Pirate"));
         assertEquals(treasureGainer, game.currentPlayer());

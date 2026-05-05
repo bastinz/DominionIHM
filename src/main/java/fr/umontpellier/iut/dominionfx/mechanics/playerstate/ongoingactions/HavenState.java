@@ -5,7 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.Haven;
 
 import java.util.List;
 
-public class HavenState extends OnGoingActionState {
+public class HavenState extends OnGoingActionPhase {
 
     private Haven haven;
 
@@ -21,5 +21,9 @@ public class HavenState extends OnGoingActionState {
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
             haven.endPlay(currentPlayer, cardName);
         }
+    }
+
+    @Override
+    public void skip() {
     }
 }

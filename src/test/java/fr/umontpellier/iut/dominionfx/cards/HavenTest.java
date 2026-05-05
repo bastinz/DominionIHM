@@ -5,6 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.HavenState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +24,15 @@ public class HavenTest extends BaseTestClass {
     public void setPlayersHands() {
         addToFirstPlayersHand("Haven");
         addToFirstPlayersHand("Silver");
+    }
+
+    @Test
+    public void skipNotAllowed() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Haven");
+        clickOnSkip();
+        assertInstanceOf(HavenState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
     }
 
     @Test

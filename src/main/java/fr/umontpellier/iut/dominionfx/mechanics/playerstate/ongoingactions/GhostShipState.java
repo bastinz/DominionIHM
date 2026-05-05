@@ -5,7 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.GhostShip
 
 import java.util.List;
 
-public class GhostShipState extends OnGoingActionState {
+public class GhostShipState extends OnGoingActionPhase {
 
     private int nbCardsToDiscard;
     private GhostShip ghostShip;
@@ -15,10 +15,6 @@ public class GhostShipState extends OnGoingActionState {
         this.nbCardsToDiscard = nbCardsToDiscard;
         this.ghostShip = ghostShip;
         getGame().instructionProperty().setValue("Discard down to 3 cards");
-    }
-
-    @Override
-    public void skip() {
     }
 
     @Override
@@ -33,6 +29,10 @@ public class GhostShipState extends OnGoingActionState {
                 complete();
             }
         }
+    }
+
+    @Override
+    public void skip() {
     }
 }
 

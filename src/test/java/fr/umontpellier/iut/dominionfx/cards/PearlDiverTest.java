@@ -5,6 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.PearlDiverState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +23,15 @@ public class PearlDiverTest extends BaseTestClass {
     @Override
     public void setPlayersHands() {
         addToFirstPlayersHand("Pearl Diver");
+    }
+
+    @Test
+    public void skipNotAllowedWhenChoosing() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Pearl Diver");
+        clickOnSkip();
+        assertInstanceOf(PearlDiverState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
     }
 
     @Test

@@ -12,7 +12,9 @@ public class TreasurePhase extends PlayerState {
 
     @Override
     public void skip() {
-        endOfCurrentPlayersTurn();
+        currentPlayer.endTreasurePhase();
+        moveToNextPhase();
+        complete();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
+package fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
@@ -31,23 +31,9 @@ public class PirateShipAttackState extends PlayerState {
         if (!availableCards.isEmpty() && availableCards.contains(cardName)) {
             Card selectedTreasure = revealedCards.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
             target.moveToTrash(selectedTreasure);
-//            target.moveToDiscard(revealedCards);
             pirateShip.setDidTrashTreasure(true);
             currentPlayer.getGame().setTemporaryCards(null, null);
             complete();
         }
     }
  }
-
-
-/*
-List<Card> revealedCards = target.drawCards(2);
-            if (revealedCards.stream().anyMatch(c -> c.hasType(CardType.TREASURE))) {
-// si au moins un trésor, choisir un trésor à écarter
-Card selectedTreasure = p.chooseCardFromButtons(
-        "%s: Choose a treasure to trash".formatted(this),
-        revealedCards.stream().filter(c -> c.hasType(CardType.TREASURE)).toList(),
-        false);
-                target.moveToTrash(selectedTreasure);
-didTrashTreasure = true;
-        }*/

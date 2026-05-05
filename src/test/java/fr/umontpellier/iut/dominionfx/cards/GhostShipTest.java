@@ -26,6 +26,15 @@ public class GhostShipTest extends BaseTestClass {
     }
 
     @Test
+    public void skipNotAllowed() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Ghost Ship");
+        clickOnSkip();
+        assertInstanceOf(GhostShipState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
     public void addsTwoCardsToHand() {
         Player currentPlayer = game.currentPlayer();
         clickOnCardInHand("Ghost Ship");

@@ -9,7 +9,6 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.TidePoolsState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,8 +25,6 @@ public class ActionPhaseTest extends BaseTestClass {
     public void moveToTreasureAfterAction() {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Corsair");
-        WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Corsair");
         assertEquals(currentPlayer, game.currentPlayer());
         assertEquals(0, game.currentPlayer().getNumberOfActions());
@@ -39,8 +36,6 @@ public class ActionPhaseTest extends BaseTestClass {
     public void moveToTreasureAfterAttack() {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Sea Hag");
-        WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Sea Hag");
         assertEquals(currentPlayer, game.currentPlayer());
         assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
@@ -54,8 +49,6 @@ public class ActionPhaseTest extends BaseTestClass {
         getFromSupplyToHand(currentPlayer, "Bazaar");
         getFromSupplyToHand(currentPlayer, "Sea Hag");
         getFromSupplyToHand(currentPlayer, "Sea Hag");
-        WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Bazaar");
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
         assertEquals(2, currentPlayer.getNumberOfActions());
@@ -72,8 +65,6 @@ public class ActionPhaseTest extends BaseTestClass {
     public void durationRemainsInPlayTillNextTurn() {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Fishing Village");
-        WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Fishing Village");
         clickOnSkip();
         assertTrue(listContainsCard(game.getPreviousTurnPlayer().getInPlay(), "Fishing Village"));
@@ -88,8 +79,6 @@ public class ActionPhaseTest extends BaseTestClass {
         getFromSupplyToHand(currentPlayer, "Fishing Village");
         getFromSupplyToHand(currentPlayer, "Blockade");
         getFromSupplyToHand(currentPlayer, "Warehouse");
-        WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Fishing Village");
         clickOnCardInHand("Blockade");
         clickOnSupplyPile("Warehouse");
@@ -108,7 +97,6 @@ public class ActionPhaseTest extends BaseTestClass {
         getFromSupplyToHand(currentPlayer, "Tide Pools");
         getFromSupplyToHand(currentPlayer, "Blockade");
         getFromSupplyToHand(currentPlayer, "Warehouse");
-        WaitForAsyncUtils.waitForFxEvents();
         clickOnCardInHand("Tide Pools");
         clickOnCardInHand("Blockade");
         clickOnSupplyPile("Warehouse");
@@ -126,8 +114,6 @@ public class ActionPhaseTest extends BaseTestClass {
     public void durationEffectsDisabledOnNextTurn() {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Tide Pools");
-        WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Tide Pools");
         clickOnSkip();
         clickOnSkip();

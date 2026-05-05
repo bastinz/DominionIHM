@@ -5,10 +5,11 @@ import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.OnGoingActionState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.AmbassadorReturnToSupplyState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.AmbassadorRevealState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.OnGoingActionPhase;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,12 +28,30 @@ public class AmbassadorTest extends BaseTestClass {
     }
 
     @Test
+    public void cannotSkipWhenRevealedCardIsExpected() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Ambassador");
+        clickOnSkip();
+        assertInstanceOf(AmbassadorRevealState.class, game.currentPlayer().getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
+    public void cannotSkipWhenNoCopyWasChosen() {
+        Player currentPlayer = game.currentPlayer();
+        getFromSupplyToHand(currentPlayer, "Lighthouse");
+        clickOnCardInHand("Ambassador");
+        clickOnCardInHand("Lighthouse");
+        clickOnSkip();
+        assertInstanceOf(AmbassadorReturnToSupplyState.class, game.currentPlayer().getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
     public void returnsOneCardToSupply() {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Lighthouse");
         getFromSupplyToHand(currentPlayer, "Lighthouse");
-        WaitForAsyncUtils.waitForFxEvents();
-
         int initialNbOfCardsInHand = currentPlayer.getHand().size();
         clickOnCardInHand("Ambassador"); // -1 card
         clickOnCardInHand("Lighthouse");
@@ -48,15 +67,13 @@ public class AmbassadorTest extends BaseTestClass {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Lighthouse");
         getFromSupplyToHand(currentPlayer, "Ambassador");
-        WaitForAsyncUtils.waitForFxEvents();
-
         int initialNbOfCardsInHand = currentPlayer.getHand().size();
         clickOnCardInHand("Ambassador"); // -1 card
         clickOnCardInHand("Lighthouse");
         clickOnCardInHand("Ambassador"); // nothing should happen
         clickOnSkip();
         assertEquals(initialNbOfCardsInHand - 1, currentPlayer.getHand().size());
-        assertInstanceOf(OnGoingActionState.class, currentPlayer.getCurrentState());
+        assertInstanceOf(OnGoingActionPhase.class, currentPlayer.getCurrentState());
 //        pause(2);
     }
 
@@ -65,8 +82,6 @@ public class AmbassadorTest extends BaseTestClass {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Lighthouse");
         getFromSupplyToHand(currentPlayer, "Lighthouse");
-        WaitForAsyncUtils.waitForFxEvents();
-
         int initialNbOfCardsInHand = currentPlayer.getHand().size();
         clickOnCardInHand("Ambassador"); // -1 card
         clickOnCardInHand("Lighthouse");
@@ -81,8 +96,6 @@ public class AmbassadorTest extends BaseTestClass {
     public void otherPlayersGetACopyOfRevealedCard() {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Lighthouse");
-        WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Ambassador");
         clickOnCardInHand("Lighthouse");
         int initialNbOfCardsInLighthousePile = game.getSupplyPiles().stream()

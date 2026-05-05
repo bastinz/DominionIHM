@@ -5,10 +5,9 @@ import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.SalvagerState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.SalvagerState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -28,6 +27,15 @@ public class SalvagerTest extends BaseTestClass {
     }
 
     @Test
+    public void skipNotAllowedWhenTrashIsExpected() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Salvager");
+        clickOnSkip();
+        assertInstanceOf(SalvagerState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
     public void addsBuys() {
         Player currentPlayer = game.currentPlayer();
         assertEquals(1, currentPlayer.getNumberOfBuys());
@@ -41,8 +49,6 @@ public class SalvagerTest extends BaseTestClass {
     public void trashes() {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Lighthouse");
-        WaitForAsyncUtils.waitForFxEvents();
-
         assertEquals(1, currentPlayer.getNumberOfBuys());
         int initialNbOfCardsInHand = currentPlayer.getCardsInHand().size();
         clickOnCardInHand("Salvager");
@@ -55,8 +61,6 @@ public class SalvagerTest extends BaseTestClass {
     public void increasesMoney() {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Lighthouse");
-        WaitForAsyncUtils.waitForFxEvents();
-
         int initialMoney = currentPlayer.getMoney();
         clickOnCardInHand("Salvager");
         clickOnCardInHand("Lighthouse");
@@ -68,8 +72,6 @@ public class SalvagerTest extends BaseTestClass {
     public void movesToRightStates() {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Lighthouse");
-        WaitForAsyncUtils.waitForFxEvents();
-
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Salvager");
         assertInstanceOf(SalvagerState.class, currentPlayer.getCurrentState());
@@ -83,8 +85,6 @@ public class SalvagerTest extends BaseTestClass {
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Lighthouse");
         getFromSupplyToHand(currentPlayer, "Bazaar");
-        WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Bazaar");
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Salvager");

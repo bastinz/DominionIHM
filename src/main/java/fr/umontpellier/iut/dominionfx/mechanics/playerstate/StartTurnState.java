@@ -16,6 +16,7 @@ public class StartTurnState extends PlayerState {
         currentPlayer.endActionPhase();
         currentPlayer.endTreasurePhase();
         moveToNextPhase();
+        complete();
     }
 
     @Override

@@ -7,7 +7,7 @@ import javafx.beans.property.StringProperty;
 
 import java.util.List;
 
-public class AmbassadorRevealState extends OnGoingActionState {
+public class AmbassadorRevealState extends OnGoingActionPhase {
 
     private final StringProperty revealedCardName;
     private final AttackCard ambassadorCard;
@@ -30,5 +30,8 @@ public class AmbassadorRevealState extends OnGoingActionState {
 
     public StringProperty revealedCardNameProperty() {
         return revealedCardName;
+    }
+
+    public void skip() {
     }
 }

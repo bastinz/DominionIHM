@@ -5,7 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.List;
 
-public class WarehouseState extends OnGoingActionState {
+public class WarehouseState extends OnGoingActionPhase {
 
     private int nbCardsToDiscard;
 
@@ -13,10 +13,6 @@ public class WarehouseState extends OnGoingActionState {
         super(currentPlayer);
         this.nbCardsToDiscard = 3;
         getGame().instructionProperty().setValue("Discard 3 cards");
-    }
-
-    @Override
-    public void skip() {
     }
 
     @Override
@@ -31,6 +27,10 @@ public class WarehouseState extends OnGoingActionState {
             else
                 getGame().instructionProperty().setValue("Discard %d card%s".formatted(nbCardsToDiscard, nbCardsToDiscard > 1 ? "s" : ""));
         }
+    }
+
+    @Override
+    public void skip() {
     }
 }
 

@@ -1,8 +1,7 @@
-package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
+package fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.DurationState;
 
 import java.util.List;
 

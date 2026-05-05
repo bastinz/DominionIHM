@@ -3,7 +3,7 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.TreasuryState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.TreasuryState;
 
 import java.util.concurrent.CompletableFuture;
 

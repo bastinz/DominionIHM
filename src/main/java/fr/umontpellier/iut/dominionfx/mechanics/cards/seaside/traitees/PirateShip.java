@@ -4,8 +4,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.AttackCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateShipAttackState;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.PirateShipChoiceState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.PirateShipAttackState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.PirateShipChoiceState;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -40,9 +40,6 @@ public class PirateShip extends AttackCard {
         if (isAttacking) {
             CompletableFuture<Void> future = new CompletableFuture<>();
             List<Card> revealedCards = target.drawCards(2);
-/*            List<Card> revealedCards = new ArrayList<>();
-            revealedCards.add(target.getDraw().getLast());
-            revealedCards.add(target.getDraw().get(target.getDraw().size() - 2));*/
             if (revealedCards.stream().anyMatch(c -> c.hasType(CardType.TREASURE))) {
                 // si au moins un trésor, choisir un trésor à écarter
                 PirateShipAttackState phase = new PirateShipAttackState(p, target, revealedCards, this);

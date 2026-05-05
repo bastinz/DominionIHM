@@ -3,16 +3,10 @@ package fr.umontpellier.iut.dominionfx.cards;
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.ExplorerState;
-import javafx.application.Platform;
-import javafx.beans.binding.ListExpression;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.util.WaitForAsyncUtils;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -32,12 +26,19 @@ public class ExplorerTest extends BaseTestClass {
     }
 
     @Test
+    public void skipAllowed() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Explorer");
+        clickOnSkip();
+        assertInstanceOf(TreasurePhase.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
     public void explorerWithProvinceAddsGold() {
         clickOnCardInHand("Explorer");
         Player currentPlayer = game.currentPlayer();
         getFromSupplyToHand(currentPlayer, "Province");
-        WaitForAsyncUtils.waitForFxEvents();
-
         long initialNumberOfGold = currentPlayer.getHand().stream()
                 .filter(card -> "Gold".equals(card.getName()))
                 .count();
@@ -68,13 +69,7 @@ public class ExplorerTest extends BaseTestClass {
     @Test
     public void explorerWithoutProvinceAndEmptySilverPile() {
         clickOnCardInHand("Explorer");
-        Platform.runLater(() -> {
-            Optional<SupplyPile> silverPile = game.getSupplyPiles().stream()
-                    .filter(p -> p.getName().equals("Silver"))
-                    .findFirst();
-            silverPile.ifPresent(ListExpression::clear);        });
-        WaitForAsyncUtils.waitForFxEvents();
-
+        emptyPile("Silver");
         Player currentPlayer = game.currentPlayer();
         long initialNumberOfSilver = currentPlayer.getHand().stream()
                 .filter(card -> "Silver".equals(card.getName()))

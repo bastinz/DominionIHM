@@ -26,12 +26,21 @@ public class WarehouseTest extends BaseTestClass {
     }
 
     @Test
+    public void skipNotAllowedWhenDiscarding() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Warehouse");
+        clickOnCardInHand("Copper");
+        clickOnSkip();
+        assertInstanceOf(WarehouseState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
     public void adds3CardsToHandAnd1Action() {
         clickOnCardInHand("Warehouse");
         clickOnCardInHand("Copper");
         clickOnCardInHand("Copper");
         clickOnCardInHand("Copper");
-
         Player currentPlayer = game.currentPlayer();
         assertEquals(5, currentPlayer.getHand().size()); // 6 -1(Warehouse) +3(gained) -3(discard)
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());

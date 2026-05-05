@@ -2,8 +2,10 @@ package fr.umontpellier.iut.dominionfx;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.SupplyPile;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import javafx.application.Platform;
+import javafx.beans.binding.ListExpression;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
@@ -13,6 +15,7 @@ import org.testfx.util.WaitForAsyncUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
@@ -44,6 +47,16 @@ public class BaseTestClass extends ApplicationTest {
         Player secondPlayer = game.getLastPlayer();
         getFromSupplyToHand(secondPlayer, cardName);
     }
+
+    public void addOnTopOfSecondPlayersDraw(String cardName) {
+        Player secondPlayer = game.getLastPlayer();
+        Platform.runLater(() -> {
+            secondPlayer.moveToDraw(secondPlayer.getCardFromSupply(cardName));
+        });
+        WaitForAsyncUtils.waitForFxEvents();
+    }
+
+
 
     public void addToPlayerSHand(Player player, String cardName) {
         getFromSupplyToHand(player, cardName);
@@ -143,13 +156,6 @@ public class BaseTestClass extends ApplicationTest {
             player.moveToHand(player.getCardFromSupply(cardName));
         });
         WaitForAsyncUtils.waitForFxEvents();
-    /*    try {
-            WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS, () ->
-                    listContainsCard(player.getHand(), cardName)
-            );
-        } catch (TimeoutException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     public void addCardForNextDraw(String cardName) { // à faire avant le passage au prochain joueur
@@ -187,5 +193,14 @@ public class BaseTestClass extends ApplicationTest {
 
     public boolean listContainsCard(List<Card> cards, String cardName) {
         return cards.stream().map(Card::getName).toList().contains(cardName);
+    }
+
+    public void emptyPile(String pileName) {
+        Platform.runLater(() -> {
+            Optional<SupplyPile> silverPile = game.getSupplyPiles().stream()
+                    .filter(p -> p.getName().equals(pileName))
+                    .findFirst();
+            silverPile.ifPresent(ListExpression::clear);});
+        WaitForAsyncUtils.waitForFxEvents();
     }
 }

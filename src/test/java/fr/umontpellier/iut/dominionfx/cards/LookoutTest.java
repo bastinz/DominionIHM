@@ -3,10 +3,12 @@ package fr.umontpellier.iut.dominionfx.cards;
 import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.LookoutState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 public class LookoutTest extends BaseTestClass {
 
@@ -20,6 +22,26 @@ public class LookoutTest extends BaseTestClass {
     @Override
     public void setPlayersHands() {
         addToFirstPlayersHand("Lookout");
+    }
+
+    @Test
+    public void skipNotAllowedAtStart() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Lookout");
+        clickOnSkip();
+        assertInstanceOf(LookoutState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
+    public void skipNotAllowedAfterTrash() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Lookout");
+        String cardToTrash = currentPlayer.getDraw().get(2).getName();
+        clickOnTemporaryCard(cardToTrash);
+        clickOnSkip();
+        assertInstanceOf(LookoutState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
     }
 
     @Test

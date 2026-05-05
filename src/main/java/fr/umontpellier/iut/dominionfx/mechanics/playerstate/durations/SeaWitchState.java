@@ -3,11 +3,11 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.SeaWitch;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.OnGoingActionState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.OnGoingActionPhase;
 
 import java.util.List;
 
-public class SeaWitchState extends OnGoingActionState {
+public class SeaWitchState extends OnGoingActionPhase {
 
     private int nbCardsToDiscard;
     private final SeaWitch seaWitch;
@@ -17,10 +17,6 @@ public class SeaWitchState extends OnGoingActionState {
         this.nbCardsToDiscard = 2;
         this.seaWitch = seaWitch;
         getGame().instructionProperty().setValue("Discard 2 cards");
-    }
-
-    @Override
-    public void skip() {
     }
 
     @Override
@@ -37,6 +33,10 @@ public class SeaWitchState extends OnGoingActionState {
             else
                 getGame().instructionProperty().setValue("Discard %d card%s".formatted(nbCardsToDiscard, nbCardsToDiscard > 1 ? "s" : ""));
         }
+    }
+
+    @Override
+    public void skip() {
     }
 }
 

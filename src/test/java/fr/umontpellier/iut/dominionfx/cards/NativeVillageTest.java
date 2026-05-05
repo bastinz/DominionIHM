@@ -4,6 +4,7 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.NativeVillageState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +22,15 @@ public class NativeVillageTest extends BaseTestClass {
     @Override
     public void setPlayersHands() {
         addToFirstPlayersHand("Native Village");
+    }
+
+    @Test
+    public void skipNotAllowedWhenChoosing() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Native Village");
+        clickOnSkip();
+        assertInstanceOf(NativeVillageState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
     }
 
     @Test

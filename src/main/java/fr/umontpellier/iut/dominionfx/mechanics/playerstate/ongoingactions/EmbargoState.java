@@ -4,7 +4,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 
 import java.util.List;
 
-public class EmbargoState extends OnGoingActionState {
+public class EmbargoState extends OnGoingActionPhase {
 
     public EmbargoState(Player currentPlayer) {
         super(currentPlayer);

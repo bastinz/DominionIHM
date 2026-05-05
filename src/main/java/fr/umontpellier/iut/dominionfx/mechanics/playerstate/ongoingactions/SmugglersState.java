@@ -5,7 +5,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 
 import java.util.List;
 
-public class SmugglersState extends OnGoingActionState {
+public class SmugglersState extends OnGoingActionPhase {
 
     private final List<String> availableChoices;
 

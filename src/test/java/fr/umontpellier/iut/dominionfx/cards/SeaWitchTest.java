@@ -9,7 +9,6 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.SeaWitchState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
-import org.testfx.util.WaitForAsyncUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +24,16 @@ public class SeaWitchTest extends BaseTestClass {
     @Override
     public void setPlayersHands() {
         addToFirstPlayersHand("Sea Witch");
+    }
+
+    @Test
+    public void skipNotAllowedWhenDiscarding() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Sea Witch");
+        clickOnSkip();
+        clickOnSkip();
+        assertInstanceOf(SeaWitchState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
     }
 
     @Test
@@ -45,7 +54,6 @@ public class SeaWitchTest extends BaseTestClass {
         assertEquals(7, currentPlayer.getHand().size()); // 5 +2(duration)
         getFromSupplyToHand(currentPlayer, "Lighthouse");
         getFromSupplyToHand(currentPlayer, "Sailor");
-        WaitForAsyncUtils.waitForFxEvents();
         assertInstanceOf(SeaWitchState.class, currentPlayer.getCurrentState());
         clickOnCardInHand("Lighthouse");
         clickOnSkip();

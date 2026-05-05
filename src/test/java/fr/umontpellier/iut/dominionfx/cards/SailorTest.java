@@ -6,6 +6,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.MerchantShip;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.SailorAndDurationGainedState;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
@@ -30,11 +31,32 @@ public class SailorTest extends BaseTestClass {
     }
 
     @Test
+    public void skipAllowedAtNextTurnStart() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Sailor");
+        clickOnSkip();
+        clickOnSkip();
+        clickOnSkip();
+        assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
+    public void skipNotAllowedChoosingToPlayDurationGained() {
+        Player currentPlayer = game.currentPlayer();
+        clickOnCardInHand("Sailor");
+        clickOnTreasures();
+        clickOnSupplyPile("Merchant Ship");
+        clickOnSkip();
+        assertInstanceOf(SailorAndDurationGainedState.class, currentPlayer.getCurrentState());
+        assertEquals(currentPlayer, game.currentPlayer());
+    }
+
+    @Test
     public void choosesToPlayGainedDuration() {
         Player currentPlayer = game.currentPlayer();
         Platform.runLater(() -> currentPlayer.incrementBuys(1));
         WaitForAsyncUtils.waitForFxEvents();
-
         clickOnCardInHand("Sailor");
         clickOnTreasures();
         int initialMoney = game.currentPlayer().getMoney();
