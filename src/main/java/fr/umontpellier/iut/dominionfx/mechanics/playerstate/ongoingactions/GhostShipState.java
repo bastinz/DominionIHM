@@ -1,6 +1,7 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.GhostShip;
 
 import java.util.List;
@@ -19,13 +20,14 @@ public class GhostShipState extends OnGoingActionPhase {
 
     @Override
     public void temporaryCardWasChosen(String cardName) {
-        if (future.isDone()) return;
         List<String> availableChoices = getGame().getTemporaryCardsNames();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
-            ghostShip.discardFromTargetHand(cardName);
+            Card cardToPlay = getGame().getTemporaryCards().stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
+            ghostShip.discardFromTargetHand(cardToPlay);
+            getGame().getTemporaryCards().remove(cardToPlay);
             nbCardsToDiscard--;
             if (nbCardsToDiscard == 0) {
-                getGame().setTemporaryCards(null, null);
+                getGame().getTemporaryCards().clear();
                 complete();
             }
         }

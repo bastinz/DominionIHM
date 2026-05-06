@@ -2,6 +2,7 @@ package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.AttackCard;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.GhostShipState;
 
 import java.util.concurrent.CompletableFuture;
@@ -32,7 +33,7 @@ public class GhostShip extends AttackCard {
         if (!target.isProtectedFromAttack()) {
             int nbCardsToDiscard = target.getHand().size() - 3;
             if (nbCardsToDiscard > 0) {
-                p.getGame().setTemporaryCards(target.getHand(), target.getHand());
+                p.getGame().getTemporaryCards().addAll(target.getHand());
                 GhostShipState phase = new GhostShipState(p, this, nbCardsToDiscard);
                 p.setCurrentState(phase);
                 return p.getCurrentState().getCompletionFuture();
@@ -45,10 +46,7 @@ public class GhostShip extends AttackCard {
         return attackCardFuture;
     }
 
-    public void discardFromTargetHand(String cardName) {
-        target.getHand().stream()
-                .filter(card -> card.getName().equals(cardName))
-                .findFirst()
-                .ifPresent(card -> target.getHand().remove(card));
+    public void discardFromTargetHand(Card card) {
+        target.getHand().remove(card);
     }
 }
