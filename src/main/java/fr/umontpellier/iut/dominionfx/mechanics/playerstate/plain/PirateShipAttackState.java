@@ -5,14 +5,12 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.PirateShip;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.List;
 
 public class PirateShipAttackState extends PlayerState {
 
-    private ObservableList<Card> revealedCards = FXCollections.observableArrayList();
+    private List<Card> revealedCards;
     private Player target;
     private final PirateShip pirateShip;
 
@@ -21,8 +19,8 @@ public class PirateShipAttackState extends PlayerState {
         getGame().instructionProperty().setValue("Choose a treasure to trash");
         this.target = target;
         this.pirateShip = pirateShip;
-        this.revealedCards.addAll(revealedCards);
-        currentPlayer.getGame().setTemporaryCards(this.revealedCards, target.getDraw());
+        this.revealedCards = revealedCards;
+        getGame().getTemporaryCards().addAll(this.revealedCards);
     }
 
     @Override
@@ -31,8 +29,11 @@ public class PirateShipAttackState extends PlayerState {
         if (!availableCards.isEmpty() && availableCards.contains(cardName)) {
             Card selectedTreasure = revealedCards.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
             target.moveToTrash(selectedTreasure);
+            getGame().getTemporaryCards().remove(selectedTreasure);
             pirateShip.setDidTrashTreasure(true);
-            currentPlayer.getGame().setTemporaryCards(null, null);
+            Card cardToDiscard = getGame().getTemporaryCards().getFirst();
+            target.moveToDiscard(cardToDiscard);
+            getGame().getTemporaryCards().remove(cardToDiscard);
             complete();
         }
     }

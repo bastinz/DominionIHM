@@ -3,10 +3,7 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NavigatorState extends PlayerState {

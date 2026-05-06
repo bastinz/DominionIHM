@@ -4,7 +4,6 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain.PearlDiverState;
-import javafx.collections.FXCollections;
 
 import java.util.concurrent.CompletableFuture;
 
