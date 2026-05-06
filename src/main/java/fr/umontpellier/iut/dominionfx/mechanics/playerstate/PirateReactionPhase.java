@@ -2,13 +2,9 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class PirateReactionPhase extends PlayerState {

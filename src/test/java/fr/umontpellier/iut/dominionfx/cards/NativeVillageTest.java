@@ -39,7 +39,7 @@ public class NativeVillageTest extends BaseTestClass {
         int initialDrawSize = currentPlayer.getDraw().size();
         int initialNativeVillageMatSize = currentPlayer.getNativeVillageMat().size();
         clickOnCardInHand("Native Village");
-        clickOnAddToNativeVillageMat();
+        clickOnYes();
         assertInstanceOf(StartTurnState.class, currentPlayer.getCurrentState());
         assertEquals(2, currentPlayer.getNumberOfActions());
         assertEquals(initialDrawSize - 1, currentPlayer.getDraw().size());
@@ -51,7 +51,7 @@ public class NativeVillageTest extends BaseTestClass {
     public void takesCardsFromNativeVillageMat() {
         Player currentPlayer = game.currentPlayer();
         clickOnCardInHand("Native Village");
-        clickOnAddToNativeVillageMat();
+        clickOnYes();
         assertEquals(1, currentPlayer.getNativeVillageMat().size());
         clickOnSkip();
         clickOnSkip();
@@ -59,7 +59,7 @@ public class NativeVillageTest extends BaseTestClass {
         clickOnCardInHand("Native Village");
         int initialHandSize = currentPlayer.getHand().size();
         int initialNativeVillageMatSize = currentPlayer.getNativeVillageMat().size();
-        clickOnTakeFromNativeVillageMat();
+        clickOnNo();
         assertEquals(initialHandSize + initialNativeVillageMatSize, currentPlayer.getHand().size());
         assertTrue(currentPlayer.getNativeVillageMat().isEmpty());
         clickOnSkip();clickOnSkip();

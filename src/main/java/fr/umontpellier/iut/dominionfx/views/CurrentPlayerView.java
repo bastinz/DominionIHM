@@ -31,10 +31,10 @@ public class CurrentPlayerView extends VBox {
     private Label nameLabel, moneyLabel, drawLabel, discardLabel, actionsLabel, buysLabel;
 
     @FXML
-    private HBox handPane, inPlayPane, islandMat, nativeVillageMat, nativeVillageButtons, answerYesNoButtons;
+    private HBox handPane, inPlayPane, islandMat, nativeVillageMat, answerYesNoButtons;
 
     @FXML
-    private Button addToNativeVillageMat, takeFromNativeVillageMat, yesButton, noButton;
+    private Button yesButton, noButton;
 
     public CurrentPlayerView() {
         try {
@@ -76,16 +76,6 @@ public class CurrentPlayerView extends VBox {
     @FXML
     void answerNo() {
         currentPlayer().answer("No");
-    }
-
-    @FXML
-    void addToMat() {
-        currentPlayer().addToMat();
-    }
-
-    @FXML
-    void takeFromMat() {
-        currentPlayer().takeFromMat();
     }
 
     private ListChangeListener<? super Card> generateListener(Pane p) {
@@ -156,7 +146,6 @@ public class CurrentPlayerView extends VBox {
              discardLabel.textProperty().bind(Bindings.concat("Discard : ", Bindings.size(currentPlayer().getDiscard()).asString()));
              actionsLabel.textProperty().bind(Bindings.concat("Actions : ", currentPlayer().numberOfActionsProperty().asString()));
              buysLabel.textProperty().bind(Bindings.concat("Buys : ", currentPlayer().numberOfBuysProperty().asString()));
-             nativeVillageButtons.visibleProperty().bind(currentPlayer().nativeVillagePlayedProperty());
              answerYesNoButtons.visibleProperty().bind(currentPlayer().waitForYesOrNoProperty());
         }
      };

@@ -25,11 +25,6 @@
         </padding>
         <Button fx:id="playTreasuresButton" onMouseClicked="#playTreasures" text="Play treasures"/>
         <Region HBox.hgrow="ALWAYS"/>
-        <HBox id="nativeVillageButtons" fx:id="nativeVillageButtons" spacing="20" visible="false">
-            <Button id="addToNativeVillageMat" fx:id="addToMat" onMouseClicked="#addToMat" text="Add to mat"/>
-            <Button id="takeFromNativeVillageMat" fx:id="takefromMat" onMouseClicked="#takeFromMat" text="Take form mat"/>
-        </HBox>
-        <Region HBox.hgrow="ALWAYS"/>
         <HBox id="answerYesNoButtons" fx:id="answerYesNoButtons" spacing="10" visible="false">
             <Button id="yesButton" fx:id="yesButton" text="Yes" onMouseClicked="#answerYes" visible="true"/>
             <Button id="noButton" fx:id="noButton" text="No" onMouseClicked="#answerNo" visible="true"/>

@@ -26,7 +26,6 @@ public interface IPlayer {
     IntegerProperty numberOfActionsProperty();
     IntegerProperty numberOfBuysProperty();
     IntegerProperty moneyProperty();
-    BooleanProperty nativeVillagePlayedProperty();
     BooleanProperty waitForYesOrNoProperty();
     IntegerProperty pirateShipCounterProperty();
 }
