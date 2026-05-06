@@ -6,18 +6,19 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NavigatorState extends PlayerState {
 
-    private ObservableList<Card> topCards = FXCollections.observableArrayList();
+    private List<Card> topCards;
     private boolean discardChoice;
 
     public NavigatorState(Player currentPlayer) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Do you want to discard all cards?");
-        topCards.addAll(currentPlayer.drawCards(5));
-        currentPlayer.getGame().setTemporaryCards(topCards, currentPlayer.getDraw());
+        topCards = currentPlayer.drawCards(5);
+        getGame().getTemporaryCards().addAll(topCards);
         discardChoice = true;
         currentPlayer.setWaitForYesOrNo(true);
     }
@@ -27,8 +28,7 @@ public class NavigatorState extends PlayerState {
         currentPlayer.setWaitForYesOrNo(false);
         discardChoice = false;
         if (choice.equals("Yes")) {
-            getGame().setTemporaryCards(null, null);
-            currentPlayer.moveToDraw(topCards);
+            currentPlayer.moveToDraw(getGame().getTemporaryCards());
             complete();
         }
         else
@@ -43,9 +43,8 @@ public class NavigatorState extends PlayerState {
         if (!availableCards.isEmpty() && availableCards.contains(cardName)) {
             Card cardToPlay = topCards.stream().filter(c -> c.getName().equals(cardName)).findFirst().orElse(null);
             currentPlayer.moveToDraw(cardToPlay);
-            topCards.remove(cardToPlay);
-            if (topCards.isEmpty()) {
-                getGame().setTemporaryCards(null, null);
+            getGame().getTemporaryCards().remove(cardToPlay);
+            if (getGame().getTemporaryCards().isEmpty()) {
                 complete();
             }
         }
