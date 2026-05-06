@@ -6,7 +6,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.TreasurePhase;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.SeaWitchState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.durations.SeaWitchState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 

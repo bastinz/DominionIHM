@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations;
+package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.durations;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
@@ -6,7 +6,8 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.OnGoi
 
 public class DurationState extends OnGoingActionPhase {
 
-    protected Card durationCard;
+    private Card durationCard;
+
     public DurationState(Player currentPlayer, Card durationCard) {
         super(currentPlayer);
         this.durationCard = durationCard;
@@ -15,7 +16,6 @@ public class DurationState extends OnGoingActionPhase {
     @Override
     public void skip() {
         durationCard.setHasDurationEffect(false);
-        complete();
-        moveToNextPhase();
+        super.skip();
     }
 }

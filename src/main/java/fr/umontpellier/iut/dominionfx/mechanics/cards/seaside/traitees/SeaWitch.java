@@ -4,7 +4,7 @@ import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.AttackCard;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.SeaWitchState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.durations.SeaWitchState;
 
 import java.util.concurrent.CompletableFuture;
 

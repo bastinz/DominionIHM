@@ -4,7 +4,7 @@ import fr.umontpellier.iut.dominionfx.BaseTestClass;
 import fr.umontpellier.iut.dominionfx.mechanics.Game;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.StartTurnState;
-import fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations.TidePoolsState;
+import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.durations.TidePoolsState;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 

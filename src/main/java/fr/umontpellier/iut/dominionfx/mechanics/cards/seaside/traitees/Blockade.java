@@ -41,7 +41,6 @@ public class Blockade extends AttackCard {
         Card card = player.getCardFromSupply(cardName);
         player.gainToSetAside(card);
         this.cardSetAside = card;
-        player.getCurrentState().complete();
     }
 
     @Override

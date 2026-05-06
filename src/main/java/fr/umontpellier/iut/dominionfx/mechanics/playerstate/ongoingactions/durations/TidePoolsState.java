@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.playerstate.durations;
+package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.durations;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
@@ -23,7 +23,6 @@ public class TidePoolsState extends DurationState {
             currentPlayer.moveToDiscard(cardToDiscard);
             nbCardsToDiscard -= 1;
             if (nbCardsToDiscard == 0) {
-                durationCard.setHasDurationEffect(false);
                 super.skip();
             }
             else
