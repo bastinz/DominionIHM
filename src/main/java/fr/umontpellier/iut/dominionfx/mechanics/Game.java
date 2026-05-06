@@ -19,10 +19,8 @@ import javafx.concurrent.Task;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.StringJoiner;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -81,12 +79,10 @@ public class Game extends Task<Void> implements Runnable, IGame {
      * @param kingdomPiles nom des cartes "royaume" à utiliser pour la partie
      */
     public Game(String[] playerNames, String[] kingdomPiles) {
-        this.inputQueue = new LinkedBlockingQueue<>();
         instruction = new SimpleObjectProperty<>("");
         gameOver = new SimpleBooleanProperty(false);
         int nbPlayers = playerNames.length;
         trashedCards = new ArrayList<>();
-        scanner = new Scanner(System.in);
 
         // Création des piles de réserve
         supplyPiles = new ArrayList<>();
@@ -208,40 +204,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     /**
-     * Renvoie une représentation de l'état de la partie sous forme d'une chaîne
-     * de caractères.
-     * <p>
-     * Cette représentation comporte
-     * — le nom du joueur dont c'est le tour
-     * — la liste des piles de la réserve en indiquant pour chacune :
-     * — le nom de la carte
-     * — le nombre de copies disponibles
-     * — le prix de la carte entre parenthèses
-     * si la pile n'est pas vide, ou "Empty pile" si la pile est vide.
-     * <p>
-     * On pourrait par exemple avoir l'affichage suivant :
-     * <p>
-     * -- Toto's Turn --
-     * Ambassador x4(3) [Empty pile] Smugglers x5(3) Blockade x10(4) Navigator
-     * x10(4) Sailor x8(4) Treasure Map x10(4) Outpost x10(5) Treasury x10(5) Wharf
-     * x10(5) Copper x60(0) Silver x32(3) Gold x20(6) Estate x8(2) Duchy x8(5)
-     * Province x2(8) Curse x4(0)
-     */
-    @Override
-    public String toString() {
-        String title = String.format("     -- %s's Turn --\n", currentTurnPlayer.getValue().getName());
-        StringJoiner joiner = new StringJoiner("   ");
-        for (List<Card> pile : supplyPiles)
-            if (pile.isEmpty())
-                joiner.add("[Empty pile]");
-            else {
-                Card c = pile.getLast();
-                joiner.add(String.format("%s x%d(%d)", c.getName(), pile.size(), c.getCost()));
-            }
-        return title + joiner + "\n";
-    }
-
-    /**
      * Renvoie une carte de la réserve dont le nom est passé en argument.
      *
      * @param cardName nom de la carte à trouver dans la réserve
@@ -303,7 +265,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
             if (!samePlayerShouldPlayExtraTurn) {
                 // passe au joueur suivant
                 currentTurnPlayer.setValue(getNextPlayer());
-                turnNumber += 1;
             }
             samePlayerShouldPlayExtraTurn = false;
         });
@@ -397,7 +358,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
     public void setTemporaryCards(ObservableList<Card> initialList, ObservableList<Card> temporaryCardsEffectiveList) {
         if (initialList == null) {
             this.temporaryCards.clear();
-//            if (temporaryCardsEffectiveList != null)
             this.temporaryCardsEffectiveList.removeListener(changeListener);
             return;
         }
@@ -420,141 +380,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
     public List<String> getTemporaryCardsNames() {
         return temporaryCards.stream().map(Card::getName).collect(Collectors.toList());
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Boucle d'exécution d'une partie.
-     * <p>
-     * Cette méthode exécute les tours des joueurs jusqu'à ce que la partie soit
-     * terminée. Lorsque la partie se termine, la méthode affiche le score
-     * final et les cartes possédées par chacun des joueurs.
-     */
-/*
-    public void runOld() {
-        currentTurnPlayer.setValue(players.getFirst());
-        while (!isFinished()) {
-            // joue le tour du joueur courant
-            if (currentTurnPlayer.getValue() != previousTurnPlayer.getValue()) {
-                log("<div class=\"turn-title\">%s (turn %d)</div>".formatted(currentTurnPlayer.getValue().toLog(), turnNumber));
-            } else {
-                log("<div class=\"turn-title\">%s (extra turn)</div>".formatted(currentTurnPlayer.getValue().toLog()));
-            }
-            currentTurnPlayer.getValue().playTurn();
-            moveToNextPlayer();
-        }
-        // Affiche le score et les cartes de chaque joueur
-        log("<div class=\"turn-title\">Game over</div>");
-        for (Player p : players) {
-            for (Card c : p.getAllOwnedCards()) {
-                p.moveToHand(c);
-            }
-            log("%s: %d Points".formatted(
-                    p.toLog(),
-                    p.getVictoryPoints()));
-            log(Utils.toLog(p.getAllOwnedCards()));
-        }
-        prompt("Game over", List.of(""), new ArrayList<>(), 0);
-    }
-*/
-
-    /**
-     * Lit une ligne de l'entrée standard
-     * <p>
-     * C'est cette méthode qui doit être appelée à chaque fois qu'on veut lire
-     * l'entrée clavier de l'utilisateur (par exemple dans Player.choose), ce
-     * qui permet de n'avoir qu'un seul Scanner pour tout le programme.
-     *
-     * @return une chaîne de caractères correspondant à la ligne suivante de
-     *         l'entrée standard (sans le retour à la ligne finale)
-     */
-    public String readLine() {
-//        return scanner.nextLine();
-        try {
-            return inputQueue.take();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Envoie l'état de la partie pour affichage aux joueurs et à l'UI avant de
-     * faire un choix
-     *
-     * @param instruction l'instruction qui est donnée au joueur
-     * @param choices     la liste des choix possibles à afficher à l'utilisateur
-     * @param buttons     la liste des boutons à afficher à l'utilisateur
-     */
-    public void prompt(String instruction, List<String> choices, List<Button> buttons, int activePlayerIndex) {
-        // Prépare la version affichée à l'utilisateur
-        System.out.println("");
-        System.out.println(toString());
-        System.out.println(currentTurnPlayer.getValue().toString());
-        String ligneInstruction = ">>> " + instruction + "<<<";
-        this.instruction.set(instruction);
-        System.out.println(ligneInstruction);
-    }
-
-    /**
-     * Ajoute un message dans le log du jeu qui est affiché dans l'interface
-     * graphique. Le message peut contenir du HTML pour le formatage.
-     *
-     * @param message
-     */
-    public void log(String message) {
-        if (logIndentLevel > 0) {
-            logLines.add("    ".repeat(logIndentLevel - 1) + "... " + message);
-        } else {
-            logLines.add(message);
-        }
-    }
-
-    public void indentLog() {
-        logIndentLevel += 1;
-    }
-
-    public void unindentLog() {
-        logIndentLevel -= 1;
-    }
-
-    public void addInput(String message) {
-        inputQueue.add(message);
-    }
-
-    /**
-     * Messages envoyés dans le log du jeu (pour affichage dans l'interface
-     * graphique)
-     */
-    private ArrayList<String> logLines = new ArrayList<>();
-    private int logIndentLevel = 0;
-
-    /**
-     * Scanner permettant de lire les entrées au clavier
-     */
-    private final Scanner scanner;
-
-    private final LinkedBlockingQueue<String> inputQueue;
-
-    /**
-     * Numéro du tour courant (commence à 1 et est incrémenté à chaque fois que
-     * le tour d'un nouveau joueur commence)
-     */
-    private int turnNumber = 1;
 
     public Player getFirstPlayer() {
         return players.getFirst();
