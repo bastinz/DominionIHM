@@ -36,8 +36,8 @@ public class LookoutTest extends BaseTestClass {
     @Test
     public void skipNotAllowedAfterTrash() {
         Player currentPlayer = game.currentPlayer();
-        clickOnCardInHand("Lookout");
         String cardToTrash = currentPlayer.getDraw().get(2).getName();
+        clickOnCardInHand("Lookout");
         clickOnTemporaryCard(cardToTrash);
         clickOnSkip();
         assertInstanceOf(LookoutState.class, currentPlayer.getCurrentState());
@@ -48,12 +48,13 @@ public class LookoutTest extends BaseTestClass {
     public void trashesAndDiscards() {
         Player currentPlayer = game.currentPlayer();
         int initialNumberOfTrashedCards = game.getNumberOfTrashedCards();
+        int initialNumberOfCardInDraw = currentPlayer.getDraw().size();
         String cardToTrash = currentPlayer.getDraw().get(2).getName();
         String cardToDiscard = currentPlayer.getDraw().get(0).getName();
         clickOnCardInHand("Lookout");
         clickOnTemporaryCard(cardToTrash);
         clickOnTemporaryCard(cardToDiscard);
-        assertEquals(3, currentPlayer.getDraw().size());
+        assertEquals(initialNumberOfCardInDraw - 2, currentPlayer.getDraw().size());
         assertEquals(10, currentPlayer.getAllOwnedCards().size()); // +1 Lookout ajoutée pour le test
         assertEquals(initialNumberOfTrashedCards + 1, game.getNumberOfTrashedCards());
 //        pause(2);

@@ -354,6 +354,10 @@ public class Game extends Task<Void> implements Runnable, IGame {
         return temporaryCards;
     }
 
+    public ObservableList<Card> getTemporaryCards() {
+        return temporaryCards;
+    }
+
     public void setTemporaryCards(ObservableList<Card> initialList, ObservableList<Card> temporaryCardsEffectiveList) {
         if (initialList == null) {
             this.temporaryCards.clear();
@@ -375,6 +379,15 @@ public class Game extends Task<Void> implements Runnable, IGame {
             }
         }
     };
+
+    public void addTemporaryCard(Card card) {
+        temporaryCards.add(card);
+    }
+
+    public void removeTemporaryCard(Card card) {
+        temporaryCards.remove(card);
+    }
+
 
     public List<String> getTemporaryCardsNames() {
         return temporaryCards.stream().map(Card::getName).collect(Collectors.toList());
