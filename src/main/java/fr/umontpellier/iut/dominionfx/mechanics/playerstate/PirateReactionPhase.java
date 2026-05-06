@@ -3,14 +3,16 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 public class PirateReactionPhase extends PlayerState {
 
-    private List<Card> reactingCards;
     private final Player reactingCardOwner;
     private final Card gainedCard;
 
@@ -23,25 +25,24 @@ public class PirateReactionPhase extends PlayerState {
     }
 
     @Override
-    public void temporaryCardWasChosen(String cardName) {
-        List<String> availableCards = reactingCards.stream().map(Card::getName).toList();
-        if (!availableCards.isEmpty() && availableCards.contains(cardName)) {
-            Card cardToPlay = reactingCardOwner.getCardFromHand(cardName);
-            reactingCards.remove(cardToPlay);
-            cardToPlay.reactToPlayerGainCard(currentPlayer, gainedCard, reactingCardOwner);
-            getGame().setTemporaryCards(null, null);
+    public void answer(String choice) {
+        currentPlayer.setWaitForYesOrNo(false);
+        if (choice.equals("Yes")) {
+            Card cardToPlay = reactingCardOwner.getCardFromHand("Pirate");
+            cardToPlay.reactToPlayerGainCard(currentPlayer, gainedCard, reactingCardOwner)
+                    .thenRun(()->complete());
+        } else
             complete();
-        }
     }
 
     public void processReactingCard() {
-        reactingCards = reactingCardOwner.getHand().stream()
+        List<Card> reactingCards = reactingCardOwner.getHand().stream()
                 .filter(c -> c.canReactToPlayerGainCard(currentPlayer, gainedCard, reactingCardOwner))
                 .collect(Collectors.toCollection(ArrayList::new));
         if (reactingCards.isEmpty())
             complete();
         else {
-            getGame().setTemporaryCards(FXCollections.observableArrayList(reactingCards), reactingCardOwner.getHand());
+            currentPlayer.setWaitForYesOrNo(true);
         }
     }
 }

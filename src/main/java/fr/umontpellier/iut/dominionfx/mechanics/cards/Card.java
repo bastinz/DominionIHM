@@ -161,7 +161,8 @@ public abstract class Card {
         return false;
     }
 
-    public void reactToPlayerGainCard(Player p, Card gainedCard, Player owner) {
+    public CompletableFuture reactToPlayerGainCard(Player p, Card gainedCard, Player owner) {
+        return CompletableFuture.completedFuture(null);
     }
 
     /**

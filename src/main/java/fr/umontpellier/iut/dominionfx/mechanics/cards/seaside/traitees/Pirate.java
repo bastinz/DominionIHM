@@ -37,9 +37,9 @@ public class Pirate extends ActionCard {
     }
 
     @Override
-    public void reactToPlayerGainCard(Player p, Card gainedCard, Player owner) {
-//        owner.playCard(this);
-        owner.moveToInPlay(this);
+    public CompletableFuture<Void> reactToPlayerGainCard(Player p, Card gainedCard, Player owner) {
+        return owner.playCard(this);
+//        owner.moveToInPlay(this);
     }
 
     @Override

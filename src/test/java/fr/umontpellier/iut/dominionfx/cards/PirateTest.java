@@ -84,7 +84,7 @@ public class PirateTest extends BaseTestClass {
         WaitForAsyncUtils.waitForFxEvents();
         clickOnTreasures();
         clickOnSupplyPile("Copper"); // achat qui va declencher Reaction
-        clickOnTemporaryCard("Pirate"); // reponse reaction
+        clickOnYes(); // reponse reaction
         assertTrue(listContainsCard(pirateOwner.getInPlay(),"Pirate"));
         assertEquals(treasureGainer, game.currentPlayer());
         assertInstanceOf(TreasurePhase.class, game.currentPlayer().getCurrentState()); // il reste un buy
@@ -93,14 +93,14 @@ public class PirateTest extends BaseTestClass {
 
     @Test
     void reactsToOtherPlayersGainedTreasureAndMovesToNextPlayerStartTurn() {
+        Player pirateOwner = game.getFirstPlayer();
         addToSecondPlayersHand("Gold");
         clickOnSkip();
         addToFirstPlayersHand("Pirate");
         clickOnTreasures();
         clickOnSupplyPile("Gold"); // achat qui va declencher Reaction
-        clickOnTemporaryCard("Pirate"); // reponse reaction puis fin du tour du joueur courant parce que TreasurePhase
-        assertInstanceOf(StartTurnState.class, game.currentPlayer().getCurrentState());
-//        pause(2);
+        clickOnYes();  // reponse reaction puis fin du tour du joueur courant parce que TreasurePhase
+        assertInstanceOf(PirateState.class, game.currentPlayer().getCurrentState()); // on passe au startTurn du joueur suivant        pause(2);
     }
 
     @Disabled
