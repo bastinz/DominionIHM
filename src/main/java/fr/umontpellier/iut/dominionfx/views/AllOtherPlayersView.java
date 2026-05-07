@@ -2,15 +2,12 @@ package fr.umontpellier.iut.dominionfx.views;
 
 import fr.umontpellier.iut.dominionfx.DominionIHM;
 import fr.umontpellier.iut.dominionfx.IPlayer;
-import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;

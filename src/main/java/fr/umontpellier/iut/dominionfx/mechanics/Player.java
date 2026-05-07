@@ -572,7 +572,7 @@ public class Player implements IPlayer {
         return onGainedCardAllPlayers(gainedCard);
     }
 
-    private CompletableFuture<Void> reactOnGainCard(Player owner, Card gainedCard) {
+    public CompletableFuture<Void> reactOnGainCard(Player owner, Card gainedCard) {
         PirateReactionPhase phase = new PirateReactionPhase(this, owner, gainedCard);
         setCurrentState(phase);
         return phase.getCompletionFuture();

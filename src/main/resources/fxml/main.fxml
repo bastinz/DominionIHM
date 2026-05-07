@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import fr.umontpellier.iut.dominionfx.views.AllOtherPlayersView?>
 <?import fr.umontpellier.iut.dominionfx.views.CurrentPlayerView?>
-<?import fr.umontpellier.iut.dominionfx.views.OtherPlayerView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
-<?import fr.umontpellier.iut.dominionfx.views.AllOtherPlayersView?>
 <fx:root fx:id="gameView" type="javafx.scene.layout.HBox" id="gameView" styleClass="root" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
     <stylesheets>
         <URL value="@../css/style.css"/>
