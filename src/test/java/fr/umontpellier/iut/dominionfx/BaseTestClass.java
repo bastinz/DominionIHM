@@ -48,10 +48,9 @@ public class BaseTestClass extends ApplicationTest {
         getFromSupplyToHand(secondPlayer, cardName);
     }
 
-    public void addOnTopOfSecondPlayersDraw(String cardName) {
-        Player secondPlayer = game.getLastPlayer();
+    public void addOnTopOfPlayersDraw(Player player, String cardName) {
         Platform.runLater(() -> {
-            secondPlayer.moveToDraw(secondPlayer.getCardFromSupply(cardName));
+            player.moveToDraw(player.getCardFromSupply(cardName));
         });
         WaitForAsyncUtils.waitForFxEvents();
     }

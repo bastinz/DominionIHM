@@ -59,7 +59,7 @@ public class PirateShipTest extends BaseTestClass {
     public void trashesTreasureWhenNoToCoins() {
         Player firstPlayer = game.currentPlayer();
         Player secondPlayer = game.getLastPlayer();
-        addOnTopOfSecondPlayersDraw("Silver");
+        addOnTopOfPlayersDraw(game.currentPlayer().getPlayers().get(1), "Silver");
         int initialTotalNumberOfCards =  secondPlayer.getAllOwnedCards().size();
         int initialNumberOfCardsInDiscard =  secondPlayer.getDiscard().size();
         int initialMoney = firstPlayer.getMoney();

@@ -32,12 +32,7 @@ public class Monkey extends ActionCard {
     @Override
     public CompletableFuture<Void> onPlayerGainCard(Player p, Card gainedCard, Player owner) {
         if (p == owner.getOtherPlayers().getLast() && isActive) {
-            Card c = owner.drawToHand();
-            if (c != null) {
-                // si la carte piochée est une réaction (Pirate) elle peut réagir immédiatement
-                // au gain de la carte
-                c.reactToPlayerGainCard(p, gainedCard, owner);
-            }
+            owner.drawToHand();
         }
         return CompletableFuture.completedFuture(null);
     }
