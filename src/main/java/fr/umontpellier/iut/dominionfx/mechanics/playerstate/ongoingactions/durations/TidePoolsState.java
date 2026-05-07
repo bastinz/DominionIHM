@@ -19,7 +19,7 @@ public class TidePoolsState extends DurationState {
     public void cardInHandWasChosen(String cardName) {
         List<String> availableChoices = currentPlayer.getNamesOfCardsInHand();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
-            Card cardToDiscard = currentPlayer.getCardsInHand().stream().findFirst().orElseThrow();
+            Card cardToDiscard = currentPlayer.getCardsInHand().stream().filter(c -> c.getName().equals(cardName)).findFirst().orElseThrow();
             currentPlayer.moveToDiscard(cardToDiscard);
             nbCardsToDiscard -= 1;
             if (nbCardsToDiscard == 0) {

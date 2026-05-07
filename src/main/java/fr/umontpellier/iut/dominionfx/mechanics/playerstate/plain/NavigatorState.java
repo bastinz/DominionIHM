@@ -25,7 +25,7 @@ public class NavigatorState extends PlayerState {
         currentPlayer.setWaitForYesOrNo(false);
         discardChoice = false;
         if (choice.equals("Yes")) {
-            currentPlayer.moveToDraw(getGame().getTemporaryCards());
+            currentPlayer.moveToDiscard(getGame().getTemporaryCards());
             complete();
         }
         else
