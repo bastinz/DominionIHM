@@ -1,4 +1,4 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;

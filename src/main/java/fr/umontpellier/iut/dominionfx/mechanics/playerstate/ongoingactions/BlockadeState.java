@@ -1,7 +1,7 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.Blockade;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.Blockade;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.PirateShip;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.PirateShip;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 
 public class PirateShipChoiceState extends PlayerState {

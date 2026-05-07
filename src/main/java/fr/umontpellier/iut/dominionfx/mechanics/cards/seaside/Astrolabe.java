@@ -1,35 +1,37 @@
-package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees;
+package fr.umontpellier.iut.dominionfx.mechanics.cards.seaside;
+
 
 import fr.umontpellier.iut.dominionfx.mechanics.CardType;
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.ActionCard;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.TreasureCard;
 
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Carte Caravane (Caravan)
+ * Carte Astrolabe
  * <p>
- * +1 Carte
- * +1 Action
- * Au début de votre prochain tour, +1 Carte.
+ * Maintenant et au début de votre prochain tour :
+ * +1 Pièce
+ * +1 Achat
  */
-public class Caravan extends ActionCard {
-    public Caravan() {
-        super("Caravan", 4);
+public class Astrolabe extends TreasureCard {
+    public Astrolabe() {
+        super("Astrolabe", 3);
         addType(CardType.DURATION);
     }
 
     @Override
     public CompletableFuture<Void> play(Player p) {
-        p.drawToHand();
-        p.incrementActions(1);
+        p.incrementMoney(1);
+        p.incrementBuys(1);
         setHasDurationEffect(true);
         return CompletableFuture.completedFuture(null);
     }
 
     @Override
     public CompletableFuture<Void> atStartOfTurn(Player p) {
-        p.drawToHand();
+        p.incrementMoney(1);
+        p.incrementBuys(1);
         setHasDurationEffect(false);
         return CompletableFuture.completedFuture(null);
     }

@@ -1,7 +1,7 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.Treasury;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.Treasury;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 
 public class TreasuryState extends PlayerState {

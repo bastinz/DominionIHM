@@ -1,7 +1,7 @@
 package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.Haven;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.Haven;
 
 import java.util.List;
 

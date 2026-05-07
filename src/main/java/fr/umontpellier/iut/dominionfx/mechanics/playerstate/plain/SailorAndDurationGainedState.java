@@ -2,7 +2,7 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate.plain;
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.Sailor;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.Sailor;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 
 public class SailorAndDurationGainedState extends PlayerState {

@@ -2,7 +2,7 @@ package fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.dura
 
 import fr.umontpellier.iut.dominionfx.mechanics.Player;
 import fr.umontpellier.iut.dominionfx.mechanics.cards.Card;
-import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.traitees.SeaWitch;
+import fr.umontpellier.iut.dominionfx.mechanics.cards.seaside.SeaWitch;
 import fr.umontpellier.iut.dominionfx.mechanics.playerstate.ongoingactions.OnGoingActionPhase;
 
 import java.util.List;
