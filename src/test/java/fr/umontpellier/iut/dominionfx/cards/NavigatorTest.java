@@ -60,9 +60,9 @@ public class NavigatorTest extends BaseTestClass {
         int initialDrawSize = firstPlayer.getDraw().size();
         clickOnCardInHand("Navigator");
         assertEquals(initialDrawSize - 5, firstPlayer.getDraw().size());
-        initialDrawSize = firstPlayer.getDraw().size();
+        int initialDiscardSize = firstPlayer.getDraw().size();
         clickOnYes();
-        assertEquals(initialDrawSize + 5, firstPlayer.getDraw().size());
+        assertEquals(initialDiscardSize + 5, firstPlayer.getDiscard().size());
 //        pause(2);
     }
 
