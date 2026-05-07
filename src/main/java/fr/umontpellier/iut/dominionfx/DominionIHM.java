@@ -26,7 +26,6 @@ public class DominionIHM extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        ScoresView scoresView = new ScoresView(this);
         if (gameTest) // on joue pour les tests
             startGame();
         else {
@@ -47,7 +46,7 @@ public class DominionIHM extends Application {
         Scene scene = new Scene(gameView, 1300,  600); // la scene doit être créée avant de mettre en place les bindings
         game.run();
 
-//        ScoresView scoresView = new ScoresView(this); // cette ligne doit être décommentée pour la fin de partie
+        ScoresView scoresView = new ScoresView(this);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Dominion-Seaside");
