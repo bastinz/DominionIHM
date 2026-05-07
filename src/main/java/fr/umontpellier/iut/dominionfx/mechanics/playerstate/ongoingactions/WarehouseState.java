@@ -11,8 +11,8 @@ public class WarehouseState extends OnGoingActionPhase {
 
     public WarehouseState(Player currentPlayer) {
         super(currentPlayer);
-        this.nbCardsToDiscard = 3;
-        getGame().instructionProperty().setValue("Discard 3 cards");
+        this.nbCardsToDiscard = Math.min(3, currentPlayer.getHand().size());
+        getGame().instructionProperty().setValue("Discard %d cards".formatted(nbCardsToDiscard));
     }
 
     @Override
