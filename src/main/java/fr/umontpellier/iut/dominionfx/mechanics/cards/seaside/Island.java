@@ -22,6 +22,10 @@ public class Island extends ActionCard {
 
     @Override
     public CompletableFuture<Void> play(Player p) {
+        if (p.getCardsInHand().isEmpty()) {
+            p.moveToIslandMat(this);
+            return CompletableFuture.completedFuture(null);
+        }
         IslandState state = new IslandState(p);
         p.setCurrentState(state);
         return state.getCompletionFuture();

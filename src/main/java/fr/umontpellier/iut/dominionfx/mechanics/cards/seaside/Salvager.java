@@ -20,6 +20,9 @@ public class Salvager extends ActionCard {
     @Override
     public CompletableFuture<Void> play(Player p) {
         p.incrementBuys(1);
+        if (p.getCardsInHand().isEmpty()) {
+            return CompletableFuture.completedFuture(null);
+        }
         SalvagerState state = new SalvagerState(p);
         p.setCurrentState(state);
         return state.getCompletionFuture();
