@@ -44,8 +44,6 @@ public class ChoosePlayersView extends Stage implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setNumberOfPlayersChanged(numberOfPlayersChangedListener);
-        setScene(new Scene(playersPane));
     }
 
     public ObservableList<String> playersNamesProperty() {
@@ -126,5 +124,7 @@ public class ChoosePlayersView extends Stage implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         numberOfPlayers.getItems().addAll(2, 3, 4);
         numberOfPlayers.getSelectionModel().select(2);
+        setNumberOfPlayersChanged(numberOfPlayersChangedListener);
+        setScene(new Scene(playersPane));
     }
 }

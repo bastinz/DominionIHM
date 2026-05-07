@@ -32,28 +32,7 @@ public class AmbassadorReturnToSupplyState extends OnGoingActionPhase {
             if (nbCardsToReveal == 0)
                 skip();
             else
-                getGame().instructionProperty().setValue("Return 1 copie of "+ revealedCardName);
+                getGame().instructionProperty().setValue("Return 1 copy of "+ revealedCardName);
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

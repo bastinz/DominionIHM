@@ -6,7 +6,9 @@ import fr.umontpellier.iut.dominionfx.mechanics.playerstate.PlayerState;
 
 import java.util.List;
 
-public class SalvagerState extends PlayerState {    public SalvagerState(Player currentPlayer) {
+public class SalvagerState extends PlayerState {
+
+    public SalvagerState(Player currentPlayer) {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Trash a card from your hand");
     }

@@ -136,8 +136,14 @@ public class BaseTestClass extends ApplicationTest {
     }
 
     public void clickOnYes() {
-        Node treasuresButton = lookup("#yesButton").query();
-        clickOn(treasuresButton);
+        Node yesButton = lookup("#yesButton").query();
+        clickOn(yesButton);
+        WaitForAsyncUtils.waitForFxEvents();
+    }
+
+    public void clickOnPlayAgain() {
+        Node playAgainButton = lookup("#playAgain").query();
+        clickOn(playAgainButton);
         WaitForAsyncUtils.waitForFxEvents();
     }
 

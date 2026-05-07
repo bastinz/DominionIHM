@@ -20,12 +20,13 @@ public class DominionIHM extends Application {
     private Stage primaryStage;
     private static Game game;
 
-    private final boolean withChoosePlayersView = false;
+    private final boolean withChoosePlayersView = true;
     private boolean gameTest = false;
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        ScoresView scoresView = new ScoresView(this);
         if (gameTest) // on joue pour les tests
             startGame();
         else {
@@ -46,7 +47,7 @@ public class DominionIHM extends Application {
         Scene scene = new Scene(gameView, 1300,  600); // la scene doit être créée avant de mettre en place les bindings
         game.run();
 
-        ScoresView scoresView = new ScoresView(this); // cette ligne doit être décommentée pour la fin de partie
+//        ScoresView scoresView = new ScoresView(this); // cette ligne doit être décommentée pour la fin de partie
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Dominion-Seaside");
@@ -90,10 +91,10 @@ public class DominionIHM extends Application {
         // String[] kingdomCards = new String[]{};
 
         // Option 2. Liste explicite de cartes royaume à utiliser (le nombre de cartes peut être quelconque)
-        String[] kingdomCards = new String[]{"Bazaar", "Warehouse", "Smugglers", "Sea Hag"};
+//        String[] kingdomCards = new String[]{"Bazaar", "Warehouse", "Smugglers", "Sea Hag"};
 
         // Option 3. Choix aléatoire de 10 cartes parmi la liste complète allKingdomCards définie précédemment
-//          String[] kingdomCards = allKingdomCards.subList(0, 10).toArray(new String[10]);
+          String[] kingdomCards = allKingdomCards.subList(0, 10).toArray(new String[10]);
         return kingdomCards;
     }
 

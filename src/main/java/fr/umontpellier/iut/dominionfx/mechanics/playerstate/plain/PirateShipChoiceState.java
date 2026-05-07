@@ -10,7 +10,7 @@ public class PirateShipChoiceState extends PlayerState {
 
     public PirateShipChoiceState(Player currentPlayer, PirateShip pirateShip) {
         super(currentPlayer);
-        getGame().instructionProperty().setValue("Choose +%dcoins or attack".formatted(currentPlayer.getPirateShipCounter()));
+        getGame().instructionProperty().setValue("Choose +%d coins or attack".formatted(currentPlayer.getPirateShipCounter()));
         currentPlayer.setWaitForYesOrNo(true);
         this.pirateShip = pirateShip;
     }

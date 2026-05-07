@@ -43,6 +43,7 @@ public class GameOverTest extends BaseTestClass {
     public void emptyThreeSupplyPiles() {
         clickOnTreasures();
         clickOnSupplyPile("Lighthouse");
+//        clickOnPlayAgain();
 //        pause(2);
     }
 }

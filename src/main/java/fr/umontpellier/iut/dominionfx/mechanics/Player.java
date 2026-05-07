@@ -219,7 +219,7 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Renvoie une liste des cartes que le joueur a dans sa pioche.
+     * Renvoie une liste des cartes que le joueur a dans son deck.
      * <p>
      * La liste renvoyée est une copie de la liste {@code draw} du joueur.
      * Elle contient les mêmes cartes mais une modification de la liste renvoyée ne
@@ -231,7 +231,7 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Renvoie une liste des cartes que le joueur a dans sa pioche.
+     * Renvoie une liste des cartes que le joueur a en jeu.
      * <p>
      * La liste renvoyée est une copie de la liste {@code inPlay} du joueur.
      * Elle contient les mêmes cartes mais une modification de la liste renvoyée ne
@@ -243,7 +243,7 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Renvoie une liste des cartes que le joueur a dans sa pioche.
+     * Renvoie une liste des cartes que le joueur a mises de côté.
      * <p>
      * La liste renvoyée est une copie de la liste {@code cardsSetAside} du joueur.
      * Elle contient les mêmes cartes mais une modification de la liste renvoyée ne
@@ -255,7 +255,7 @@ public class Player implements IPlayer {
     }
 
     /**
-     * Renvoie une liste des cartes que le joueur a dans sa pioche.
+     * Renvoie une liste des cartes que le joueur a sur le Native Village Mat.
      * <p>
      * La liste renvoyée est une copie de la liste {@code nativeVillageMat} du
      * joueur. Elle contient les mêmes cartes mais une modification de la liste

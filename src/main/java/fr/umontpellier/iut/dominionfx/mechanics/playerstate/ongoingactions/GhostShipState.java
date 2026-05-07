@@ -37,6 +37,3 @@ public class GhostShipState extends OnGoingActionPhase {
     public void skip() {
     }
 }
-
-
-

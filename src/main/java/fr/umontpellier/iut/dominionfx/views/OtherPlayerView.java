@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 /**
- * Cette classe présente les éléments appartenant au joueur courant.
+ * Cette classe présente les éléments appartenant un autre joueur que le joueur courant.
  * On y définit les bindings sur le joueur courant, ainsi que le listener à exécuter lorsque ce joueur change
  */
 public class OtherPlayerView extends VBox {

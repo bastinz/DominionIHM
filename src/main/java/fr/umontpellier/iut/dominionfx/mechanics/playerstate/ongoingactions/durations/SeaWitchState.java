@@ -39,25 +39,3 @@ public class SeaWitchState extends OnGoingActionPhase {
     public void skip() {
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

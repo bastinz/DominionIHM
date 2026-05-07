@@ -346,7 +346,6 @@ public class Game extends Task<Void> implements Runnable, IGame {
     }
 
     private final ObservableList<Card> temporaryCards = FXCollections.observableArrayList();
-    private ObservableList<Card> temporaryCardsEffectiveList;
 
     @Override
     public ObservableList<Card> temporaryCardsProperty() {

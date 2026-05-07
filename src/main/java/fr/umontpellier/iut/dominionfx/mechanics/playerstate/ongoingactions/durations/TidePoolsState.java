@@ -34,4 +34,3 @@ public class TidePoolsState extends DurationState {
     public void skip() {
     }
 }
-
