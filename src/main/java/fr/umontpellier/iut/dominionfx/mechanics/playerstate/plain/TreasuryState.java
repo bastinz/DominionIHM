@@ -12,6 +12,7 @@ public class TreasuryState extends PlayerState {
         super(currentPlayer);
         getGame().instructionProperty().setValue("Do you want to put Treasury onto your deck?");
         this.treasuryCard = treasuryCard;
+        currentPlayer.setWaitForYesOrNo(true);
     }
 
     @Override

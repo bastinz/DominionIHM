@@ -8,6 +8,7 @@ public class PearlDiverState extends PlayerState {
 
     public PearlDiverState(Player currentPlayer, Card bottomCard) {
         super(currentPlayer);
+        currentPlayer.setWaitForYesOrNo(true);
         getGame().instructionProperty().setValue("Do you want to put %s on top of your deck?".formatted(bottomCard.getName()));
     }
 

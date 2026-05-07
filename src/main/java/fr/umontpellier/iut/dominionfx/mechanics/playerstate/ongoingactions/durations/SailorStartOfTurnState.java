@@ -16,7 +16,7 @@ public class SailorStartOfTurnState extends DurationState {
     public void cardInHandWasChosen(String cardName) {
         List<String> availableChoices = currentPlayer.getNamesOfCardsInHand();
         if (!availableChoices.isEmpty() && availableChoices.contains(cardName)) {
-            Card cardToTrash = currentPlayer.getCardsInHand().stream().findFirst().orElseThrow();
+            Card cardToTrash = currentPlayer.getCardsInHand().stream().filter(c -> c.getName().equals(cardName)).findFirst().orElseThrow();
             currentPlayer.moveToTrash(cardToTrash);
             skip();
         }

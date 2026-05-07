@@ -51,7 +51,6 @@ public class Sailor extends ActionCard {
     @Override
     public CompletableFuture<Void> onPlayerGainCard(Player p, Card gainedCard, Player owner) {
         if (canPlayDuration && gainedCard.hasType(CardType.DURATION) && p == owner) {
-            p.setWaitForYesOrNo(true);
             SailorAndDurationGainedState phase = new SailorAndDurationGainedState(p, gainedCard, this);
             p.setCurrentState(phase);
             return phase.getCompletionFuture();

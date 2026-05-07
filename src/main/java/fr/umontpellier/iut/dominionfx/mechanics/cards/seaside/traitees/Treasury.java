@@ -33,7 +33,6 @@ public class Treasury extends ActionCard {
     @Override
     public CompletableFuture<Void> onCleanup(Player p) {
         if (p.getCardsBoughtThisTurn().stream().noneMatch(c -> c.hasType(CardType.VICTORY))) {
-            p.setWaitForYesOrNo(true);
             TreasuryState phase = new TreasuryState(p, this);
             p.setCurrentState(phase);
             return phase.getCompletionFuture();

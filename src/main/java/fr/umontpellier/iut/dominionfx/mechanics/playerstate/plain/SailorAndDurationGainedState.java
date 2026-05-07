@@ -15,6 +15,7 @@ public class SailorAndDurationGainedState extends PlayerState {
         getGame().instructionProperty().setValue("Do you want to play " + gainedCard.getName());
         this.gainedCard = gainedCard;
         this.sailorCard = sailorCard;
+        currentPlayer.setWaitForYesOrNo(true);
     }
 
     @Override

@@ -26,7 +26,6 @@ public class PearlDiver extends ActionCard {
         p.incrementActions(1);
         Card c = p.getBottomCardOfDeck();
         if (c != null) {
-            p.setWaitForYesOrNo(true);
             p.getGame().getTemporaryCards().add(c);
             PearlDiverState phase = new PearlDiverState(p, c);
             p.setCurrentState(phase);
