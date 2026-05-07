@@ -6,6 +6,7 @@ import fr.umontpellier.iut.dominionfx.views.GameView;
 import fr.umontpellier.iut.dominionfx.views.ScoresView;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -19,7 +20,8 @@ public class DominionIHM extends Application {
     private Stage primaryStage;
     private static Game game;
 
-    final private boolean withChoosePlayersView = false;
+    private final boolean withChoosePlayersView = true;
+    private boolean gameTest = false;
 
     @Override
     public void start(Stage primaryStage) {
@@ -28,9 +30,9 @@ public class DominionIHM extends Application {
             startGame();
         else {
             if (withChoosePlayersView) {
-/*            choosePlayersView = new ChoosePlayersView();
-            choosePlayersView.setNomsDesJoueursDefinisListener(quandLesNomsJoueursSontDefinis);
-            choosePlayersView.show();*/
+                choosePlayersView = new ChoosePlayersView();
+                choosePlayersView.setPlayersNamesDefinedListener(whenPlayersNamesAreDefined);
+                choosePlayersView.show();
             } else {
                 setPlayersAndGame();
                 startGame();
@@ -59,17 +61,17 @@ public class DominionIHM extends Application {
     public void setPlayersAndGame() {
         String[] playerNames;
         if (!gameTest && withChoosePlayersView)
-            playerNames = choosePlayersView.getNomsJoueurs();
+            playerNames = choosePlayersView.getPlayersNames();
         else {
-            playerNames = new String[2];
-            playerNames[0] = "Marco";
-            playerNames[1] = "Polo";
+            playerNames = new String[4];
+            playerNames[0] = "Achille";
+            playerNames[1] = "Antigone";
+            playerNames[2] = "Hercule";
+            playerNames[3] = "Pénélope";
         }
         String[] kingdomCards = selectKingdomCards();
         game = new Game(playerNames, kingdomCards);
     }
-
-    private boolean gameTest = false;
 
     public DominionIHM(boolean gameTest) { // ajouté pour les tests
         this.gameTest = gameTest;
@@ -142,10 +144,12 @@ public class DominionIHM extends Application {
         return allKingdomCards;
     }
 
-/*    private final ListChangeListener<String> quandLesNomsJoueursSontDefinis = change -> {
-        if (!vueChoixJoueurs.getNomsJoueurs().isEmpty())
-            demarrerPartie();
-    };*/
+    private final ListChangeListener<String> whenPlayersNamesAreDefined = change -> {
+        if (!(choosePlayersView.getPlayersNames().length == 0)) {
+            setPlayersAndGame();
+            startGame();
+        }
+    };
 
     public void stopGame() {
 /*        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

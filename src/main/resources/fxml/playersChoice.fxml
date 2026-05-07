@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="playersPane" alignment="CENTER" prefHeight="394.0" prefWidth="423.0" stylesheets="@../css/style.css"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+   <opaqueInsets>
+      <Insets/>
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="20.0"/>
+   </padding>
+   <spacing>20</spacing>
+   <VBox fx:id="playersNamesPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+         minWidth="-Infinity" prefHeight="343.0" prefWidth="423.0">
+      <padding>
+         <Insets bottom="10.0"/>
+      </padding>
+      <HBox alignment="CENTER" prefHeight="84.0" prefWidth="423.0">
+         <opaqueInsets>
+            <Insets/>
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="30.0"/>
+         </padding>
+         <Label fx:id="playersNumberText" prefHeight="30.0" prefWidth="260.0" scaleShape="false"
+                text="How many players? " textAlignment="CENTER">
+            <opaqueInsets>
+               <Insets/>
+            </opaqueInsets>
+            <padding>
+               <Insets right="10.0"/>
+            </padding>
+         </Label>
+         <ComboBox fx:id="numberOfPlayers" maxHeight="-Infinity"
+                   visibleRowCount="3"/>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="48.0" prefWidth="423.0">
+         <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Player's name 1 : "
+                textAlignment="CENTER">
+            <font>
+               <Font size="18.0"/>
+            </font>
+            <padding>
+               <Insets right="10.0"/>
+            </padding>
+         </Label>
+         <TextField prefHeight="39.0" prefWidth="140.0" text="Achille"/>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="97.0" prefHeight="48.0" prefWidth="423.0">
+         <Label alignment="CENTER_RIGHT" text="Player's name 2 : " textAlignment="CENTER">
+            <font>
+               <Font size="18.0"/>
+            </font>
+            <padding>
+               <Insets right="10.0"/>
+            </padding>
+         </Label>
+         <TextField prefHeight="39.0" prefWidth="140.0" text="Antigone"/>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="145.0" prefHeight="48.0" prefWidth="423.0">
+         <Label alignment="CENTER_RIGHT" text="Player's name 3 : " textAlignment="CENTER">
+            <font>
+               <Font size="18.0"/>
+            </font>
+            <padding>
+               <Insets right="10.0"/>
+            </padding>
+         </Label>
+         <TextField prefHeight="39.0" prefWidth="140.0" text="Hercule"/>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="193.0" prefHeight="48.0" prefWidth="423.0">
+         <Label alignment="CENTER" text="Player's name 4 : " textAlignment="CENTER">
+            <font>
+               <Font size="18.0"/>
+            </font>
+            <padding>
+               <Insets right="10.0"/>
+            </padding>
+         </Label>
+         <TextField prefHeight="39.0" prefWidth="140.0" text="Pénélope"/>
+      </HBox>
+   </VBox>
+   <Button fx:id="boutonDemarrer" alignment="CENTER" contentDisplay="TEXT_ONLY" mnemonicParsing="false"
+      onAction="#setPlayersNamesList" prefHeight="38.0" prefWidth="225.0" text="Start playing" textAlignment="CENTER">
+      <font>
+         <Font size="24.0"/>
+      </font>
+   </Button>
+</VBox>

@@ -26,7 +26,10 @@ public class OtherPlayerView extends VBox {
     @FXML private Label drawLabel;
     @FXML private Label discardLabel;
 
-    public OtherPlayerView() {
+    private IPlayer player;
+
+    public OtherPlayerView(IPlayer player) {
+        this.player = player;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/otherPlayer.fxml"));
             loader.setRoot(this);
@@ -49,11 +52,10 @@ public class OtherPlayerView extends VBox {
 
     private final ChangeListener<IPlayer> currentPlayerChangeListener = (ObservableValue<? extends IPlayer> observableValue, IPlayer oldPlayer, IPlayer newPlayer) -> {
          if (newPlayer != null) {
-             IPlayer otherPlayer = DominionIHM.getGame().getNextPlayer();
-             nameLabel.setText(otherPlayer.getName());
-             handLabel.textProperty().bind(Bindings.concat("Hand : ", Bindings.size(otherPlayer.getHand()).asString()));
-             drawLabel.textProperty().bind(Bindings.concat("Draw : ", Bindings.size(otherPlayer.getDraw()).asString()));
-             discardLabel.textProperty().bind(Bindings.concat("Discard : ", Bindings.size(otherPlayer.getDiscard()).asString()));
+             nameLabel.setText(player.getName());
+             handLabel.textProperty().bind(Bindings.concat("Hand : ", Bindings.size(player.getHand()).asString()));
+             drawLabel.textProperty().bind(Bindings.concat("Draw : ", Bindings.size(player.getDraw()).asString()));
+             discardLabel.textProperty().bind(Bindings.concat("Discard : ", Bindings.size(player.getDiscard()).asString()));
          }
      };
 

@@ -1,62 +1,66 @@
 package fr.umontpellier.iut.dominionfx.views;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 /**
  * Cette classe correspond à une nouvelle fenêtre permettant de choisir les noms des joueurs de la partie.
 
  * Lorsque l'utilisateur a fini de saisir les noms de joueurs, il demandera à démarrer la partie.
  */
-public class ChoosePlayersView extends Stage {
+public class ChoosePlayersView extends Stage implements Initializable {
 
-    private final ObservableList<String> nomsJoueurs;
-    @FXML
-    private VBox joueursBox;
-    @FXML
-    private TextField nomJoueur1;
-    @FXML
-    private TextField nomJoueur2;
+    private final ObservableList<String> playersNames;
+    @FXML private VBox playersPane;
+    @FXML private VBox playersNamesPane;
+    @FXML private ComboBox<Integer> numberOfPlayers;
 
     public ChoosePlayersView() {
-        nomsJoueurs = FXCollections.observableArrayList();
+        playersNames = FXCollections.observableArrayList();
         initStyle(StageStyle.UNDECORATED);
         initModality(Modality.APPLICATION_MODAL);
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/choixJoueurs.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/playersChoice.fxml"));
             loader.setController(this);
             loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setScene(new Scene(joueursBox));
+        setNumberOfPlayersChanged(numberOfPlayersChangedListener);
+        setScene(new Scene(playersPane));
     }
 
-    public ObservableList<String> nomsJoueursProperty() {
-        return nomsJoueurs;
+    public ObservableList<String> playersNamesProperty() {
+        return playersNames;
     }
 
-    public String[] getNomsJoueurs() {
-        return nomsJoueurs.toArray(String[]::new);
+    public String[] getPlayersNames() {
+        return playersNames.toArray(new String[0]);
     }
 
     /**
      * Définit l'action à exécuter lorsque la liste des participants est correctement initialisée
      */
-    public void setNomsDesJoueursDefinisListener(ListChangeListener<String> quandLesNomsDesJoueursSontDefinis) {
-        nomsJoueursProperty().addListener(quandLesNomsDesJoueursSontDefinis);
+    public void setPlayersNamesDefinedListener(ListChangeListener<String> whenPlayersNamesAreDefined) {
+        playersNamesProperty().addListener(whenPlayersNamesAreDefined);
     }
 
     /**
@@ -64,21 +68,63 @@ public class ChoosePlayersView extends Stage {
      * et affecte la liste définitive des participants
      */
     @FXML
-    protected void setListeDesNomsDeJoueurs() {
+    protected void setPlayersNamesList() {
         ArrayList<String> tempNamesList = new ArrayList<>();
-        if (nomJoueur1.getText() == null || nomJoueur1.getText().isEmpty()) {
-            tempNamesList.clear();
-        } else
-            tempNamesList.add(nomJoueur1.getText());
-        if (nomJoueur2.getText() == null || nomJoueur2.getText().isEmpty()) {
-            tempNamesList.clear();
-        } else
-            tempNamesList.add(nomJoueur2.getText());
-        if (tempNamesList.size() ==  2) {
+        for (int i = 1; i <= getNumberOfPlayers(); i++) {
+            String name = getPlayerByIndex(i);
+            if (name == null || name.equals("")) {
+                tempNamesList.clear();
+                break;
+            } else
+                tempNamesList.add(name);
+        }
+        if (!tempNamesList.isEmpty()) {
             hide();
-            nomsJoueurs.clear();
-            nomsJoueurs.addAll(tempNamesList);
+            playersNames.clear();
+            playersNames.addAll(tempNamesList);
         }
     }
 
+    /**
+     * Retourne le nombre de participants à la partie que l'utilisateur a renseigné
+     */
+    protected int getNumberOfPlayers() {
+        return numberOfPlayers.getSelectionModel().getSelectedItem();
+    }
+
+    /**
+     * Retourne le nom que l'utilisateur a renseigné pour le ième participant à la partie
+     *
+     * @param playerNumber : le numéro du participant
+     */
+    protected String getPlayerByIndex(int playerNumber) {
+        return ((TextField) ((HBox) playersNamesPane.getChildren().get(playerNumber)).getChildren().get(1)).getText();
+    }
+
+    protected void setNumberOfPlayersChanged(ChangeListener<Integer> numberOfPlayersChangedListener) {
+        numberOfPlayers.getSelectionModel().selectedItemProperty().addListener(numberOfPlayersChangedListener);
+    }
+
+    private final ChangeListener<Integer> numberOfPlayersChangedListener = (observableValue, oldNbPlayers, newNbPlayers) -> {
+        if (oldNbPlayers < newNbPlayers)
+            for (int i = oldNbPlayers + 1; i <= newNbPlayers; i++)
+                ajoutZoneNomDeJoueurParNumero(i);
+        else
+            for (int i = 0; i < (oldNbPlayers - newNbPlayers); i++)
+                enleveZoneNomDeJoueur();
+    };
+
+    protected void ajoutZoneNomDeJoueurParNumero(int playerNumber) {
+        playersNamesPane.getChildren().add(new PlayerNameInput(playerNumber));
+    }
+
+    protected void enleveZoneNomDeJoueur() {
+        playersNamesPane.getChildren().remove(playersNamesPane.getChildren().get(playersNamesPane.getChildren().size() - 1));
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        numberOfPlayers.getItems().addAll(2, 3, 4);
+        numberOfPlayers.getSelectionModel().select(2);
+    }
 }

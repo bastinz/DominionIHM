@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<!--<fx:root fx:id="otherPlayerPane" type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/">
+    <Label id="nameLabel" fx:id="nameLabel"/>
+    <HBox spacing="10">
+        <Label id="handLabel" fx:id="handLabel"/>
+        <Label id="drawLabel" fx:id="drawLabel"/>
+        <Label id="discardLabel" fx:id="discardLabel"/>
+    </HBox>
+</fx:root>-->
+<fx:root type="javafx.scene.layout.VBox" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
+<padding>
+    <Insets right="5" left="5" bottom="30"/>
+</padding>
+<spacing>20</spacing>
+<Label id="allPlayersLabel" fx:id="allPlayersLabel" text="You are playing against"/>
+<VBox fx:id="allOtherPlayersPane" alignment="CENTER" spacing="20">
+</VBox>
+</fx:root>

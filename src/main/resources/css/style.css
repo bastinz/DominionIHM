@@ -21,17 +21,11 @@ Text {
       -fx-fill: yellow;
  }
 
-SVGPath {
-    -fx-fill: none;
-    -fx-stroke: red; // transparent
-    -fx-stroke-width: 3px;
-}
-
 #instructionLabel {
     -fx-font-size: 30;
 }
 
-#nameLabel {
+#nameLabel, #allPlayersLabel, #playersNumberText {
     -fx-font-size: 30;
 }
 

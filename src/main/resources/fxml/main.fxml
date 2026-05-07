@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import fr.umontpellier.iut.dominionfx.views.AllOtherPlayersView?>
 <fx:root fx:id="gameView" type="javafx.scene.layout.HBox" id="gameView" styleClass="root" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
     <stylesheets>
         <URL value="@../css/style.css"/>
@@ -17,7 +18,7 @@
         <Label id="instructionLabel" fx:id="instructionLabel" alignment="TOP_LEFT" text="Ici le texte pour les indications"/>
         <HBox VBox.vgrow="ALWAYS">
             <CurrentPlayerView id="currentPlayerPane" fx:id="currentPlayerPane" HBox.hgrow="ALWAYS"/>
-            <OtherPlayerView id="otherPlayerPane" fx:id="otherPlayerPane"/>
+            <AllOtherPlayersView id="otherPlayersPane" fx:id="otherPlayerPane"/>
         </HBox>
         <HBox id="temporaryCards" fx:id="temporaryCards" minHeight="50.0"/>
     </VBox>
