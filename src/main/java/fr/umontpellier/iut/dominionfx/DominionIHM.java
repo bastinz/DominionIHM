@@ -20,7 +20,7 @@ public class DominionIHM extends Application {
     private Stage primaryStage;
     private static Game game;
 
-    private final boolean withChoosePlayersView = true;
+    private final boolean withChoosePlayersView = false;
     private boolean gameTest = false;
 
     @Override
@@ -63,11 +63,9 @@ public class DominionIHM extends Application {
         if (!gameTest && withChoosePlayersView)
             playerNames = choosePlayersView.getPlayersNames();
         else {
-            playerNames = new String[4];
-            playerNames[0] = "Achille";
-            playerNames[1] = "Antigone";
-            playerNames[2] = "Hercule";
-            playerNames[3] = "Pénélope";
+            playerNames = new String[2];
+            playerNames[0] = "Apollon";
+            playerNames[1] = "Aphrodite";
         }
         String[] kingdomCards = selectKingdomCards();
         game = new Game(playerNames, kingdomCards);
